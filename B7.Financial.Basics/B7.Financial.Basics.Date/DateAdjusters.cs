@@ -9,21 +9,15 @@
 public static class DateAdjusters
 {
     /// <summary>
-    /// Determines the next leap day that occurs on or after the specified date.
+    /// Determines the next leap day that occurs after the specified date.
     /// </summary>
     /// <remarks>A leap day is February 29, which occurs only in leap years. This method accounts for leap
     /// year rules and ensures the returned date is valid.</remarks>
     /// <param name="date">The starting date to evaluate.</param>
-    /// <returns>A <see cref="DateOnly"/> representing the next February 29 that occurs on or after the specified date. If the
+    /// <returns>A <see cref="DateOnly"/> representing the next February 29 that occurs after the specified date. If the
     /// input date is already February 29, the same date is returned.</returns>
     public static DateOnly NextLeapDay(this DateOnly date)
     {
-        // If the date is already a leap day, return it as-is
-        if (date is { Month: 2, Day: 29 })
-        {
-            return date;
-        }
-
         // If the date occurs before February 29 in a leap year, return February 29 of that year
         if (DateTime.IsLeapYear(date.Year) && date < new DateOnly(date.Year, 2, 29))
         {
@@ -88,7 +82,8 @@ public static class DateAdjusters
         year += 4 - (year & 3);
 
         // Adjust for century years not divisible by 400
-        if (year % 100 == 0 && year % 400 != 0)
+        //if (year % 100 == 0 && year % 400 != 0)
+        if (!DateTime.IsLeapYear(year))
         {
             year += 4;
         }
