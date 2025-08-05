@@ -18,24 +18,21 @@ public static class DateAdjusters
     /// input date is already February 29, the same date is returned.</returns>
     public static DateOnly NextLeapDay(this DateOnly date)
     {
-        var year = date.Year;
-        var month = date.Month;
-        var day = date.Day;
-
-        // If the date is already a leap day, return it
-        if (month == 2 && day == 29)
+        // If the date is already a leap day, return it as-is
+        if (date is { Month: 2, Day: 29 })
         {
-            return EnsureLeapDay(date.Year);
+            return date;
         }
 
-        // If the date is before February 29 in a leap year, return February 29 of that year
-        if (DateTime.IsLeapYear(year) && month <= 2)
+        // If the date occurs before February 29 in a leap year, return February 29 of that year
+        if (DateTime.IsLeapYear(date.Year) && date < new DateOnly(date.Year, 2, 29))
         {
-            return new DateOnly(year, 2, 29);
+            return new DateOnly(date.Year, 2, 29);
         }
 
-        // Handle any other date
-        return EnsureLeapDay(((year / 4) * 4) + 4);
+        // Otherwise calculate the next leap year and return its leap day
+        var nextLeapYear = GetNextLeapYear(date.Year);
+        return new DateOnly(nextLeapYear, 2, 29);
     }
 
     /// <summary>
@@ -61,7 +58,7 @@ public static class DateAdjusters
         // If the date is already a leap day, return it
         if (date is { Day: 29, Month: 2 })
         {
-            return EnsureLeapDay(date.Year);
+            return date;
         }
 
         // Calculate the next leap year
@@ -87,13 +84,15 @@ public static class DateAdjusters
     // Get next leap year
     private static int GetNextLeapYear(int year)
     {
-        while (!DateTime.IsLeapYear(++year)) { }
+        // Compute the next year divisible by 4 using bitwise operations
+        year += 4 - (year & 3);
+
+        // Adjust for century years not divisible by 400
+        if (year % 100 == 0 && year % 400 != 0)
+        {
+            year += 4;
+        }
+
         return year;
     }
-
-    // Handle 2100, which is not a leap year
-    private static DateOnly EnsureLeapDay(int possibleLeapYear) =>
-        DateTime.IsLeapYear(possibleLeapYear)
-            ? new DateOnly(possibleLeapYear, 2, 29)
-            : new DateOnly(possibleLeapYear + 4, 2, 29);
 }
