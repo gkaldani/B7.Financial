@@ -1,0 +1,11 @@
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\bin\Debug\net9.0\B7.Financial.Basics.Date.deps.json
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\bin\Debug\net9.0\B7.Financial.Basics.Date.dll
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\bin\Debug\net9.0\B7.Financial.Basics.Date.pdb
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.GeneratedMSBuildEditorConfig.editorconfig
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.AssemblyInfoInputs.cache
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.AssemblyInfo.cs
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.csproj.CoreCompileInputs.cache
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.dll
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\refint\B7.Financial.Basics.Date.dll
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\B7.Financial.Basics.Date.pdb
+F:\GitHub\gkaldani\B7.Financial\B7.Financial.Basics\B7.Financial.Basics.Date\obj\Debug\net9.0\ref\B7.Financial.Basics.Date.dll
