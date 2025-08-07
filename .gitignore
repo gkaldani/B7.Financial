@@ -52,3 +52,5 @@
 *.dll
 *.pdb
 /B7.Financial.Basics/B7.Financial.Basics.ConsoleApp/obj/project.nuget.cache
+/B7.Financial.Basics/B7.Financial.Basics.Date/obj/project.nuget.cache
+/B7.Financial.Basics/B7.Financial.Basics.Date.Tests/obj/project.nuget.cache
