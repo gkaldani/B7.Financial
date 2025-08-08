@@ -432,9 +432,22 @@
           "build/net8.0/xunit.runner.visualstudio.props": {}
         }
       },
+      "B7.Financial.Abstractions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/B7.Financial.Abstractions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/B7.Financial.Abstractions.dll": {}
+        }
+      },
       "B7.Financial.Basics.Date/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "B7.Financial.Abstractions": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/B7.Financial.Basics.Date.dll": {}
         },
@@ -1011,6 +1024,11 @@
         "xunit.runner.visualstudio.3.1.3.nupkg.sha512",
         "xunit.runner.visualstudio.nuspec"
       ]
+    },
+    "B7.Financial.Abstractions/1.0.0": {
+      "type": "project",
+      "path": "../B7.Financial.Abstractions/B7.Financial.Abstractions.csproj",
+      "msbuildProject": "../B7.Financial.Abstractions/B7.Financial.Abstractions.csproj"
     },
     "B7.Financial.Basics.Date/1.0.0": {
       "type": "project",

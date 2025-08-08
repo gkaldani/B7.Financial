@@ -12,6 +12,21 @@ public static class DateOnlyUtils
         secondDate.DayNumber - firstDate.DayNumber;
 
     /// <summary>
+    /// Returns the number of days in a given year.
+    /// </summary>
+    /// <param name="year"></param>
+    /// <returns></returns>
+    public static int DaysInYear(int year) => DateTime.IsLeapYear(year) ? 366 : 365;
+
+    /// <summary>
+    /// Returns the number of days in the year of a given <see cref="DateOnly"/> value.
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    public static int DaysInYear(this DateOnly date) => DateTime.IsLeapYear(date.Year) ? 366 : 365;
+
+
+    /// <summary>
     /// Generates a sequence of dates within the specified range.
     /// </summary>
     /// <remarks>The method iterates through the range of dates, incrementing by one day at a time, and yields

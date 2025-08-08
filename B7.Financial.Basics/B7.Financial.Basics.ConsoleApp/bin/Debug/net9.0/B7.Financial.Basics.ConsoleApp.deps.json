@@ -14,7 +14,18 @@
           "B7.Financial.Basics.ConsoleApp.dll": {}
         }
       },
+      "B7.Financial.Abstractions/1.0.0": {
+        "runtime": {
+          "B7.Financial.Abstractions.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "B7.Financial.Basics.Date/1.0.0": {
+        "dependencies": {
+          "B7.Financial.Abstractions": "1.0.0"
+        },
         "runtime": {
           "B7.Financial.Basics.Date.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -26,6 +37,11 @@
   },
   "libraries": {
     "B7.Financial.Basics.ConsoleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "B7.Financial.Abstractions/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
