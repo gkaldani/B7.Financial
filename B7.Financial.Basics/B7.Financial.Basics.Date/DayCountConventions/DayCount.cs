@@ -11,7 +11,7 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </remarks>
 public abstract class DayCount : INamed
 {
-    public static string Name => "DayCount";
+    public static string Name => throw new NotImplementedException("DayCount");
 
     /// <summary>
     /// Unique name of the day count convention.
@@ -39,6 +39,19 @@ public abstract class DayCount : INamed
     /// <param name="scheduleInfo">The schedule information</param>
     /// <returns>The year fraction, zero or greater</returns>
     public abstract decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IScheduleInfo? scheduleInfo);
+
+    /// <summary>
+    /// Calculates the number of days between the specified dates using the rules of this day count.
+    /// <para>
+    /// A day count is typically defines as a count of days divided by a year estimate. <br/>
+    /// This method returns the count of days, which is the numerator of the division. <br/>
+    /// For example, the 'Act/Act' day count will return the actual number of days between <br/>
+    /// the two dates, but the '30/360 ISDA' will return a value based on 30 day months.
+    /// </para>
+    /// </summary>
+    /// <param name="firstDate">The first date</param>
+    /// <param name="secondDate">The second date</param>
+    /// <returns>The number of days, as determined by the day count</returns>
     public abstract int Days(DateOnly firstDate, DateOnly secondDate);
 
     /// <summary>
