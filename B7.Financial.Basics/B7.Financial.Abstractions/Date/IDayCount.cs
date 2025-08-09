@@ -1,34 +1,7 @@
-﻿using B7.Financial.Abstractions;
+﻿namespace B7.Financial.Abstractions.Date;
 
-namespace B7.Financial.Basics.Date.DayCountConventions;
-
-/// <summary>
-/// A convention defining how to calculate fractions of a year.
-/// </summary>
-/// <remarks>
-/// The purpose of this convention is to define how to convert dates into numeric year fractions. <br/>
-/// This is of use when calculating accrued interest over time.
-/// </remarks>
-public abstract class DayCount : INamed
+public interface IDayCount : INamed
 {
-    public static string Name => throw new NotImplementedException("DayCount");
-
-    /// <summary>
-    /// Unique name of the day count convention.
-    /// </summary>
-    public abstract string GetName();
-
-    /// <summary>
-    /// Gets the year fraction between the specified dates. <br/>
-    /// Given two dates, this method returns the fraction of a year between these <br/>
-    /// dates according to the convention. The dates must be in order.
-    /// </summary>
-    /// <param name="firstDate">The first date</param>
-    /// <param name="secondDate">The second date, on or after the <see cref="firstDate"/></param>
-    /// <returns>The year fraction, zero or greater</returns>
-    public decimal YearFraction(DateOnly firstDate, DateOnly secondDate) =>
-        YearFraction(firstDate, secondDate, null);
-
     /// <summary>
     /// Gets the year fraction between the specified dates. <br/>
     /// Given two dates, this method returns the fraction of a year between these <br/>
@@ -38,7 +11,7 @@ public abstract class DayCount : INamed
     /// <param name="secondDate">The second date, on or after the <see cref="firstDate"/></param>
     /// <param name="scheduleInfo">The schedule information</param>
     /// <returns>The year fraction, zero or greater</returns>
-    public abstract decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IScheduleInfo? scheduleInfo);
+    public decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IScheduleInfo? scheduleInfo);
 
     /// <summary>
     /// Calculates the number of days between the specified dates using the rules of this day count.
@@ -52,7 +25,7 @@ public abstract class DayCount : INamed
     /// <param name="firstDate">The first date</param>
     /// <param name="secondDate">The second date</param>
     /// <returns>The number of days, as determined by the day count</returns>
-    public abstract int Days(DateOnly firstDate, DateOnly secondDate);
+    public int Days(DateOnly firstDate, DateOnly secondDate);
 
     /// <summary>
     /// Information about the schedule necessary to calculate the day count.

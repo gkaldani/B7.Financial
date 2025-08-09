@@ -1,4 +1,4 @@
-﻿namespace B7.Financial.Basics.Date;
+﻿namespace B7.Financial.Abstractions.Date;
 
 /// <summary>
 /// Represents a method that adjusts a <see cref="DateOnly"/> value based on custom logic.

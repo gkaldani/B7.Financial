@@ -1,4 +1,6 @@
-﻿namespace B7.Financial.Basics.Date;
+﻿using B7.Financial.Abstractions.Date;
+
+namespace B7.Financial.Basics.Date;
 
 /// <summary>
 /// Provides utility methods and predefined adjusters for working with leap days (February 29).
