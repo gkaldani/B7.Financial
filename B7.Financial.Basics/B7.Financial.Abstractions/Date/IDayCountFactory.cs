@@ -1,7 +1,4 @@
-﻿using B7.Financial.Abstractions;
-using B7.Financial.Abstractions.Date;
-
-namespace B7.Financial.Basics.Date.DayCountConventions;
+﻿namespace B7.Financial.Abstractions.Date;
 
 /// <summary>
 /// Represents a factory for creating day count conventions.

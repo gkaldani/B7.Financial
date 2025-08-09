@@ -11,12 +11,7 @@ namespace B7.Financial.Abstractions.Date;
 /// </remarks>
 public abstract class DayCount : IDayCount
 {
-    public static string Name => throw new NotImplementedException("DayCount");
-
-    /// <summary>
-    /// Unique name of the day count convention.
-    /// </summary>
-    public abstract string GetName();
+    public abstract string Name { get; }
 
     /// <summary>
     /// Gets the year fraction between the specified dates. <br/>

@@ -1,5 +1,4 @@
-﻿using B7.Financial.Abstractions;
-using B7.Financial.Abstractions.Date;
+﻿using B7.Financial.Abstractions.Date;
 
 namespace B7.Financial.Basics.Date.DayCountConventions;
 
@@ -21,9 +20,7 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </summary>
 public sealed class DayCountActualActualIsda : DayCount
 {
-    public new static string Name => "Act/Act ISDA";
-
-    public override string GetName() => Name;
+    public override string Name => "Act/Act ISDA";
 
     public override decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IDayCount.IScheduleInfo? scheduleInfo)
     {

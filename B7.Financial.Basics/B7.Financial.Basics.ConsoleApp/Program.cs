@@ -14,12 +14,12 @@ internal class Program
 
         IDayCountFactory dayCountFactory = new StandardDayCountsFactory();
 
-        IDayCount oneOneDayCount = dayCountFactory.Of(DayCountActualActualIsda.Name);
+        IDayCount oneOneDayCount = dayCountFactory.Of("Act/Act ISDA");
 
         Console.WriteLine(oneOneDayCount.GetType());
         
-        Console.WriteLine(DayCountActualActualIsda.Name);
-        Console.WriteLine(oneOneDayCount.GetName());
+        //Console.WriteLine(DayCountActualActualIsda.Name);
+        Console.WriteLine(oneOneDayCount.Name);
 
         //var dayCount = dayCountFactory.Of("Actual/365");
 
@@ -42,6 +42,6 @@ public class TermDeposit
 
     public override string ToString()
     {
-        return $"TermDeposit:\r\n\tDayCount: {DayCount.GetName()}";
+        return $"TermDeposit:\r\n\tDayCount: {DayCount.Name}";
     }
 }

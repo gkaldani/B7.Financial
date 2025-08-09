@@ -14,8 +14,8 @@ public class StandardDayCountsFactory : IDayCountFactory
     private static readonly FrozenDictionary<string, DayCount> DayCountConventions =
         new Dictionary<string, DayCount>(StringComparer.OrdinalIgnoreCase)
         {
-            [DayCountOneOne.Name] = OneOne,
-            [DayCountActualActualIsda.Name] = ActualActualIsda,
+            [OneOne.Name] = OneOne,
+            [ActualActualIsda.Name] = ActualActualIsda,
         }.ToFrozenDictionary();
 
     /// <summary>

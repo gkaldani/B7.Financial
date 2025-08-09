@@ -8,6 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\B7.Financial.Abstractions\B7.Financial.Abstractions.csproj" />
 	</ItemGroup>
 
