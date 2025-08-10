@@ -1,4 +1,5 @@
-﻿using B7.Financial.Abstractions.Date;
+﻿using B7.Financial.Abstractions;
+using B7.Financial.Abstractions.Date;
 
 namespace B7.Financial.Basics.Date.DayCountConventions;
 
@@ -39,7 +40,8 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </summary>
 public sealed class DayCountActualActualIcma : DayCount
 {
-    public override string Name => "Act/Act ICMA";
+    private static readonly Name DayCountName = "Act/Act ICMA";
+    public override Name Name => DayCountName;
 
     public override decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IDayCount.IScheduleInfo? scheduleInfo)
     {
@@ -50,7 +52,7 @@ public sealed class DayCountActualActualIcma : DayCount
         }
 
         if (scheduleInfo is null)
-            throw new ArgumentNullException(nameof(scheduleInfo));
+            throw new ArgumentNullException(nameof(scheduleInfo), "Schedule information is required for this day count.");
 
 
         // calculation is based on the schedule period, firstDate assumed to be the start of the period

@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>B7.Financial.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:B7.Financial.Abstractions.Date.DateAdjuster">
+            <summary>
+            Represents a method that adjusts a <see cref="T:System.DateOnly"/> value based on custom logic.
+            </summary>
+            <param name="date">The <see cref="T:System.DateOnly"/> value to be adjusted.</param>
+            <returns>A new <see cref="T:System.DateOnly"/> value that represents the adjusted date.</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.DayCount">
+            <summary>
+            A convention defining how to calculate fractions of a year.
+            </summary>
+            <remarks>
+            The purpose of this convention is to define how to convert dates into numeric year fractions. <br/>
+            This is of use when calculating accrued interest over time.
+            </remarks>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.DayCount.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly)">
+            <summary>
+            Gets the year fraction between the specified dates. <br/>
+            Given two dates, this method returns the fraction of a year between these <br/>
+            dates according to the convention. The dates must be in order.
+            </summary>
+            <param name="firstDate">The first date</param>
+            <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
+            <returns>The year fraction, zero or greater</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCount.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.IDayCount">
+            <summary>
+            Common interface for day count conventions.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.IDayCount.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <summary>
+            Gets the year fraction between the specified dates. <br/>
+            Given two dates, this method returns the fraction of a year between these <br/>
+            dates according to the convention. The dates must be in order.
+            </summary>
+            <param name="firstDate">The first date</param>
+            <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
+            <param name="scheduleInfo">The schedule information</param>
+            <returns>The year fraction, zero or greater</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.IDayCount.Days(System.DateOnly,System.DateOnly)">
+            <summary>
+            Calculates the number of days between the specified dates using the rules of this day count.
+            <para>
+            A day count is typically defines as a count of days divided by a year estimate. <br/>
+            This method returns the count of days, which is the numerator of the division. <br/>
+            For example, the 'Act/Act' day count will return the actual number of days between <br/>
+            the two dates, but the '30/360 ISDA' will return a value based on 30 day months.
+            </para>
+            </summary>
+            <param name="firstDate">The first date</param>
+            <param name="secondDate">The second date</param>
+            <returns>The number of days, as determined by the day count</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo">
+            <summary>
+            Information about the schedule necessary to calculate the day count.
+            <para>
+            Some <see cref="T:B7.Financial.Abstractions.Date.DayCount"/> implementations require additional information about the schedule. <br/>
+            Implementations of this interface provide that information.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo.StartDate">
+            <summary>
+            The start date of the schedule.
+            <para>
+            The first date in the schedule. <br/>
+            If the schedule adjusts for business days, then this is the adjusted date.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo.EndDate">
+            <summary>
+            The end date of the schedule.
+            <para>
+            The last date in the schedule. <br/>
+            If the schedule adjusts for business days, then this is the adjusted date.
+            </para>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo.PeriodEndDate(System.DateOnly)">
+            <summary>
+            Gets the end date of the schedule period. <br/>
+            This is called when a day count requires the end date of the schedule period.
+            </summary>
+            <param name="date">The date to find the period end date for</param>
+            <returns>The period end date</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.IDayCountFactory">
+            <summary>
+            Represents a factory for creating day count conventions.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.IDayCountFactory.DayCountNames">
+            <summary>
+            Retrieves the names of all available day count conventions.
+            </summary>
+            <returns> A collection of day count convention names. </returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.INamed">
+            <summary>
+            A named instance.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.INamed.Name">
+            <summary>
+            The unique name of the instance. <br/>
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Abstractions.INamed`1">
+            <summary>
+            A named instance.
+            <para/>
+            This simple interface is used to define objects that can be identified by a unique name. <br/>
+            The name contains enough information to be able to recreate the instance.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.INamed`1.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Factory method.
+            </summary>
+            <param name="name">The name of the instance</param>
+            <returns>Instance of <see cref="!:T"/></returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.INamedFactory`1">
+            <summary>
+            This interface defines a factory for creating named instances of type T.
+            </summary>
+            <typeparam name="T"> The type of the named instance. </typeparam>
+        </member>
+        <member name="M:B7.Financial.Abstractions.INamedFactory`1.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves an instance of type <typeparamref name="T"/> by its name.
+            </summary>
+            <param name="name"> The name of the instance to retrieve. </param>
+            <returns> An instance of type <typeparamref name="T"/>. </returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Name">
+            <summary>
+            Represents a strongly-typed name.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Name.MaxLength">
+            <summary>
+            Determines the maximum length of a name.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.Create(System.String)">
+            <summary>
+            Factory method to create a new instance of <see cref="T:B7.Financial.Abstractions.Name"/> with the specified value.
+            </summary>
+            <param name="value">The value of the name.</param>
+            <returns>A new instance of <see cref="T:B7.Financial.Abstractions.Name"/>.</returns>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Name.Value">
+            <summary>
+            The value of the name.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.#ctor(System.String)">
+            <summary>
+            Constructs a new instance of <see cref="T:B7.Financial.Abstractions.Name"/> with the specified value.
+            </summary>
+            <param name="value">The value of the name.</param>
+            <exception cref="T:System.ArgumentException">Thrown when the name is null, whitespace</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the name is too long.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.ToString">
+            <summary>
+            Overrides the ToString method to return the name value.
+            </summary>
+            <returns>The name value.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.Equals(B7.Financial.Abstractions.Name)">
+            <inheritdoc/>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.op_Implicit(B7.Financial.Abstractions.Name)~System.String">
+            <summary>
+            Implicit conversion from <see cref="T:B7.Financial.Abstractions.Name"/> to <see cref="T:System.String"/>.
+            </summary>
+            <param name="name"> The name instance to convert. </param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.op_Implicit(B7.Financial.Abstractions.Name)~System.ReadOnlySpan{System.Char}">
+            <summary>
+            Implicit conversion from <see cref="T:B7.Financial.Abstractions.Name"/> to <see cref="T:System.ReadOnlySpan`1"/>.
+            </summary>
+            <param name="name"> The name instance to convert. </param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.op_Implicit(System.String)~B7.Financial.Abstractions.Name">
+            <summary>
+            Implicit conversion from <see cref="T:System.String"/> to <see cref="T:B7.Financial.Abstractions.Name"/>.
+            </summary>
+            <param name="value"> The string value to convert. </param>
+        </member>
+    </members>
+</doc>

@@ -1,5 +1,8 @@
 ﻿namespace B7.Financial.Abstractions.Date;
 
+/// <summary>
+/// Common interface for day count conventions.
+/// </summary>
 public interface IDayCount : INamed
 {
     /// <summary>

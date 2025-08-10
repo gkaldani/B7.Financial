@@ -11,7 +11,8 @@ namespace B7.Financial.Abstractions.Date;
 /// </remarks>
 public abstract class DayCount : IDayCount
 {
-    public abstract string Name { get; }
+    /// <inheritdoc />
+    public abstract Name Name { get; }
 
     /// <summary>
     /// Gets the year fraction between the specified dates. <br/>
@@ -24,7 +25,9 @@ public abstract class DayCount : IDayCount
     public decimal YearFraction(DateOnly firstDate, DateOnly secondDate) =>
         YearFraction(firstDate, secondDate, null);
 
+    /// <inheritdoc />
     public abstract decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IScheduleInfo? scheduleInfo);
 
+    /// <inheritdoc />
     public abstract int Days(DateOnly firstDate, DateOnly secondDate);
 }

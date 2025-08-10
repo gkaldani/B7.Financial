@@ -8,7 +8,7 @@ public interface INamed
     /// <summary>
     /// The unique name of the instance. <br/>
     /// </summary>
-    public string Name { get; }
+    public Name Name { get; }
 }
 
 /// <summary>
@@ -24,5 +24,5 @@ public interface INamed<out T> : INamed
     /// </summary>
     /// <param name="name">The name of the instance</param>
     /// <returns>Instance of <see cref="T"/></returns>
-    static abstract T Of(string name);
+    static abstract T Of(Name name);
 }

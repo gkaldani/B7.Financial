@@ -9,12 +9,12 @@ namespace B7.Financial.Basics.Date.PeriodIso8601;
 /// <summary>
 /// Represents a period of time in ISO 8601 format.
 /// </summary>
-public readonly record struct Period : INamed, INamedFactory<Period>,
+public readonly struct Period : IEquatable<Period>, INamed, INamedFactory<Period>,
     IAdditionOperators<Period, Period, Period>,
     IAdditiveIdentity<Period, Period>,
     IMinMaxValue<Period>
 {
-    public string Name => ToString();
+    public Name Name => (Name)ToString();
 
     public static Period Zero => default;
     public static Period AdditiveIdentity => Zero;
@@ -50,11 +50,19 @@ public readonly record struct Period : INamed, INamedFactory<Period>,
         this.Days = days;
     }
 
-    public Period Of(string name) => Parse(name);
+    public Period Of(Name name) => Parse(name);
+
+    public bool Equals(Period other)
+    {
+        return Years == other.Years &&
+               Months == other.Months &&
+               Weeks == other.Weeks &&
+               Days == other.Days;
+    }
 
     public override string ToString()
     {
-        if (this == Zero) return "Zero";
+        if (this.Equals(Zero)) return "Zero";
 
         var sb = new StringBuilder("P");
 
@@ -77,9 +85,15 @@ public readonly record struct Period : INamed, INamedFactory<Period>,
             left.Weeks + right.Weeks,
             left.Days + right.Days);
 
-    public static Period Parse(string value)
+    /// <summary>
+    /// Parses a period from a string in ISO 8601 format.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="FormatException"></exception>
+    public static Period Parse(Name value)
     {
-        if (TryParseCore(value.AsSpan(), out var period))
+        if (TryParseCore(value, out var period))
             return period.Value;
 
         throw new FormatException($"Invalid period format: '{value}'");
@@ -177,9 +191,17 @@ public readonly record struct Period : INamed, INamedFactory<Period>,
         return true;
     }
 
+    /// <summary>
+    /// Returns the total number of months represented by this period.
+    /// </summary>
+    /// <returns> The total number of months. </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ToTotalMonths() => (Years * 12) + Months;
 
+    /// <summary>
+    /// Normalizes the period by converting months greater than or equal to 12 into years.
+    /// </summary>
+    /// <returns></returns>
     public Period ToNormalized()
     {
         if (Months < 12) return this;
@@ -188,6 +210,13 @@ public readonly record struct Period : INamed, INamedFactory<Period>,
         return new Period(Years + years, months, Weeks, Days);
     }
 
+    /// <summary>
+    /// Deconstructs the period into its components.
+    /// </summary>
+    /// <param name="years">The number of years.</param>
+    /// <param name="months">The number of months.</param>
+    /// <param name="weeks">The number of weeks.</param>
+    /// <param name="days">The number of days.</param>
     public void Deconstruct(out int years, out int months, out int weeks, out int days)
     {
         years = Years;

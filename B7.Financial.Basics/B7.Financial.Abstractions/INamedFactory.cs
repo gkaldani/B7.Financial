@@ -3,13 +3,13 @@
 /// <summary>
 /// This interface defines a factory for creating named instances of type T.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T"> The type of the named instance. </typeparam>
 public interface INamedFactory<out T> where T : INamed
 {
     /// <summary>
-    /// Retrieves an instance of type T by its name.
+    /// Retrieves an instance of type <typeparamref name="T"/> by its name.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public T Of(string name);
+    /// <param name="name"> The name of the instance to retrieve. </param>
+    /// <returns> An instance of type <typeparamref name="T"/>. </returns>
+    public T Of(Name name);
 }
