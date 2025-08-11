@@ -103,5 +103,5 @@ public class DayCountJsonConverter(IDayCountFactory factory) : System.Text.Json.
         factory.Of(reader.GetString() ?? throw new InvalidOperationException());
 
     public override void Write(System.Text.Json.Utf8JsonWriter writer, IDayCount value, System.Text.Json.JsonSerializerOptions options) =>
-        writer.WriteStringValue((ReadOnlySpan<char>)value.Name);
+        writer.WriteStringValue(value.Name.AsSpan());
 }

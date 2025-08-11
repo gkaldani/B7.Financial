@@ -1,10 +1,14 @@
-﻿using System.Text;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace B7.Financial.Abstractions;
 
 /// <summary>
 /// Represents a strongly-typed name.
 /// </summary>
+/// <remarks>
+/// Has implicit conversions to and from <see cref="string"/>.
+/// </remarks>
 #pragma warning disable CA2231
 public readonly struct Name : IEquatable<Name>
 #pragma warning restore CA2231
@@ -22,7 +26,7 @@ public readonly struct Name : IEquatable<Name>
     public static Name Create(string value) => new(value);
 
     /// <summary>
-    /// The value of the name.
+    /// The string representation of the name.
     /// </summary>
     public string Value => _value ?? throw new InvalidOperationException("Name is not initialized.");
 
@@ -47,6 +51,12 @@ public readonly struct Name : IEquatable<Name>
     }
 
     /// <summary>
+    /// Creates a new readonly span over the <see cref="Name"/>.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<char> AsSpan() => Value.AsSpan();
+
+    /// <summary>
     /// Overrides the ToString method to return the name value.
     /// </summary>
     /// <returns>The name value.</returns>
@@ -66,12 +76,6 @@ public readonly struct Name : IEquatable<Name>
     /// </summary>
     /// <param name="name"> The name instance to convert. </param>
     public static implicit operator string(Name name) => name.Value;
-
-    /// <summary>
-    /// Implicit conversion from <see cref="Name"/> to <see cref="ReadOnlySpan{T}"/>.
-    /// </summary>
-    /// <param name="name"> The name instance to convert. </param>
-    public static implicit operator ReadOnlySpan<char>(Name name) => name.Value.AsSpan();
 
     /// <summary>
     /// Implicit conversion from <see cref="string"/> to <see cref="Name"/>.

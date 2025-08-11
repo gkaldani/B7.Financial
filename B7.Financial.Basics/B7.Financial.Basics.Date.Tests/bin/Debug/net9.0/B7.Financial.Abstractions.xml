@@ -20,6 +20,9 @@
             This is of use when calculating accrued interest over time.
             </remarks>
         </member>
+        <member name="P:B7.Financial.Abstractions.Date.DayCount.Name">
+            <inheritdoc />
+        </member>
         <member name="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly)">
             <summary>
             Gets the year fraction between the specified dates. <br/>
@@ -29,6 +32,12 @@
             <param name="firstDate">The first date</param>
             <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
             <returns>The year fraction, zero or greater</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCount.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
         </member>
         <member name="T:B7.Financial.Abstractions.Date.IDayCount">
             <summary>
@@ -148,6 +157,9 @@
             <summary>
             Represents a strongly-typed name.
             </summary>
+            <remarks>
+            Has implicit conversions to and from <see cref="T:System.String"/>.
+            </remarks>
         </member>
         <member name="F:B7.Financial.Abstractions.Name.MaxLength">
             <summary>
@@ -163,7 +175,7 @@
         </member>
         <member name="P:B7.Financial.Abstractions.Name.Value">
             <summary>
-            The value of the name.
+            The string representation of the name.
             </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Name.#ctor(System.String)">
@@ -173,6 +185,11 @@
             <param name="value">The value of the name.</param>
             <exception cref="T:System.ArgumentException">Thrown when the name is null, whitespace</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the name is too long.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Name.AsSpan">
+            <summary>
+            Creates a new readonly span over the <see cref="T:B7.Financial.Abstractions.Name"/>.
+            </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Name.ToString">
             <summary>
@@ -192,12 +209,6 @@
         <member name="M:B7.Financial.Abstractions.Name.op_Implicit(B7.Financial.Abstractions.Name)~System.String">
             <summary>
             Implicit conversion from <see cref="T:B7.Financial.Abstractions.Name"/> to <see cref="T:System.String"/>.
-            </summary>
-            <param name="name"> The name instance to convert. </param>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Name.op_Implicit(B7.Financial.Abstractions.Name)~System.ReadOnlySpan{System.Char}">
-            <summary>
-            Implicit conversion from <see cref="T:B7.Financial.Abstractions.Name"/> to <see cref="T:System.ReadOnlySpan`1"/>.
             </summary>
             <param name="name"> The name instance to convert. </param>
         </member>
