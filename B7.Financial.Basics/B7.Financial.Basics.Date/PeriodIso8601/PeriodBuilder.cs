@@ -139,7 +139,8 @@ public sealed class PeriodBuilder
         }
 
         // Period ctor enforces non-negativity; we’ve already guarded on set.
-        return new Period(y, m, _weeks, _days);
+
+        return new Period(y, m, _days);
     }
 
     /// <summary>

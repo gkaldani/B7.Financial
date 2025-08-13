@@ -36,7 +36,7 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     /// <summary>
     /// Maximum value for <see cref="Period"/>.
     /// </summary>
-    public static Period MaxValue { get; } = new(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue);
+    public static Period MaxValue { get; } = new(years: int.MaxValue, months: int.MaxValue, weeks: 0, days: int.MaxValue);
 
     /// <summary>
     /// Minimum value for <see cref="Period"/>.
@@ -47,25 +47,25 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     /// Creates a new instance of <see cref="Period"/> with the specified days.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Period OfDays(int days) => new(years: 0, months: 0, weeks: 0, days: days);
+    public static Period OfDays(int days) => new(years: 0, months: 0,days: days);
 
     /// <summary>
     /// Creates a new instance of <see cref="Period"/> with the specified months.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Period OfMonths(int months) => new(years: 0, months: months, weeks: 0, days: 0);
+    public static Period OfMonths(int months) => new(years: 0, months: months, days: 0);
 
     /// <summary>
     /// Creates a new instance of <see cref="Period"/> with the specified weeks.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Period OfWeeks(int weeks) => new(years: 0, months: 0, weeks: weeks, days: 0);
+    public static Period OfWeeks(int weeks) => new(weeks);
 
     /// <summary>
     /// Creates a new instance of <see cref="Period"/> with the specified years.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Period OfYears(int years) => new(years: years, months: 0, weeks: 0, days: 0);
+    public static Period OfYears(int years) => new(years: years, months: 0, days: 0);
 
     /// <summary>Year component of the period.</summary>
     public int Years { get; }
@@ -90,20 +90,43 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     public bool IsNormalized => Months < 12;
 
     /// <summary>
+    /// Indicates this is a week-based period (W only).
+    /// </summary>
+    public bool IsWeekBased => Weeks != 0 && (Years | Months | Days) == 0;
+
+    /// <summary>
+    /// Indicates this is a date-based period (Y/M/D only).
+    /// </summary>
+    public bool IsDateBased => Weeks == 0;
+
+    /// <summary>
     /// Constructs a new instance of <see cref="Period"/> with the specified values.
     /// </summary>
     /// <exception cref="ArgumentException">All values must be non-negative.</exception>
-    public Period(int years, int months, int weeks, int days)
+    private Period(int years, int months, int weeks, int days)
     {
         // Single validation check with bitwise OR for better performance
         if ((years | months | weeks | days) < 0)
             throw new ArgumentException("All values must be non-negative.");
+
+        if (weeks > 0 && (years != 0 || months != 0 || days != 0))
+            throw new ArgumentException("Weeks cannot be combined with years, months, or days in ISO 8601 format.");
 
         Years = years;
         Months = months;
         Weeks = weeks;
         Days = days;
     }
+
+    /// <summary>
+    /// Constructs a new instance of <see cref="Period"/> with the specified number of weeks.
+    /// </summary>
+    public Period(int weeks) : this(years: 0, months: 0, weeks, days: 0) { }
+
+    /// <summary>
+    /// Constructs a new instance of <see cref="Period"/> with the specified number of years, months, and days.
+    /// </summary>
+    public Period(int years, int months, int days) : this(years, months, weeks: 0, days) { }
 
     /// <summary>
     /// Retrieves an instance of <see cref="Period"/> based on the provided name.
@@ -206,6 +229,12 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     }
 
     /// <summary>
+    /// Multiplies a period by a non-negative integer factor (commutative).
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Period operator *(int factor, Period period) => period * factor;
+
+    /// <summary>
     /// Parses a period from a string in ISO 8601 format.
     /// </summary>
     public static Period Parse(Name value)
@@ -297,30 +326,28 @@ public readonly struct Period : INamed, INamedFactory<Period>,
                         if (years != 0) return false; // Duplicate
                         if (hasWeeksComponent) return false; // ISO: weeks cannot be mixed with Y/M/D
                         years = number;
-                        anyComponent = true;
                         break;
                     case 'M':
                         if (months != 0) return false; // Duplicate
                         if (hasWeeksComponent) return false;
                         months = number;
-                        anyComponent = true;
                         break;
                     case 'W':
                         if ((years | months | days) != 0) return false; // ISO: W cannot mix with Y/M/D
                         if (weeks != 0) return false; // Duplicate
                         weeks = number;
                         hasWeeksComponent = true;
-                        anyComponent = true;
                         break;
                     case 'D':
                         if (days != 0) return false; // Duplicate
                         if (hasWeeksComponent) return false;
                         days = number;
-                        anyComponent = true;
                         break;
                     default:
                         return false;
                 }
+
+                anyComponent = true;
 
                 // Reset for next number
                 numberStart = i + 1;
@@ -427,6 +454,11 @@ public readonly struct Period : INamed, INamedFactory<Period>,
 
     /// <summary>
     /// Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
+    /// Supported format specifiers:
+    /// - null or "G": default (no transformation)
+    /// - "N": normalize months into years
+    /// - "W": compress days into weeks if no Y/M and divisible by 7
+    /// - "C": canonical (N + W)
     /// </summary>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     {
@@ -436,38 +468,80 @@ public readonly struct Period : INamed, INamedFactory<Period>,
         if (destination.Length == 0) return false;
         destination[idx++] = 'P';
 
-        if (Years != 0)
+        // Local copies so we can transform for formatting without changing state.
+        int y = Years, m = Months, w = Weeks, d = Days;
+
+        if (!format.IsEmpty)
         {
-            if (!Years.TryFormat(destination[idx..], out var w, default, provider)) return false;
-            idx += w;
+            switch (char.ToUpperInvariant(format[0]))
+            {
+                case 'N':
+                    if (m >= 12)
+                    {
+                        var (yy, mm) = Math.DivRem(m, 12);
+                        y += yy;
+                        m = mm;
+                    }
+                    break;
+
+                case 'W':
+                    if ((y | m) == 0 && d != 0 && d % 7 == 0)
+                    {
+                        w += d / 7;
+                        d = 0;
+                    }
+                    break;
+
+                case 'C':
+                    if (m >= 12)
+                    {
+                        var (yy2, mm2) = Math.DivRem(m, 12);
+                        y += yy2;
+                        m = mm2;
+                    }
+                    if ((y | m) == 0 && d != 0 && d % 7 == 0)
+                    {
+                        w += d / 7;
+                        d = 0;
+                    }
+                    break;
+
+                    // 'G' or unknown: treat as default
+            }
+        }
+
+        if (y != 0)
+        {
+            if (!y.TryFormat(destination[idx..], out var w1, default, provider)) return false;
+            idx += w1;
             if (idx >= destination.Length) return false;
             destination[idx++] = 'Y';
         }
-        if (Months != 0)
+        if (m != 0)
         {
-            if (!Months.TryFormat(destination[idx..], out var w, default, provider)) return false;
-            idx += w;
+            if (!m.TryFormat(destination[idx..], out var w2, default, provider)) return false;
+            idx += w2;
             if (idx >= destination.Length) return false;
             destination[idx++] = 'M';
         }
-        if (Weeks != 0)
+        if (w != 0)
         {
-            if (!Weeks.TryFormat(destination[idx..], out var w, default, provider)) return false;
-            idx += w;
+            if (!w.TryFormat(destination[idx..], out var w3, default, provider)) return false;
+            idx += w3;
             if (idx >= destination.Length) return false;
             destination[idx++] = 'W';
         }
-        if (Days != 0)
+        if (d != 0)
         {
-            if (!Days.TryFormat(destination[idx..], out var w, default, provider)) return false;
-            idx += w;
+            if (!d.TryFormat(destination[idx..], out var w4, default, provider)) return false;
+            idx += w4;
             if (idx >= destination.Length) return false;
             destination[idx++] = 'D';
         }
 
         if (idx == 1) // nothing appended after 'P'
         {
-            if (destination.Length < 4) return false; // "P0D"
+            if (destination.Length < 3) return false; // "P0D"
             destination[idx++] = '0';
             destination[idx++] = 'D';
         }
@@ -480,4 +554,62 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     /// Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
     /// </summary>
     public string ToString(string? format, IFormatProvider? formatProvider) => ToString();
+
+    /// <summary>
+    /// Applies this period to a DateOnly, in Y -> M -> D order for date-based periods,
+    /// or as 7*W days for week-based periods.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DateOnly AddTo(DateOnly date)
+    {
+        if (Weeks != 0)
+        {
+            var totalDays = checked(Weeks * 7L);
+            return date.AddDays(checked((int)totalDays));
+        }
+
+        var result = date;
+        if (Years != 0) result = result.AddYears(Years);
+        if (Months != 0) result = result.AddMonths(Months);
+        if (Days != 0) result = result.AddDays(Days);
+        return result;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DateAdjuster"/> that applies this period to a DateOnly.
+    /// </summary>
+    public DateAdjuster ToAddDateAdjuster()
+    {
+        var period = this; // Copy 'this' to a local variable
+        return date => period.AddTo(date);
+    }
+
+    /// <summary>
+    /// Subtracts this period from a DateOnly, in Y -> M -> D order for date-based periods,
+    /// or as 7*W days for week-based periods.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DateOnly SubtractFrom(DateOnly date)
+    {
+        if (Weeks != 0)
+        {
+            var totalDays = checked(Weeks * 7L);
+            return date.AddDays(checked((int)-totalDays));
+        }
+
+        var result = date;
+        if (Years != 0) result = result.AddYears(-Years);
+        if (Months != 0) result = result.AddMonths(-Months);
+        if (Days != 0) result = result.AddDays(-Days);
+        return result;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DateAdjuster"/> that subtracts this period from a DateOnly.
+    /// </summary>
+    public DateAdjuster ToSubtractDateAdjuster()
+    {
+        var period = this; // Copy 'this' to a local variable
+        return date => period.SubtractFrom(date);
+    }
 }

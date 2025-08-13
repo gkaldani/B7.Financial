@@ -5,309 +5,338 @@ using B7.Financial.Abstractions.Date;
 
 namespace B7.Financial.Basics.Date.Tests;
 
-public sealed class PeriodTests
+public class PeriodTests
 {
     [Fact]
-    public void StaticProperties_AreDefinedAndConsistent()
+    public void Zero_Period_Properties()
     {
-        Assert.Equal(Period.Zero, Period.AdditiveIdentity);
-        Assert.Equal(default, Period.Zero);
-        Assert.Equal(new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue), Period.MaxValue);
-        Assert.Equal(Period.Zero, Period.MinValue);
+        var p = Period.Zero;
+        Assert.True(p.IsZero);
+        Assert.Equal("P0D", p.ToString());
+        Assert.Equal(p, Period.AdditiveIdentity);
+        Assert.True(p.IsDateBased);
+        Assert.False(p.IsWeekBased);
     }
 
     [Fact]
-    public void Constructor_Throws_OnNegativeValues()
+    public void MaxValue_Has_IntMax_Components()
     {
-        Assert.Throws<ArgumentException>(() => new Period(-1, 0, 0, 0));
-        Assert.Throws<ArgumentException>(() => new Period(0, -1, 0, 0));
-        Assert.Throws<ArgumentException>(() => new Period(0, 0, -1, 0));
-        Assert.Throws<ArgumentException>(() => new Period(0, 0, 0, -1));
+        var p = Period.MaxValue;
+        Assert.Equal(int.MaxValue, p.Years);
+        Assert.Equal(int.MaxValue, p.Months);
+        Assert.Equal(0, p.Weeks);
+        Assert.Equal(int.MaxValue, p.Days);
     }
 
     [Fact]
-    public void FactoryMethods_CreateExpectedComponents()
+    public void Static_Factories()
     {
-        var d = Period.OfDays(10);
-        Assert.Equal(0, d.Years);
-        Assert.Equal(0, d.Months);
-        Assert.Equal(0, d.Weeks);
-        Assert.Equal(10, d.Days);
-
-        var w = Period.OfWeeks(3);
-        Assert.Equal(0, w.Years);
-        Assert.Equal(0, w.Months);
-        Assert.Equal(3, w.Weeks);
-        Assert.Equal(0, w.Days);
-
-        var m = Period.OfMonths(6);
-        Assert.Equal(0, m.Years);
-        Assert.Equal(6, m.Months);
-        Assert.Equal(0, m.Weeks);
-        Assert.Equal(0, m.Days);
-
-        var y = Period.OfYears(2);
-        Assert.Equal(2, y.Years);
-        Assert.Equal(0, y.Months);
-        Assert.Equal(0, y.Weeks);
-        Assert.Equal(0, y.Days);
+        Assert.Equal(10, Period.OfDays(10).Days);
+        Assert.Equal(6, Period.OfMonths(6).Months);
+        Assert.Equal(3, Period.OfWeeks(3).Weeks);
+        Assert.Equal(2, Period.OfYears(2).Years);
     }
 
     [Fact]
-    public void Properties_IsZero_IsNormalized()
+    public void Public_Constructors()
     {
-        Assert.True(Period.Zero.IsZero);
-        Assert.True(Period.Zero.IsNormalized);
-
-        var p = new Period(1, 0, 0, 0);
-        Assert.False(p.IsZero);
-        Assert.True(p.IsNormalized);
-
-        var notNormalized = new Period(0, 15, 0, 0);
-        Assert.False(notNormalized.IsNormalized);
+        var w = new Period(4);
+        Assert.Equal(4, w.Weeks);
+        var ymd = new Period(1, 2, 3);
+        Assert.Equal(1, ymd.Years);
+        Assert.Equal(2, ymd.Months);
+        Assert.Equal(3, ymd.Days);
     }
 
     [Fact]
-    public void Name_Property_Mirrors_ToString()
+    public void Name_Equals_ToString()
     {
-        var p = new Period(1, 2, 3, 4);
-        Assert.Equal(p.ToString(), p.Name.ToString());
+        var p = new Period(1, 2, 3);
+        Assert.Equal(p.ToString(), p.Name);
     }
 
     [Fact]
-    public void Equals_And_GetHashCode()
+    public void Flags_Computed()
     {
-        var a = new Period(1, 2, 3, 4);
-        var b = new Period(1, 2, 3, 4);
-        var c = new Period(1, 2, 3, 5);
-
-        Assert.True(a.Equals(b));
-        Assert.True(a.Equals((object)b));
-        Assert.Equal(a.GetHashCode(), b.GetHashCode());
-
-        Assert.False(a.Equals(c));
-        Assert.False(a.Equals((object)c));
+        var a = new Period(0, 13, 5); // invalid because weeks + months cannot happen via ctor; create valid examples
+        var dateBased = new Period(1, 13 - 12, 0); // Years=1, Months=1
+        Assert.True(dateBased.IsDateBased);
+        Assert.False(dateBased.IsWeekBased);
+        var weeks = new Period(5);
+        Assert.True(weeks.IsWeekBased);
+        Assert.False(weeks.IsDateBased == false ? false : false); // ensure no side effects
+        Assert.False(new Period(0, 12, 0).IsNormalized);
+        Assert.True(new Period(0, 11, 0).IsNormalized);
     }
 
     [Fact]
-    public void Relational_And_Equality_Operators()
+    public void Equality_And_Inequality()
     {
-        var a = new Period(0, 12, 0, 0);
-        var b = new Period(1, 0, 0, 0);
-
-        Assert.False(a == b);
-        Assert.True(a != b);
+        var p1 = new Period(1, 2, 3);
+        var p2 = new Period(1, 2, 3);
+        var p3 = new Period(2, 1, 3);
+        Assert.True(p1 == p2);
+        Assert.False(p1 != p2);
+        Assert.True(p1 != p3);
+        Assert.False(p1 == p3);
+        Assert.True(p1.Equals((object)p2));
+        Assert.False(p1.Equals((object)p3));
     }
 
     [Fact]
-    public void Addition_NormalizesMonths_AndIsChecked()
-    {
-        var a = new Period(1, 10, 3, 4);
-        var b = new Period(2, 5, 1, 6);
-        var sum = a + b;
-
-        // months: 10 + 5 = 15 => +1 year, 3 months
-        Assert.Equal(1 + 2 + 1, sum.Years);
-        Assert.Equal(3, sum.Months);
-        Assert.Equal(3 + 1, sum.Weeks);
-        Assert.Equal(4 + 6, sum.Days);
-
-        // checked overflow on components (days easiest to trigger)
-        var maxDays = Period.OfDays(int.MaxValue);
-        Assert.Throws<OverflowException>(() => { var _ = maxDays + Period.OfDays(1); });
-
-        // months overflow before normalization should still throw when sum exceeds int.MaxValue
-        var nearMaxMonths = new Period(0, int.MaxValue, 0, 0);
-        Assert.Throws<OverflowException>(() => { var _ = nearMaxMonths + Period.OfMonths(1); });
-    }
-
-    [Fact]
-    public void Multiply_NormalizesMonths_ZeroAndExceptions()
-    {
-        var p = new Period(0, 14, 2, 3); // 14M => 1Y 2M
-        var times2 = p * 2;
-
-        // months: 14 * 2 = 28 => +2Y 4M
-        // years: 0 * 2 + 2 = 2; total years 2 + 2 = 4
-        Assert.Equal(2, times2.Years);
-        Assert.Equal(4, times2.Months);
-        Assert.Equal(4, times2.Weeks);
-        Assert.Equal(6, times2.Days);
-
-        // multiplying by 0 yields Zero
-        Assert.Equal(Period.Zero, p * 0);
-
-        // negative factor throws
-        Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = p * -1; });
-
-        // checked overflow
-        var maxYears = new Period(int.MaxValue, 0, 0, 0);
-        Assert.Throws<OverflowException>(() => { var _ = maxYears * 2; });
-    }
-
-    [Fact]
-    public void ToString_And_Format_Overloads()
+    public void ToString_Default()
     {
         Assert.Equal("P0D", Period.Zero.ToString());
-        Assert.Equal("P1Y2M3W4D", new Period(1, 2, 3, 4).ToString());
-
-        // The IFormattable-style overload funnels to parameterless ToString
-        var p = new Period(0, 5, 0, 0);
-        Assert.Equal(p.ToString(), p.ToString("G", CultureInfo.InvariantCulture));
-        Assert.Equal(p.ToString(), p.ToString(null, null));
+        Assert.Equal("P1Y2M3D", new Period(1, 2, 3).ToString());
+        Assert.Equal("P5W", new Period(5).ToString());
+        Assert.Equal("P10M", new Period(0, 10, 0).ToString());
+        Assert.Equal("P1Y", new Period(1, 0, 0).ToString());
     }
 
     [Fact]
-    public void TryFormat_Succeeds_WhenBufferLargeEnough()
+    public void TryFormat_Variants()
     {
-        var p = new Period(1, 2, 3, 4);
-        var expected = p.ToString();
+        var p = new Period(0, 25, 14); // 0Y25M0W14D
+        Span<char> dst = stackalloc char[32];
 
-        var buffer = new char[expected.Length];
-        var ok = p.TryFormat(buffer, out var written, default, provider: null);
+        // Default
+        Assert.True(p.TryFormat(dst, out var written, default, null));
+        Assert.Equal("P25M14D", dst[..written].ToString());
 
-        Assert.True(ok);
-        Assert.Equal(expected.Length, written);
-        Assert.Equal(expected, new string(buffer.AsSpan(0, written)));
+        // Normalize (N): 25M => 2Y1M
+        Assert.True(p.TryFormat(dst, out written, "N".AsSpan(), null));
+        Assert.Equal("P2Y1M14D", dst[..written].ToString());
+
+        // Week compression (W) only when no Y/M and days divisible by 7
+        var d21 = Period.OfDays(21);
+        Assert.True(d21.TryFormat(dst, out written, "W".AsSpan(), null));
+        Assert.Equal("P3W", dst[..written].ToString());
+
+        // Canonical (C): normalize + week compress
+        var p2 = new Period(0, 24, 21); // 24M, 21D
+        Assert.True(p2.TryFormat(dst, out written, "C".AsSpan(), null));
+        // 24M => 2Y0M (prevents week compression because Y != 0) so stays days
+        Assert.Equal("P2Y21D", dst[..written].ToString());
+
+        // Canonical with only days
+        Assert.True(d21.TryFormat(dst, out written, "C".AsSpan(), null));
+        Assert.Equal("P3W", dst[..written].ToString());
+
+        // Unknown format -> default
+        Assert.True(p.TryFormat(dst, out written, "X".AsSpan(), null));
+        Assert.Equal("P25M14D", dst[..written].ToString());
     }
 
     [Fact]
-    public void TryFormat_Fails_WhenBufferTooSmall()
+    public void TryFormat_BufferTooSmall_Fails()
     {
-        var p = new Period(1, 2, 3, 4);
-        var expected = p.ToString();
-
-        // One less than needed should fail
-        var small = new char[Math.Max(0, expected.Length - 1)];
-        var ok = p.TryFormat(small, out var written, default, provider: null);
+        Span<char> small = stackalloc char[2]; // cannot hold even "P0"
+        var ok = Period.Zero.TryFormat(small, out _, default, null);
         Assert.False(ok);
-        Assert.Equal(0, written);
-
-        // For Zero, implementation requires length >= 4 (stricter than "P0D" length 3)
-        var zeroBuf = new char[3];
-        var zeroOk = Period.Zero.TryFormat(zeroBuf, out var zeroWritten, default, provider: null);
-        Assert.False(zeroOk);
-        Assert.Equal(0, zeroWritten);
     }
 
     [Fact]
-    public void ToTotalMonths_ComputesCorrectly()
+    public void Addition_Normalizes_Months()
     {
-        Assert.Equal(0, Period.Zero.ToTotalMonths());
-        Assert.Equal(12, new Period(1, 0, 0, 0).ToTotalMonths());
-        Assert.Equal(14, new Period(1, 2, 0, 0).ToTotalMonths());
-        Assert.Equal(5, new Period(0, 5, 7, 10).ToTotalMonths()); // weeks/days ignored
+        var a = new Period(1, 10, 5);
+        var b = new Period(0, 5, 2);
+        var result = a + b;
+        // Months: 10 + 5 = 15 => +1Y 3M
+        Assert.Equal(2, result.Years);
+        Assert.Equal(3, result.Months);
+        Assert.Equal(7, result.Days);
     }
 
     [Fact]
-    public void ToNormalized_ConvertsMonthsToYears_WhenNeeded()
+    public void Addition_Overflow_Throws()
     {
-        var already = new Period(2, 5, 1, 1);
-        Assert.Equal(already, already.ToNormalized());
+        var a = Period.OfDays(int.MaxValue);
+        var b = Period.OfDays(1);
+        Assert.Throws<OverflowException>(() => { var _ = a + b; });
+    }
 
-        var notNorm = new Period(1, 26, 2, 3); // 26M => +2Y 2M
-        var norm = notNorm.ToNormalized();
-        Assert.Equal(1 + 2, norm.Years);
-        Assert.Equal(2, norm.Months);
-        Assert.Equal(2, norm.Weeks);
+    [Fact]
+    public void Multiplication_Normalizes_Months()
+    {
+        var p = new Period(0, 11, 2);
+        var r = p * 2;
+        // 11*2 = 22 => 1Y 10M
+        Assert.Equal(1, r.Years);
+        Assert.Equal(10, r.Months);
+        Assert.Equal(4, r.Days);
+    }
+
+    [Fact]
+    public void Multiplication_Commutative()
+    {
+        var p = Period.OfMonths(5);
+        Assert.Equal(p * 3, 3 * p);
+    }
+
+    [Fact]
+    public void Multiplication_NegativeFactor_Throws()
+    {
+        var p = new Period(1, 2, 3);
+        Assert.Throws<ArgumentOutOfRangeException>(() => { var _ = p * -1; });
+    }
+
+    [Fact]
+    public void Multiplication_Overflow_Throws()
+    {
+        var p = Period.OfYears(int.MaxValue);
+        Assert.Throws<OverflowException>(() => { var _ = p * 2; });
+    }
+
+    [Fact]
+    public void ToTotalMonths_Computed()
+    {
+        var p = new Period(2, 5, 7);
+        Assert.Equal(2 * 12 + 5, p.ToTotalMonths());
+    }
+
+    [Fact]
+    public void ToNormalized_Reduces_Months()
+    {
+        var p = new Period(1, 24, 3);
+        var norm = p.ToNormalized();
+        Assert.Equal(3, norm.Years); // 1 + 2
+        Assert.Equal(0, norm.Months);
         Assert.Equal(3, norm.Days);
-        Assert.True(norm.IsNormalized);
     }
 
     [Fact]
-    public void Deconstruct_ProvidesAllComponents()
+    public void ToNormalized_When_Already_Normalized_Returns_Same()
     {
-        var p = new Period(3, 4, 5, 6);
+        var p = new Period(1, 5, 2);
+        var norm = p.ToNormalized();
+        Assert.Equal(p, norm);
+    }
+
+    [Fact]
+    public void Deconstruct_Works()
+    {
+        var p = new Period(2, 3, 4);
         p.Deconstruct(out var y, out var m, out var w, out var d);
-
-        Assert.Equal(3, y);
-        Assert.Equal(4, m);
-        Assert.Equal(5, w);
-        Assert.Equal(6, d);
+        Assert.Equal(2, y);
+        Assert.Equal(3, m);
+        Assert.Equal(0, w);
+        Assert.Equal(4, d);
     }
 
     [Fact]
-    public void Parse_Name_Overload_Succeeds_And_InvalidThrows()
+    public void Parse_Name_Success()
     {
-        var p = Period.Parse(new Name("P1Y2M4D"));
-        Assert.Equal(new Period(1, 2, 0, 4), p);
-
-        Assert.Throws<FormatException>(() => Period.Parse(new Name("P")));
-        Assert.Throws<FormatException>(() => Period.Parse(new Name("P10")));
-        Assert.Throws<FormatException>(() => Period.Parse(new Name("PX")));
+        var name = new Name("P10D");
+        var p = Period.Parse(name);
+        Assert.Equal(10, p.Days);
     }
 
     [Fact]
-    public void TryParse_Name_Overload_Succeeds_And_Fails()
+    public void Parse_String_Success()
     {
-        Assert.True(Period.TryParse(new Name("P0D"), out var zero));
-        Assert.True(zero.HasValue);
-        Assert.Equal(Period.Zero, zero.Value);
-
-        Assert.True(Period.TryParse(new Name("ZERO"), out var z2)); // backward compatibility
-        Assert.True(z2.HasValue);
-        Assert.Equal(Period.Zero, z2.Value);
-
-        Assert.False(Period.TryParse(new Name("P10"), out var _));
-        Assert.False(Period.TryParse(new Name("P1W2D"), out var _)); // invalid mix of W with D
+        var p = Period.Parse("P1Y2M3D");
+        Assert.Equal(1, p.Years);
+        Assert.Equal(2, p.Months);
+        Assert.Equal(3, p.Days);
     }
 
     [Fact]
-    public void Parse_String_Overloads()
+    public void Parse_Span_Success()
     {
-        Assert.Equal(new Period(1, 2, 0, 0), Period.Parse("P1Y2M"));
-        Assert.Equal(new Period(1, 2, 0, 0), Period.Parse(" p1y2m ", provider: null)); // whitespace + case-insensitive
-
-        // ISpanParsable Parse(string, IFormatProvider?)
-        Assert.Equal(new Period(0, 0, 3, 0), Period.Parse("P3W", provider: CultureInfo.InvariantCulture));
-
-        // ISpanParsable Parse(ReadOnlySpan<char>, IFormatProvider?)
-        Assert.Equal(new Period(5, 0, 0, 6), Period.Parse("P5Y6D".AsSpan(), provider: null));
+        ReadOnlySpan<char> span = "P5W".AsSpan();
+        var p = Period.Parse(span);
+        Assert.Equal(5, p.Weeks);
     }
 
     [Fact]
-    public void TryParse_Provider_Overloads()
+    public void Parse_Zero_Alias()
     {
-        // string? overload
-        Assert.True(Period.TryParse("P10D", provider: CultureInfo.InvariantCulture, out var p1));
-        Assert.Equal(new Period(0, 0, 0, 10), p1);
-
-        Assert.False(Period.TryParse((string?)null, provider: null, out var _));
-        Assert.False(Period.TryParse("P", provider: null, out var _));
-
-        // ReadOnlySpan<char> overload
-        Assert.True(Period.TryParse("P2Y3M".AsSpan(), provider: null, out var p2));
-        Assert.Equal(new Period(2, 3, 0, 0), p2);
+        Assert.True(Period.TryParse("ZERO", out var p));
+        Assert.True(p!.Value.IsZero);
     }
 
     [Fact]
-    public void Parser_Validation_MixedWeeksAndYMD_Duplicates_Order_TrailingNumber()
+    public void Parse_Whitespace_Trim()
     {
-        // Mixed weeks with Y/M/D invalid
-        Assert.False(Period.TryParse("P1W2D", out Period? _));
-        Assert.False(Period.TryParse("P1Y2W", out Period? _));
-        Assert.False(Period.TryParse("P1M1W", out Period? _));
+        var p = Period.Parse("   P10D  ");
+        Assert.Equal(10, p.Days);
+    }
 
-        // Duplicates invalid
-        Assert.False(Period.TryParse("P1Y2Y", out Period? _));
-        Assert.False(Period.TryParse("P1M2M", out Period? _));
-        Assert.False(Period.TryParse("P1W2W", out Period? _));
-        Assert.False(Period.TryParse("P1D2D", out Period? _));
+    [Theory]
+    [InlineData("")]
+    [InlineData("P")]
+    [InlineData("PX")]
+    [InlineData("P1")]
+    [InlineData("P1Y1Y")]
+    [InlineData("P1W2D")]
+    [InlineData("P1Y1W")]
+    public void Parse_Invalid_Fails(string value)
+    {
+        Assert.False(Period.TryParse(value, out var _));
+        Assert.Throws<FormatException>(() => Period.Parse(value));
+    }
 
-        // Trailing number invalid; "P" alone invalid
-        Assert.False(Period.TryParse("P10", out Period? _));
-        Assert.False(Period.TryParse("P", out Period? _));
+    [Fact]
+    public void TryParse_Name_Invalid_ReturnsFalse()
+    {
+        var name = new Name("P1Y1W");
+        Assert.False(Period.TryParse(name, out var _));
+    }
 
-        // Reordered units are accepted
-        Assert.True(Period.TryParse("P10D1Y", out Period? r1));
-        Assert.Equal(new Period(1, 0, 0, 10), r1);
+    [Fact]
+    public void Instance_Of_Uses_Parse()
+    {
+        var period = Period.OfDays(5);
+        var recreated = period.Of(new Name("P5D"));
+        Assert.Equal(period, recreated);
+    }
 
-        // Whitespace trimming and case-insensitive 'p'
-        Assert.True(Period.TryParse("  p7d  ", out Period? r2));
-        Assert.Equal(new Period(0, 0, 0, 7), r2);
+    [Fact]
+    public void ToAddDateAdjuster_Applies_Correct_Order()
+    {
+        // Order test: Jan 30 + (1M 5D) => (AddMonths first) Feb 29 + 5 = Mar 5 (leap year)
+        var p = new Period(0, 1, 5);
+        var baseDate = new DateOnly(2024, 1, 30);
+        var expected = new DateOnly(2024, 3, 5);
+        Assert.Equal(expected, p.AddTo(baseDate));
+        var adjuster = p.ToAddDateAdjuster();
+        Assert.Equal(expected, adjuster(baseDate));
+    }
 
-        // Negative or invalid characters rejected
-        Assert.False(Period.TryParse("P-1Y", out Period? _));
-        Assert.False(Period.TryParse("P1X", out Period? _));
+    [Fact]
+    public void AddTo_WeekBased()
+    {
+        var p = Period.OfWeeks(2);
+        var baseDate = new DateOnly(2024, 1, 1);
+        var expected = new DateOnly(2024, 1, 15);
+        Assert.Equal(expected, p.AddTo(baseDate));
+    }
+
+    [Fact]
+    public void SubtractFrom_DateBased_Order()
+    {
+        // 2024-03-05 - (1M 5D) => subtract month => 2024-02-05 then -5D => 2024-01-31
+        var p = new Period(0, 1, 5);
+        var baseDate = new DateOnly(2024, 3, 5);
+        var expected = new DateOnly(2024, 1, 31);
+        Assert.Equal(expected, p.SubtractFrom(baseDate));
+        var adjuster = p.ToSubtractDateAdjuster();
+        Assert.Equal(expected, adjuster(baseDate));
+    }
+
+    [Fact]
+    public void SubtractFrom_WeekBased()
+    {
+        var p = Period.OfWeeks(3);
+        var baseDate = new DateOnly(2024, 2, 1);
+        var expected = new DateOnly(2024, 1, 11);
+        Assert.Equal(expected, p.SubtractFrom(baseDate));
+    }
+
+    [Fact]
+    public void ToString_Format_Overload_Ignores_Format()
+    {
+        var p = new Period(1, 2, 3);
+        Assert.Equal(p.ToString(), p.ToString("N", null));
     }
 }

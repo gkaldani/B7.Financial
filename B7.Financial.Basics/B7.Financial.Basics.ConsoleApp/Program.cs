@@ -13,6 +13,12 @@ internal class Program
 
         var period = Period.Parse("P1Y35d");
 
+        var adjuster = period.ToAddDateAdjuster();
+
+        var d = adjuster(DateOnly.FromDateTime(DateTime.Now));
+
+        Console.WriteLine($"Adjusted date: {d}");
+
         IDayCountFactory dayCountFactory = new StandardDayCountsFactory();
 
         foreach (var dayCountName in dayCountFactory.DayCountNames())

@@ -227,11 +227,31 @@
             Gets a value indicating whether this period is normalized (Months &lt; 12).
             </summary>
         </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.IsWeekBased">
+            <summary>
+            Indicates this is a week-based period (W only).
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.IsDateBased">
+            <summary>
+            Indicates this is a date-based period (Y/M/D only).
+            </summary>
+        </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Constructs a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified values.
             </summary>
             <exception cref="T:System.ArgumentException">All values must be non-negative.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.#ctor(System.Int32)">
+            <summary>
+            Constructs a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified number of weeks.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified number of years, months, and days.
+            </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.Of(B7.Financial.Abstractions.Name)">
             <summary>
@@ -271,6 +291,11 @@
         <member name="M:B7.Financial.Abstractions.Date.Period.op_Multiply(B7.Financial.Abstractions.Date.Period,System.Int32)">
             <summary>
             Multiplies a period by a non-negative integer factor using checked arithmetic and normalizes months.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_Multiply(System.Int32,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Multiplies a period by a non-negative integer factor (commutative).
             </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.Parse(B7.Financial.Abstractions.Name)">
@@ -327,11 +352,38 @@
         <member name="M:B7.Financial.Abstractions.Date.Period.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <summary>
             Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
+            Supported format specifiers:
+            - null or "G": default (no transformation)
+            - "N": normalize months into years
+            - "W": compress days into weeks if no Y/M and divisible by 7
+            - "C": canonical (N + W)
             </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.ToString(System.String,System.IFormatProvider)">
             <summary>
             Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.AddTo(System.DateOnly)">
+            <summary>
+            Applies this period to a DateOnly, in Y -> M -> D order for date-based periods,
+            or as 7*W days for week-based periods.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToAddDateAdjuster">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Date.DateAdjuster"/> that applies this period to a DateOnly.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.SubtractFrom(System.DateOnly)">
+            <summary>
+            Subtracts this period from a DateOnly, in Y -> M -> D order for date-based periods,
+            or as 7*W days for week-based periods.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToSubtractDateAdjuster">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Date.DateAdjuster"/> that subtracts this period from a DateOnly.
             </summary>
         </member>
         <member name="T:B7.Financial.Abstractions.INamed">
