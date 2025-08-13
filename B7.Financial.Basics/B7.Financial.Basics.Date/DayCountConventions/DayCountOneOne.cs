@@ -8,9 +8,17 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </summary>
 public sealed class DayCountOneOne : DayCount
 {
-    private static readonly Name DayCountName = "1/1";
+    /// <summary>
+    /// The name of the day count convention.
+    /// </summary>
+    public static readonly Name DayCountName = "1/1";
+
+    /// <inheritdoc />
     public override Name Name => DayCountName;
+
+    /// <inheritdoc />
     public override decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IDayCount.IScheduleInfo? scheduleInfo) => 1;
+
+    /// <inheritdoc />
     public override int Days(DateOnly firstDate, DateOnly secondDate) => 1;
 }
-

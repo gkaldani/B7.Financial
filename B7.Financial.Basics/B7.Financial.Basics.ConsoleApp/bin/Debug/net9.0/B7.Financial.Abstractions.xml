@@ -39,6 +39,36 @@
         <member name="M:B7.Financial.Abstractions.Date.DayCount.Days(System.DateOnly,System.DateOnly)">
             <inheritdoc />
         </member>
+        <member name="T:B7.Financial.Abstractions.Date.DayCountJsonConverter">
+            <summary>
+            JSON converter for <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/>.
+            </summary>
+            <param name="factory"></param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCountJsonConverter.#ctor(B7.Financial.Abstractions.Date.IDayCountFactory)">
+            <summary>
+            JSON converter for <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/>.
+            </summary>
+            <param name="factory"></param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCountJsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Reads a <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/> from JSON.
+            </summary>
+            <param name="reader"></param>
+            <param name="typeToConvert"></param>
+            <param name="options"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.DayCountJsonConverter.Write(System.Text.Json.Utf8JsonWriter,B7.Financial.Abstractions.Date.IDayCount,System.Text.Json.JsonSerializerOptions)">
+            <summary>
+            Writes a <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/> to JSON as a string representation of its name.
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="options"></param>
+        </member>
         <member name="T:B7.Financial.Abstractions.Date.IDayCount">
             <summary>
             Common interface for day count conventions.
@@ -54,6 +84,7 @@
             <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
             <param name="scheduleInfo">The schedule information</param>
             <returns>The year fraction, zero or greater</returns>
+            <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="M:B7.Financial.Abstractions.Date.IDayCount.Days(System.DateOnly,System.DateOnly)">
             <summary>
@@ -104,6 +135,14 @@
             <param name="date">The date to find the period end date for</param>
             <returns>The period end date</returns>
         </member>
+        <member name="P:B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo.Frequency">
+            <summary>
+            The periodic frequency of the schedule. <br/>
+            <remarks>
+            This is called when a <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/> requires the periodic frequency of the schedule.
+            </remarks>
+            </summary>
+        </member>
         <member name="T:B7.Financial.Abstractions.Date.IDayCountFactory">
             <summary>
             Represents a factory for creating day count conventions.
@@ -114,6 +153,213 @@
             Retrieves the names of all available day count conventions.
             </summary>
             <returns> A collection of day count convention names. </returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.Period">
+            <summary>
+            Represents a period of time in ISO 8601 format (date components only).
+            Examples: P1Y, P6M, P3W, P10D, P1Y2M10D, P0D.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Name">
+            <summary>
+            The unique name (identifier) of the instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/>.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Zero">
+            <summary>
+            Zero period, representing no time duration.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.AdditiveIdentity">
+            <summary>
+            Additive identity for <see cref="T:B7.Financial.Abstractions.Date.Period"/>.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.MaxValue">
+            <summary>
+            Maximum value for <see cref="T:B7.Financial.Abstractions.Date.Period"/>.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.MinValue">
+            <summary>
+            Minimum value for <see cref="T:B7.Financial.Abstractions.Date.Period"/>.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.OfDays(System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified days.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.OfMonths(System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified months.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.OfWeeks(System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified weeks.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.OfYears(System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified years.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Years">
+            <summary>Year component of the period.</summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Months">
+            <summary>Month component of the period.</summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Weeks">
+            <summary>Week component of the period.</summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.Days">
+            <summary>Day component of the period.</summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.IsZero">
+            <summary>
+            Gets a value indicating whether this period has any non-zero components.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.Period.IsNormalized">
+            <summary>
+            Gets a value indicating whether this period is normalized (Months &lt; 12).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Constructs a new instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> with the specified values.
+            </summary>
+            <exception cref="T:System.ArgumentException">All values must be non-negative.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves an instance of <see cref="T:B7.Financial.Abstractions.Date.Period"/> based on the provided name.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Equals(B7.Financial.Abstractions.Date.Period)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.CompareTo(B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Compares this period with another period.
+            </summary>
+            <param name="other">The period to compare with.</param>
+            <returns>A value indicating the relative order of the periods.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_Equality(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Compares two periods for equality.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_Inequality(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Compares two periods for inequality.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_LessThan(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Determines whether one period is less than another.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_LessThanOrEqual(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Determines whether one period is less than or equal to another.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_GreaterThan(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Determines whether one period is greater than another.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_GreaterThanOrEqual(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Determines whether one period is greater than or equal to another.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToString">
+            <summary>
+            Returns a string representation of the period in ISO 8601 format.
+            Zero is "P0D".
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_Addition(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Adds two periods using checked arithmetic and normalizes months into years.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.op_Multiply(B7.Financial.Abstractions.Date.Period,System.Int32)">
+            <summary>
+            Multiplies a period by a non-negative integer factor using checked arithmetic and normalizes months.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Parse(B7.Financial.Abstractions.Name)">
+            <summary>
+            Parses a period from a string in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.TryParse(B7.Financial.Abstractions.Name,System.Nullable{B7.Financial.Abstractions.Date.Period}@)">
+            <summary>
+            Tries to parse a period from a <see cref="P:B7.Financial.Abstractions.Date.Period.Name"/> in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.TryParse(System.String,System.Nullable{B7.Financial.Abstractions.Date.Period}@)">
+            <summary>
+            Tries to parse a period from a string in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToTotalMonths">
+            <summary>
+            Returns the total number of months represented by this period (ignores weeks and days).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToNormalized">
+            <summary>
+            Normalizes the period by converting months greater than or equal to 12 into years.
+            Weeks and days are unchanged.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Deconstruct(System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Deconstructs the period into its components.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Parse(System.String,System.IFormatProvider)">
+            <summary>
+            Parses a period from a string in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+            <summary>
+            Parses a period from a span of characters in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.TryParse(System.String,System.IFormatProvider,B7.Financial.Abstractions.Date.Period@)">
+            <summary>
+            Tries to parse a period from a string in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,B7.Financial.Abstractions.Date.Period@)">
+            <summary>
+            Tries to parse a period from a span of characters in ISO 8601 format.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+            <summary>
+            Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.Period.ToString(System.String,System.IFormatProvider)">
+            <summary>
+            Formats as ISO 8601 (e.g., "P1Y2M", "P0D").
+            </summary>
         </member>
         <member name="T:B7.Financial.Abstractions.INamed">
             <summary>
@@ -217,6 +463,106 @@
             Implicit conversion from <see cref="T:System.String"/> to <see cref="T:B7.Financial.Abstractions.Name"/>.
             </summary>
             <param name="value"> The string value to convert. </param>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Schedule.Frequency">
+            <summary>
+            A periodic frequency used by financial products that have a specific event every so often.
+            <para>
+            Frequency is primarily intended to be used to subdivide events within a year. <br/>
+            A frequency is allowed to be any non-negative period of days, weeks, month or years.
+            A special value, 'Term', is provided for when there are no subdivisions of the entire term. <br/>
+            This is also known as 'zero-coupon' or 'once'.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Term">
+            <summary>
+            A periodic frequency matching the term. <br/>
+            Also known as zero-coupon. <br/>
+            This is represented using <see cref="P:B7.Financial.Abstractions.Date.Period.Zero"/>. <br/>
+            There are no events per year with this frequency.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.Name">
+            <summary>
+            Gets the name of the frequency.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.Period">
+            <summary>
+            Period of the frequency. <br/>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.EventsPerYear">
+            <summary>
+            Events per year. <br/>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.EventsPerYearEstimate">
+            <summary>
+            Estimated events per year. <br/>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.#ctor(B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Constructs a frequency based on the specified period.
+            </summary>
+            <param name="period"></param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToString">
+            <summary>
+            string representation of the frequency.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsTerm">
+            <summary>
+            Indicates if the frequency is the term frequency.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsWeekBased">
+            <summary>
+            Indicates if the periodic frequency is based on weeks.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsMonthBased">
+            <summary>
+            Indicates if the periodic frequency is based on months.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsAnnual">
+            <summary>
+            Checks if the periodic frequency is annual.
+            <remarks>
+            An annual frequency consists of 12 months. <br/>
+            The period must be exactly 12 months with no weeks or days. <br/>
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Equals(B7.Financial.Abstractions.Schedule.Frequency)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.op_Equality(B7.Financial.Abstractions.Schedule.Frequency,B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Compares two frequencies for equality.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.op_Inequality(B7.Financial.Abstractions.Schedule.Frequency,B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Compares two frequencies for inequality.
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

@@ -40,9 +40,16 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </summary>
 public sealed class DayCountActualActualIcma : DayCount
 {
-    private static readonly Name DayCountName = "Act/Act ICMA";
+    /// <summary>
+    /// The name of the day count convention.
+    /// </summary>
+    public static readonly Name DayCountName = "Act/Act ICMA";
+
+
+    /// <inheritdoc />
     public override Name Name => DayCountName;
 
+    /// <inheritdoc />
     public override decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IDayCount.IScheduleInfo? scheduleInfo)
     {
         // avoid using ScheduleInfo in this case
@@ -62,6 +69,7 @@ public sealed class DayCountActualActualIcma : DayCount
         return 0;
     }
 
+    /// <inheritdoc />
     public override int Days(DateOnly firstDate, DateOnly secondDate) =>
         DateOnlyUtils.DaysBetween(firstDate, secondDate);
 }

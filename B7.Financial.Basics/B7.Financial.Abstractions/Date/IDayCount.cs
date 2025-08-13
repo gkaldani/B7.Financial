@@ -1,4 +1,6 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿using B7.Financial.Abstractions.Schedule;
+
+namespace B7.Financial.Abstractions.Date;
 
 /// <summary>
 /// Common interface for day count conventions.
@@ -14,6 +16,7 @@ public interface IDayCount : INamed
     /// <param name="secondDate">The second date, on or after the <see cref="firstDate"/></param>
     /// <param name="scheduleInfo">The schedule information</param>
     /// <returns>The year fraction, zero or greater</returns>
+    /// <exception cref="ArgumentException"></exception>
     public decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IScheduleInfo? scheduleInfo);
 
     /// <summary>
@@ -63,6 +66,14 @@ public interface IDayCount : INamed
         /// </summary>
         /// <param name="date">The date to find the period end date for</param>
         /// <returns>The period end date</returns>
-        public DateOnly PeriodEndDate(DateOnly date);
+        public DateOnly? PeriodEndDate(DateOnly date);
+
+        /// <summary>
+        /// The periodic frequency of the schedule. <br/>
+        /// <remarks>
+        /// This is called when a <see cref="IDayCount"/> requires the periodic frequency of the schedule.
+        /// </remarks>
+        /// </summary>
+        public Frequency Frequency { get; }
     }
 }

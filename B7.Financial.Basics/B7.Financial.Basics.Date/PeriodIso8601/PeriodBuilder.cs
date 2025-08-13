@@ -1,6 +1,7 @@
 ﻿using B7.Financial.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using B7.Financial.Abstractions.Date;
 
 namespace B7.Financial.Basics.Date.PeriodIso8601;
 

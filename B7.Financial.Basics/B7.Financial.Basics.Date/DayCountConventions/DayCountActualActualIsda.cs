@@ -21,9 +21,29 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// </summary>
 public sealed class DayCountActualActualIsda : DayCount
 {
-    private static readonly Name DayCountName = "Act/Act ISDA";
+    /// <summary>
+    /// The name of the day count convention.
+    /// </summary>
+    public static readonly Name DayCountName = "Act/Act ISDA";
+
+    /// <inheritdoc />
     public override Name Name => DayCountName;
 
+    /// <summary>
+    /// Returns the year fraction between two dates according to the Actual/Actual ISDA convention. <br/>
+    /// </summary>
+    /// <remarks>
+    /// The result is calculated in two parts: <br/>
+    /// The actual number of days in the requested period that fall in a leap year is divided by 366, <br/>
+    /// The actual number of days in the requested period that fall in a standard year is divided by 365. <br/>
+    /// The result is the sum of the two. <br/>
+    /// The first day in the period is included, the last day excluded.
+    /// </remarks>
+    /// <param name="firstDate">The first date</param>
+    /// <param name="secondDate">The second date, on or after the <see cref="firstDate"/></param>
+    /// <param name="scheduleInfo">The schedule information</param>
+    /// <returns>The year fraction, zero or greater</returns>
+    /// <exception cref="ArgumentException"></exception>
     public override decimal YearFraction(DateOnly firstDate, DateOnly secondDate, IDayCount.IScheduleInfo? scheduleInfo)
     {
         if (firstDate > secondDate)
@@ -49,6 +69,7 @@ public sealed class DayCountActualActualIsda : DayCount
                (y2 - y1 - 1);
     }
 
+    /// <inheritdoc />
     public override int Days(DateOnly firstDate, DateOnly secondDate) =>
         DateOnlyUtils.DaysBetween(firstDate, secondDate);
 }

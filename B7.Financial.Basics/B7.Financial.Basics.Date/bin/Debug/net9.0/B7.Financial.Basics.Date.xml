@@ -1,0 +1,444 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>B7.Financial.Basics.Date</name>
+    </assembly>
+    <members>
+        <member name="T:B7.Financial.Basics.Date.DateAdjusters">
+            <summary>
+            Provides utility methods and predefined adjusters for working with leap days (February 29).
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. Leap years are years divisible by 4,
+            except for years divisible by 100 but not divisible by 400. This class includes methods to calculate  the next leap
+            day on or after a given date, as well as predefined adjusters for use with date manipulation.</remarks>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateAdjusters.NextLeapDay(System.DateOnly)">
+            <summary>
+            Determines the next leap day that occurs after the specified date.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. This method accounts for leap
+            year rules and ensures the returned date is valid.</remarks>
+            <param name="date">The starting date to evaluate.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the next February 29 that occurs after the specified date. If the
+            input date is already February 29, the same date is returned.</returns>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DateAdjusters.NextLeapDayAdjuster">
+            <summary>
+            Adjusts the given date to the next leap day.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. If the provided date is already
+            February 29, the adjuster will return the same date. Otherwise, it calculates the next occurrence of February 29
+            after the given date.</remarks>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateAdjusters.NextOrSameLeapDay(System.DateOnly)">
+            <summary>
+            Determines the next leap day (February 29) that is on or after the specified date.
+            </summary>
+            <remarks>A leap day occurs only in leap years, which are years divisible by 4, except for years
+            divisible by 100 but not divisible by 400. This method ensures that the returned date is always February 29 of a
+            valid leap year.</remarks>
+            <param name="date">The starting date to evaluate.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the next leap day (February 29) that is on or after the specified
+            <paramref name="date"/>. If the specified date is already a leap day, the same date is returned.</returns>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DateAdjusters.NextOrSameLeapDayAdjuster">
+            <summary>
+            Adjusts the given date to the next leap day, or returns the same date if it is already a leap day.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. If the provided date is already
+            February 29, the adjuster will return the same date. Otherwise, it calculates the next occurrence of February 29
+            after the given date.</remarks>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DateOnlyUtils">
+            <summary>
+            DateOnlyUtils provides utility methods for working with <see cref="T:System.DateOnly"/> values.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysBetween(System.DateOnly,System.DateOnly)">
+            <summary>
+            Returns the number of days between two <see cref="T:System.DateOnly"/> values.
+            </summary>
+            <param name="firstDate">The first date.</param>
+            <param name="secondDate">The second date.</param>
+            <returns>The number of days between the two dates.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysInYear(System.Int32)">
+            <summary>
+            Returns the number of days in a given year.
+            </summary>
+            <param name="year"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysInYear(System.DateOnly)">
+            <summary>
+            Returns the number of days in the year of a given <see cref="T:System.DateOnly"/> value.
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.Stream(System.DateOnly,System.DateOnly)">
+            <summary>
+            Generates a sequence of dates within the specified range.
+            </summary>
+            <remarks>The method iterates through the range of dates, incrementing by one day at a time, and yields
+            each date in the sequence.</remarks>
+            <param name="startInclusive">The start date of the range, inclusive.</param>
+            <param name="endExclusive">The end date of the range, exclusive.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:System.DateOnly"/> representing each date from <paramref
+            name="startInclusive"/> to the day before <paramref name="endExclusive"/>.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.IsAfter(System.DateOnly,System.DateOnly)">
+            <summary>
+            Checks if the specified <see cref="T:System.DateOnly"/> is before another date.
+            </summary>
+            <param name="self"></param>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.IsLeapYear(System.DateOnly)">
+            <summary>
+            Checks if the specified <see cref="T:System.DateOnly"/> is before another date.
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual">
+            <summary>
+            The 'Act/365 Actual' day count convention. <br/>
+            Also known as 'Act/365A'. <be/>
+            Which divides the actual number of days by 366 if the period contains 'Leap Day' (February 29th), <br/>
+            or by 365 if it does not.
+            <para>
+            The result is a simple division. <br/>
+            The numerator is the actual number of days in the requested period. <br/>
+            The denominator is 366 if the period contains leap day (February 29th), if not it is 365. <br/>
+            The first day in the period is excluded, the last day is included.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear">
+            <summary>
+            The 'Act/365 Leap Yea Year' day count convention. <br/>
+            Also known as 'Act/365L'. <be/>
+            Which divides the actual number of days by 365 or 366. <br/>
+            <para>
+            The result is a simple division. <br/>
+            The numerator is the actual number of days in the requested period. <br/>
+            The denominator is determined by examining the frequency and the period end date (the date of the next coupon). <br/>
+            If the frequency is annual then the denominator is 366 if the period contains 'Leap Day' (February 29th), <br/>
+            if not it is 365. The first day in the period is excluded, the last day is included. <br/>
+            If the frequency is not annual, the denominator is 366 if the period end date <br/>
+            is in a leap year, if not it is 365.
+            </para>
+            <remarks>
+            Defined by the 2006 ISDA definitions 4.16i and ICMA rule 251.1(i) part 2 as later clarified by ICMA and Swiss Exchange.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma">
+            <summary>
+            The 'Act/Act ICMA' day count, which divides the actual number of days by <br/>
+            the actual number of days in the coupon period multiplied by the frequency. <br/>
+            Also known as 'Actual/Actual ICMA' or 'Actual/Actual (Bond)'. <br/>
+            Defined by the 2006 ISDA definitions 4.16c and ICMA rule 251.1(iii) and 251.3
+            <para>
+            The result is calculated as follows.
+            </para>
+            <para>
+            First, the underlying schedule period is obtained treating the first date as the start of the schedule period.
+            </para>
+            <para>
+            Second, if the period is a stub, then nominal regular periods are created matching the <br/>
+            schedule frequency, working forwards or backwards from the known regular schedule date. <br/>
+            An end-of-month flag is used to handle month-ends. <br/>
+            If the period is not a stub then the schedule period treated as a nominal period below.
+            </para>
+            <para>
+            Third, the result is calculated as the sum of a calculation for each nominal period. <br/>
+            The actual days between the first and second date are allocated to the matching nominal period. <br/>
+            Each calculation is a division. The numerator is the actual number of days in <br/>
+            the nominal period, which could be zero in the case of a long stub. <br/>
+            The denominator is the length of the nominal period  multiplied by the frequency. <br/>
+            The first day in the period is included, the last day is excluded. <br/>
+            </para>
+            <para>
+            Due to the way that the nominal periods are determined ignoring business day adjustments, <br/>
+            this day count is recommended for use by bonds, not swaps.
+            </para>
+            <para>
+            The method <see cref="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly)"/> will throw an <br/>
+            exception because schedule information is required for this day count. <br/>
+            as later clarified by ISDA 'EMU and market conventions' http://www.isda.org/c_and_a/pdf/mktc1198.pdf.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda">
+            <summary>
+            Actual/Actual ISDA day count convention. <br/>
+            Also known as 'Actual/Actual'. <br/>
+            Defined by the 2006 ISDA definitions 4.16b.
+            <para>
+            The 'Act/Act ISDA' day count, which divides the actual number of days in a <br/>
+            leap year by 366 and the actual number of days in a standard year by 365.
+            </para>
+            <para>
+            The result is calculated in two parts. <br/>
+            The actual number of days in the requested period that fall in a leap year is divided by 366. <br/>
+            The actual number of days in the requested period that fall in a standard year is divided by 365. <br/>
+            The result is the sum of the two. <br/>
+            The first day in the period is included, the last day excluded.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <summary>
+            Returns the year fraction between two dates according to the Actual/Actual ISDA convention. <br/>
+            </summary>
+            <remarks>
+            The result is calculated in two parts: <br/>
+            The actual number of days in the requested period that fall in a leap year is divided by 366, <br/>
+            The actual number of days in the requested period that fall in a standard year is divided by 365. <br/>
+            The result is the sum of the two. <br/>
+            The first day in the period is included, the last day excluded.
+            </remarks>
+            <param name="firstDate">The first date</param>
+            <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
+            <param name="scheduleInfo">The schedule information</param>
+            <returns>The year fraction, zero or greater</returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne">
+            <summary>
+            Always returns a year fraction of 1 and a day count of 1.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory">
+            <summary>
+            Represents a factory for creating standard day count conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.OneOne">
+            <summary>The '1/1' day count convention.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.ActualActualIsda">
+            <summary>The 'Act/Act ISDA' day count convention.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.Actual365Actual">
+            <summary>The 'Act/365A' day count convention.</summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves a day count convention by its name.
+            </summary>
+            <param name="name"></param>
+            <returns>The <see cref="T:B7.Financial.Abstractions.Date.DayCount"/> instance associated with the specified name.</returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.DayCountNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder">
+            <summary>
+            Fluent builder for <see cref="T:B7.Financial.Abstractions.Date.Period"/> with optional normalization on build.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.From(B7.Financial.Abstractions.Name)">
+            <summary>
+            Parse ISO-8601 text (e.g., "P1Y2M3W4D" or "Zero") and seed the builder.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.TryFrom(System.String,B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder@)">
+            <summary>
+            Try parse ISO-8601 text and seed the builder.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.WithTotalMonths(System.Int32)">
+            <summary>
+            Sets years/months from a total months value (e.g., 26 =&gt; 2y 2m).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Normalize(System.Boolean)">
+            <summary>
+            When enabled, converts months ≥ 12 to years during <see cref="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Build"/>.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Clear">
+            <summary>
+            Resets all components to zero.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Peek">
+            <summary>
+            Peek the current state without modifying it.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Build">
+            <summary>
+            Create the immutable <see cref="T:B7.Financial.Abstractions.Date.Period"/>. Throws if any part is negative (should never happen).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.TryBuild(System.Nullable{B7.Financial.Abstractions.Date.Period}@)">
+            <summary>
+            Try to create the <see cref="T:B7.Financial.Abstractions.Date.Period"/> without throwing.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.op_Implicit(B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder)~B7.Financial.Abstractions.Date.Period">
+            <summary>
+            Implicit conversion for convenience: var p = PeriodBuilder.Create().WithDays(3);
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.None">
+            <summary>
+            Value indicating no units - an empty period.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years">
+            <summary>
+            Years element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months">
+            <summary>
+            Months element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Weeks">
+            <summary>
+            Weeks element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days">
+            <summary>
+            Days element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllDateUnits">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Weeks"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.YearMonthDay">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Hours">
+            <summary>
+            Hours element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Minutes">
+            <summary>
+            Minutes element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Seconds">
+            <summary>
+            Seconds element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Milliseconds">
+            <summary>
+            Milliseconds element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Ticks">
+            <summary>
+            Tick element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Nanoseconds">
+            <summary>
+            Nanoseconds element within a <see cref="!:Period" />.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.HourMinuteSecond">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Hours"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Minutes"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Seconds"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllTimeUnits">
+            <summary>
+            Compound value representing the combination of all time elements.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.DateAndTime">
+            <summary>
+            Compound value representing the combination of all possible elements except weeks.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllUnits">
+            <summary>
+            Compound value representing the combination of all possible elements.
+            </summary>
+        </member>
+    </members>
+</doc>

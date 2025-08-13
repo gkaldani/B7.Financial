@@ -1,5 +1,8 @@
 ﻿namespace B7.Financial.Basics.Date;
 
+/// <summary>
+/// DateOnlyUtils provides utility methods for working with <see cref="DateOnly"/> values.
+/// </summary>
 public static class DateOnlyUtils
 {
     /// <summary>
@@ -42,4 +45,19 @@ public static class DateOnlyUtils
             yield return current;
         }
     }
+
+    /// <summary>
+    /// Checks if the specified <see cref="DateOnly"/> is before another date.
+    /// </summary>
+    /// <param name="self"></param>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    public static bool IsAfter(this DateOnly self, DateOnly date) => self > date;
+
+    /// <summary>
+    /// Checks if the specified <see cref="DateOnly"/> is before another date.
+    /// </summary>
+    /// <param name="self"></param>
+    /// <returns></returns>
+    public static bool IsLeapYear(this DateOnly self) => DateTime.IsLeapYear(self.Year);
 }
