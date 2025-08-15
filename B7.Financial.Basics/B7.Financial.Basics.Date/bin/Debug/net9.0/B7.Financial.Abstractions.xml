@@ -513,9 +513,28 @@
             There are no events per year with this frequency.
             </summary>
         </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Monthly">
+            <summary>Monthly frequency (12 events per year).</summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Quarterly">
+            <summary>Quarterly frequency (4 events per year).</summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.SemiAnnual">
+            <summary>Semi-annual frequency (2 events per year).</summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Annual">
+            <summary>Annual frequency (1 event per year).</summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Weekly">
+            <summary>Weekly frequency (52 events per year).</summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Daily">
+            <summary>Daily frequency (364 events per year using standard financial calendar).</summary>
+        </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.Name">
             <summary>
-            Gets the name of the frequency.
+            Gets the name of the frequency. <br/>
+            For the term frequency this is "Term", otherwise the ISO 8601 period text.
             </summary>
         </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.Period">
@@ -525,25 +544,75 @@
         </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.EventsPerYear">
             <summary>
-            Events per year. <br/>
+            Exact whole number of events per (synthetic) year, or -1 if not an even divisor
+            of 12 months (month-based) or 364 days (day/week-based).
             </summary>
         </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.EventsPerYearEstimate">
             <summary>
-            Estimated events per year. <br/>
+            Estimated events per year (decimal). -1 when not computable under current rules.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.HasExactEventsPerYear">
+            <summary>
+            Indicates this frequency has an exact integral events-per-year value (EventsPerYear > 0).
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsRegular">
+            <summary>
+            Alias for <see cref="P:B7.Financial.Abstractions.Schedule.Frequency.HasExactEventsPerYear"/> (semantic clarity in some domains).
             </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Schedule.Frequency.#ctor(B7.Financial.Abstractions.Date.Period)">
             <summary>
             Constructs a frequency based on the specified period.
             </summary>
-            <param name="period"></param>
+            <param name="period">The period for this frequency.</param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Parse(B7.Financial.Abstractions.Name)">
+            <summary>
+            Parses a frequency from its string representation.
+            </summary>
+            <param name="value">The string representation (either "Term" or ISO 8601 period).</param>
+            <returns>The parsed frequency.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the value cannot be parsed.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryParse(B7.Financial.Abstractions.Name,System.Nullable{B7.Financial.Abstractions.Schedule.Frequency}@)">
+            <summary>
+            Tries to parse a frequency from its string representation.
+            </summary>
+            <param name="value">The string representation.</param>
+            <param name="frequency">The parsed frequency if successful.</param>
+            <returns>True if parsing succeeded, false otherwise.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryFromEventsPerYear(System.Int32,System.Nullable{B7.Financial.Abstractions.Schedule.Frequency}@)">
+            <summary>
+            Attempts to construct a frequency from an integer events-per-year value.
+            Supports:
+            - Month-based divisors of 12 (e.g. 12, 6, 4, 3, 2, 1)
+            - Week-based divisors of 52
+            - Day-based divisors of 364
+            Returns false if no exact canonical period can be produced.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.FromEventsPerYear(System.Int32)">
+            <summary>
+            Creates a frequency from events per year, throwing an exception if not possible.
+            </summary>
+            <param name="eventsPerYear">Number of events per year.</param>
+            <returns>A frequency instance.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when eventsPerYear cannot be represented as an exact frequency.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Deconstruct(B7.Financial.Abstractions.Date.Period@,System.Int32@,System.Decimal@)">
+            <summary>
+            Deconstructs the frequency into its core components.
+            </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToString">
             <summary>
-            string representation of the frequency.
+            String representation of the frequency.
             </summary>
-            <returns></returns>
+            <returns>The frequency name.</returns>
         </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsTerm">
             <summary>
@@ -560,6 +629,11 @@
             Indicates if the periodic frequency is based on months.
             </summary>
         </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsDayBased">
+            <summary>
+            Indicates if the periodic frequency is based on days.
+            </summary>
+        </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsAnnual">
             <summary>
             Checks if the periodic frequency is annual.
@@ -568,6 +642,39 @@
             The period must be exactly 12 months with no weeks or days. <br/>
             </remarks>
             </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsQuarterly">
+            <summary>
+            Checks if the periodic frequency is quarterly (3 months).
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.Frequency.IsMonthly">
+            <summary>
+            Checks if the periodic frequency is monthly (1 month).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToReciprocal">
+            <summary>
+            Returns the reciprocal frequency if this frequency has exact events per year.
+            For example, Monthly (12 events) returns Annual (1 event), Quarterly (4 events) returns Annual, etc.
+            </summary>
+            <returns>The reciprocal frequency.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown when the frequency doesn't have exact events per year.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryGetReciprocal(B7.Financial.Abstractions.Schedule.Frequency@)">
+            <summary>
+            Attempts to get the reciprocal frequency.
+            </summary>
+            <param name="reciprocal">The reciprocal frequency if successful.</param>
+            <returns>True if reciprocal could be computed, false otherwise.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.IsCompatibleWith(B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Determines if this frequency is compatible with the specified frequency.
+            Frequencies are compatible if they have the same base type (day/week/month).
+            </summary>
+            <param name="other">The frequency to check against.</param>
+            <returns>True if the frequencies are compatible.</returns>
         </member>
         <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Equals(B7.Financial.Abstractions.Schedule.Frequency)">
             <inheritdoc />
@@ -582,17 +689,11 @@
             <summary>
             Compares two frequencies for equality.
             </summary>
-            <param name="left"></param>
-            <param name="right"></param>
-            <returns></returns>
         </member>
         <member name="M:B7.Financial.Abstractions.Schedule.Frequency.op_Inequality(B7.Financial.Abstractions.Schedule.Frequency,B7.Financial.Abstractions.Schedule.Frequency)">
             <summary>
             Compares two frequencies for inequality.
             </summary>
-            <param name="left"></param>
-            <param name="right"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

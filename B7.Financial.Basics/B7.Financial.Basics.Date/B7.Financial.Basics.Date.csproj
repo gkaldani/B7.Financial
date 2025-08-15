@@ -16,4 +16,8 @@
 	  <ProjectReference Include="..\B7.Financial.Abstractions\B7.Financial.Abstractions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Schedule\" />
+	</ItemGroup>
+
 </Project>
