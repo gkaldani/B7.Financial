@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-using B7.Financial.Abstractions;
+﻿using B7.Financial.Abstractions;
 using B7.Financial.Abstractions.Date;
 
 namespace B7.Financial.Basics.Date.Tests;
@@ -213,7 +211,7 @@ public class PeriodTests
     }
 
     [Fact]
-    public void Deconstruct_Works()
+    public void Deconstruct_Works_DateBased()
     {
         var p = new Period(2, 3, 4);
         p.Deconstruct(out var y, out var m, out var w, out var d);
@@ -221,6 +219,17 @@ public class PeriodTests
         Assert.Equal(3, m);
         Assert.Equal(0, w);
         Assert.Equal(4, d);
+    }
+
+    [Fact]
+    public void Deconstruct_Works_WeekBased()
+    {
+        var p = new Period(5);
+        p.Deconstruct(out var y, out var m, out var w, out var d);
+        Assert.Equal(0, y);
+        Assert.Equal(0, m);
+        Assert.Equal(5, w);
+        Assert.Equal(0, d);
     }
 
     [Fact]
@@ -252,7 +261,7 @@ public class PeriodTests
     public void Parse_Zero_Alias()
     {
         Assert.True(Period.TryParse("ZERO", out var p));
-        Assert.True(p!.Value.IsZero);
+        Assert.True(p.Value.IsZero);
     }
 
     [Fact]
@@ -272,7 +281,7 @@ public class PeriodTests
     [InlineData("P1Y1W")]
     public void Parse_Invalid_Fails(string value)
     {
-        Assert.False(Period.TryParse(value, out var _));
+        Assert.False(Period.TryParse(value, out _));
         Assert.Throws<FormatException>(() => Period.Parse(value));
     }
 
@@ -280,7 +289,7 @@ public class PeriodTests
     public void TryParse_Name_Invalid_ReturnsFalse()
     {
         var name = new Name("P1Y1W");
-        Assert.False(Period.TryParse(name, out var _));
+        Assert.False(Period.TryParse(name, out _));
     }
 
     [Fact]
