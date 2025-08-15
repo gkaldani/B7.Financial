@@ -6,7 +6,11 @@ using System.Text;
 namespace B7.Financial.Abstractions.Date;
 
 /// <summary>
-/// Represents a period of time in ISO 8601 format (date components only).
+/// Represents a period of time in ISO 8601 format (date components only). <br/>
+/// Periods can be expressed in years, months, and days (Y/M/D) or weeks (W). <br/>
+/// If weeks are specified, they cannot be combined with years, months, or days in the same period.
+/// If Period contains weeks, it is considered a week-based period.
+/// If Period contains only years, months, and days, it is considered a date-based period.
 /// Examples: P1Y, P6M, P3W, P10D, P1Y2M10D, P0D.
 /// </summary>
 public readonly struct Period : INamed, INamedFactory<Period>,
@@ -47,7 +51,7 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     /// Creates a new instance of <see cref="Period"/> with the specified days.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Period OfDays(int days) => new(years: 0, months: 0,days: days);
+    public static Period OfDays(int days) => new(years: 0, months: 0, days: days);
 
     /// <summary>
     /// Creates a new instance of <see cref="Period"/> with the specified months.
@@ -180,7 +184,8 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     }
 
     /// <summary>
-    /// Adds two periods using checked arithmetic and normalizes months into years.
+    /// Adds two periods using checked arithmetic.
+    /// if the result is Year Based (Years > 0), it normalizes months into years.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Period operator +(Period left, Period right)
@@ -192,14 +197,26 @@ public readonly struct Period : INamed, INamedFactory<Period>,
             var weeks = left.Weeks + right.Weeks;
             var days = left.Days + right.Days;
 
-            if (months < 12) return new Period(years, months, weeks, days);
+            // Handle week-based and date-based combinations
+            // If one is week-based and the other is date-based, convert weeks to days.
+            if ((left.IsWeekBased && right.IsDateBased) || (left.IsDateBased && right.IsWeekBased))
+            {
+                weeks = 0;
+                days += right.Weeks * 7;
+            }
+
+            // Handle week-based results
+            if (weeks > 0)
+                return new Period(weeks);
+
+            if (years == 0 || months < 12) return new Period(years, months, days);
 
             // Normalize months into years
             var (y, m) = Math.DivRem(months, 12);
             years += y;
             months = m;
 
-            return new Period(years, months, weeks, days);
+            return new Period(years, months, days);
         }
     }
 
@@ -212,19 +229,23 @@ public readonly struct Period : INamed, INamedFactory<Period>,
         if (factor < 0) throw new ArgumentOutOfRangeException(nameof(factor), "Factor must be non-negative.");
         checked
         {
+            // handle week-based periods separately
+            var weeks = period.Weeks * factor;
+            if (weeks > 0)
+                return new Period(weeks);
+
             var years = period.Years * factor;
             var months = period.Months * factor;
-            var weeks = period.Weeks * factor;
             var days = period.Days * factor;
 
-            if (months < 12) return new Period(years, months, weeks, days);
+            if (years == 0 || months < 12) return new Period(years, months, weeks, days);
 
             // Normalize months into years
             var (y, m) = Math.DivRem(months, 12);
             years += y;
             months = m;
 
-            return new Period(years, months, weeks, days);
+            return new Period(years, months, days);
         }
     }
 

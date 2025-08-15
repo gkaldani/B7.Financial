@@ -158,10 +158,10 @@ public class PeriodTests
     [Fact]
     public void Multiplication_Normalizes_Months()
     {
-        var p = new Period(0, 11, 2);
+        var p = new Period(1, 11, 2);
         var r = p * 2;
-        // 11*2 = 22 => 1Y 10M
-        Assert.Equal(1, r.Years);
+        // 1Y11M2D * 2 = 2Y22M4D => 3Y + 10M + 4D
+        Assert.Equal(3, r.Years);
         Assert.Equal(10, r.Months);
         Assert.Equal(4, r.Days);
     }

@@ -156,7 +156,11 @@
         </member>
         <member name="T:B7.Financial.Abstractions.Date.Period">
             <summary>
-            Represents a period of time in ISO 8601 format (date components only).
+            Represents a period of time in ISO 8601 format (date components only). <br/>
+            Periods can be expressed in years, months, and days (Y/M/D) or weeks (W). <br/>
+            If weeks are specified, they cannot be combined with years, months, or days in the same period.
+            If Period contains weeks, it is considered a week-based period.
+            If Period contains only years, months, and days, it is considered a date-based period.
             Examples: P1Y, P6M, P3W, P10D, P1Y2M10D, P0D.
             </summary>
         </member>
@@ -285,7 +289,8 @@
         </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.op_Addition(B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.Period)">
             <summary>
-            Adds two periods using checked arithmetic and normalizes months into years.
+            Adds two periods using checked arithmetic.
+            if the result is Year Based (Years > 0), it normalizes months into years.
             </summary>
         </member>
         <member name="M:B7.Financial.Abstractions.Date.Period.op_Multiply(B7.Financial.Abstractions.Date.Period,System.Int32)">
