@@ -1,5 +1,7 @@
 ﻿using B7.Financial.Abstractions.Date;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace B7.Financial.Abstractions.Schedule;
 
@@ -7,41 +9,25 @@ namespace B7.Financial.Abstractions.Schedule;
 /// A periodic frequency used by financial products that have a specific event every so often.
 /// <para>
 /// Frequency is primarily intended to be used to subdivide events within a year. <br/>
-/// A frequency is allowed to be any non-negative period of days, weeks, month or years.
-/// A special value, 'Term', is provided for when there are no subdivisions of the entire term. <br/>
+/// A frequency is allowed to be any non-negative <see cref="Date.Period"/>. <br/>
+/// A special value, <see cref="Frequency.Term"/>, is provided for when there are no subdivisions of the entire term. <br/>
 /// This is also known as 'zero-coupon' or 'once'.
 /// </para>
 /// </summary>
-public readonly struct Frequency : INamed, IEquatable<Frequency>
+public readonly struct Frequency :
+    INamed,
+    IEquatable<Frequency>,
+    IAdditionOperators<Frequency, Period, Frequency>
 {
     private const string TermString = "Term";
 
     /// <summary>
     /// A periodic frequency matching the term. <br/>
     /// Also known as zero-coupon. <br/>
-    /// This is represented using <see cref="Date.Period.Zero"/>. <br/>
+    /// This is represented using <see cref="Date.Period.MaxValue"/>. <br/>
     /// There are no events per year with this frequency.
     /// </summary>
-    public static readonly Frequency Term = new(Period.Zero);
-
-    // Common financial frequencies as static readonly fields
-    /// <summary>Monthly frequency (12 events per year).</summary>
-    public static readonly Frequency Monthly = new(Period.OfMonths(1));
-    
-    /// <summary>Quarterly frequency (4 events per year).</summary>
-    public static readonly Frequency Quarterly = new(Period.OfMonths(3));
-    
-    /// <summary>Semi-annual frequency (2 events per year).</summary>
-    public static readonly Frequency SemiAnnual = new(Period.OfMonths(6));
-    
-    /// <summary>Annual frequency (1 event per year).</summary>
-    public static readonly Frequency Annual = new(Period.OfMonths(12));
-    
-    /// <summary>Weekly frequency (52 events per year).</summary>
-    public static readonly Frequency Weekly = new(Period.OfWeeks(1));
-    
-    /// <summary>Daily frequency (364 events per year using standard financial calendar).</summary>
-    public static readonly Frequency Daily = new(Period.OfDays(1));
+    public static readonly Frequency Term = new(Period.MaxValue);
 
     /// <summary>
     /// Gets the name of the frequency. <br/>
@@ -52,7 +38,10 @@ public readonly struct Frequency : INamed, IEquatable<Frequency>
     /// <summary>
     /// Period of the frequency. <br/>
     /// </summary>
-    public Period Period { get; }
+    public Period Period => _period ?? throw new InvalidOperationException("Frequency is not initialized.");
+
+    // Backing field so default(Frequency) is safe.
+    private readonly Period? _period;
 
     /// <summary>
     /// Exact whole number of events per (synthetic) year, or -1 if not an even divisor
@@ -81,9 +70,12 @@ public readonly struct Frequency : INamed, IEquatable<Frequency>
     /// <param name="period">The period for this frequency.</param>
     public Frequency(Period period)
     {
-        Period = period;
-
         if (period == Period.Zero)
+            throw new ArgumentException("Period cannot be zero.", nameof(period));
+
+        _period = period;
+
+        if (period == Period.MaxValue)
         {
             Name = TermString;
             EventsPerYear = 0;
@@ -257,7 +249,7 @@ public readonly struct Frequency : INamed, IEquatable<Frequency>
     /// <summary>
     /// Indicates if the frequency is the term frequency.
     /// </summary>
-    public bool IsTerm => Period == Period.Zero;
+    public bool IsTerm => Period == Period.MaxValue;
 
     /// <summary>
     /// Indicates if the periodic frequency is based on weeks.
@@ -387,4 +379,179 @@ public readonly struct Frequency : INamed, IEquatable<Frequency>
     /// Compares two frequencies for inequality.
     /// </summary>
     public static bool operator !=(Frequency left, Frequency right) => !(left == right);
+
+    /// <summary>
+    /// Normalizes the months and years of this tenor.
+    /// <para>
+    /// This method returns a tenor of an equivalent length but with any number <br/>
+    /// of months greater than 12 normalized into a combination of months and years.
+    /// </para>
+    /// </summary>
+    /// <returns>The normalized tenor</returns>
+    public Frequency ToNormalized() => 
+        IsTerm ? Term : new Frequency(Period.ToNormalized());
+
+    /// <summary>
+    /// Adds a period to a frequency.
+    /// </summary>
+    public static Frequency operator +(Frequency left, Period right)
+    {
+        if (left.IsTerm)
+            return new Frequency(right);
+        // Add the period to the existing frequency's period
+        var newPeriod = left.Period + right;
+        return new Frequency(newPeriod);
+    }
+
+    /// <summary>
+    /// Adds the current frequency to the specified date and returns the resulting date.
+    /// </summary>
+    /// <param name="date">The starting date to which the frequency will be added.</param>
+    /// <returns>A <see cref="DateOnly"/> representing the resulting date after adding the frequency.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the frequency represents a term and cannot be added to a date.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DateOnly AddTo(DateOnly date)
+    {
+        if (IsTerm)
+            throw new InvalidOperationException("Cannot add to a term frequency.");
+
+        return Period.AddTo(date);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DateAdjuster"/> that adds the current frequency to a date.
+    /// </summary>
+    public DateAdjuster ToAddDateAdjuster()
+    {
+        if (IsTerm)
+            throw new InvalidOperationException("Cannot create a date adjuster from a term frequency.");
+        var frequency = this; // Capture the frequency in a closure
+        return date =>  frequency.AddTo(date);
+    }
+
+    /// <summary>
+    /// Subtracts the current frequency from the specified date and returns the resulting date.
+    /// </summary>
+    /// <param name="date">The starting date from which the frequency will be subtracted.</param>
+    /// <returns>A <see cref="DateOnly"/> representing the resulting date after subtracting the frequency.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the frequency represents a term and cannot be subtracted from a date.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DateOnly SubtractFrom(DateOnly date)
+    {
+        if (IsTerm)
+            throw new InvalidOperationException("Cannot subtract from a term frequency.");
+
+        return Period.SubtractFrom(date);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DateAdjuster"/> that subtracts the current frequency from a date.
+    /// </summary>
+    public DateAdjuster ToSubtractDateAdjuster()
+    {
+        if (IsTerm)
+            throw new InvalidOperationException("Cannot create a date adjuster from a term frequency.");
+        var frequency = this; // Capture the frequency in a closure
+        return date => frequency.SubtractFrom(date);
+    }
+
+    /// <summary>
+    /// Attempts to compute an exact integer factor n such that:
+    ///     this = subFrequency * n
+    /// for compatible base types (month-based, week-based, or day-based).
+    /// Returns false when:
+    /// - Either frequency is Term
+    /// - Bases differ (month vs week vs day)
+    /// - Periods are irregular mixed Y/M/D (contain both months>0 and days>0) 
+    /// - Division is not exact
+    /// </summary>
+    /// <param name="subFrequency">Candidate sub-frequency (must be same or smaller)</param>
+    /// <param name="factor">Resulting integer factor (>=1) when successful.</param>
+    public bool TryExactDivide(Frequency subFrequency, out int factor)
+    {
+        factor = 0;
+
+        // Term cannot participate (ambiguous length)
+        if (IsTerm || subFrequency.IsTerm)
+            return false;
+
+        // Determine base compatibility (reuse existing semantics).
+        var sameBase =
+            (IsMonthBased && subFrequency.IsMonthBased) ||
+            (IsWeekBased && subFrequency.IsWeekBased) ||
+            (IsDayBased && subFrequency.IsDayBased);
+
+        if (!sameBase)
+            return false;
+
+        // Guard against irregular mixed Y/M/D periods (months>0 && days>0) which we
+        // currently do not treat as either pure month-based or day-based for divisibility.
+        // (IsMonthBased / IsDayBased were already false in that scenario, so we'd have exited,
+        // but keep future-proof logic explicit.)
+        if (!IsMonthBased && !IsWeekBased && !IsDayBased)
+            return false;
+        if (subFrequency is { IsMonthBased: false, IsWeekBased: false, IsDayBased: false })
+            return false;
+
+        int numerator;
+        int denominator;
+
+        if (IsMonthBased) // Use total months (years normalized).
+        {
+            numerator   = Period.ToTotalMonths();
+            denominator = subFrequency.Period.ToTotalMonths();
+        }
+        else if (IsWeekBased)   // Use weeks.
+        {
+            numerator   = Period.Weeks;
+            denominator = subFrequency.Period.Weeks;
+        }
+        else                    // Day-based.
+        {
+            numerator   = Period.Days;
+            denominator = subFrequency.Period.Days;
+        }
+
+        // Basic sanity.
+        if (denominator <= 0)
+            return false;
+
+        // subFrequency must not exceed this.
+        if (numerator < denominator)
+            return false;
+
+        if (numerator % denominator != 0)
+            return false;
+
+        factor = numerator / denominator;
+        return factor >= 1;
+    }
+
+    /// <summary>
+    /// Computes an exact integer factor n such that:
+    ///     this = subFrequency * n
+    /// for compatible base types (month / week / day).
+    /// Throws when:
+    /// - Not exact
+    /// - Bases differ
+    /// - Term involved
+    /// - Irregular unsupported period shapes
+    /// </summary>
+    /// <param name="subFrequency">Candidate sub-frequency (same base, not larger).</param>
+    /// <returns>Integer factor (>=1).</returns>
+    /// <exception cref="InvalidOperationException">Division not exact or frequencies incompatible.</exception>
+    public int ExactDivide(Frequency subFrequency)
+    {
+        // Handle common error cases with specific messages for better diagnostics
+        if (IsTerm || subFrequency.IsTerm)
+            throw new InvalidOperationException("Cannot divide when Term frequency is involved.");
+
+        // Check base type compatibility explicitly
+        if (!IsCompatibleWith(subFrequency))
+            throw new InvalidOperationException($"Cannot divide frequencies with incompatible base types: '{this}' and '{subFrequency}'.");
+
+        if (!TryExactDivide(subFrequency, out var factor))
+            throw new InvalidOperationException($"Frequency '{subFrequency}' does not exactly divide '{this}'.");
+        return factor;
+    }
 }

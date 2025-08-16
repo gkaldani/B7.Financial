@@ -499,8 +499,8 @@
             A periodic frequency used by financial products that have a specific event every so often.
             <para>
             Frequency is primarily intended to be used to subdivide events within a year. <br/>
-            A frequency is allowed to be any non-negative period of days, weeks, month or years.
-            A special value, 'Term', is provided for when there are no subdivisions of the entire term. <br/>
+            A frequency is allowed to be any non-negative <see cref="T:B7.Financial.Abstractions.Date.Period"/>. <br/>
+            A special value, <see cref="F:B7.Financial.Abstractions.Schedule.Frequency.Term"/>, is provided for when there are no subdivisions of the entire term. <br/>
             This is also known as 'zero-coupon' or 'once'.
             </para>
             </summary>
@@ -509,27 +509,9 @@
             <summary>
             A periodic frequency matching the term. <br/>
             Also known as zero-coupon. <br/>
-            This is represented using <see cref="P:B7.Financial.Abstractions.Date.Period.Zero"/>. <br/>
+            This is represented using <see cref="P:B7.Financial.Abstractions.Date.Period.MaxValue"/>. <br/>
             There are no events per year with this frequency.
             </summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Monthly">
-            <summary>Monthly frequency (12 events per year).</summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Quarterly">
-            <summary>Quarterly frequency (4 events per year).</summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.SemiAnnual">
-            <summary>Semi-annual frequency (2 events per year).</summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Annual">
-            <summary>Annual frequency (1 event per year).</summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Weekly">
-            <summary>Weekly frequency (52 events per year).</summary>
-        </member>
-        <member name="F:B7.Financial.Abstractions.Schedule.Frequency.Daily">
-            <summary>Daily frequency (364 events per year using standard financial calendar).</summary>
         </member>
         <member name="P:B7.Financial.Abstractions.Schedule.Frequency.Name">
             <summary>
@@ -569,7 +551,23 @@
             </summary>
             <param name="period">The period for this frequency.</param>
         </member>
-        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryFromEventsPerYear(System.Int32,B7.Financial.Abstractions.Schedule.Frequency@)">
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.Parse(B7.Financial.Abstractions.Name)">
+            <summary>
+            Parses a frequency from its string representation.
+            </summary>
+            <param name="value">The string representation (either "Term" or ISO 8601 period).</param>
+            <returns>The parsed frequency.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the value cannot be parsed.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryParse(B7.Financial.Abstractions.Name,System.Nullable{B7.Financial.Abstractions.Schedule.Frequency}@)">
+            <summary>
+            Tries to parse a frequency from its string representation.
+            </summary>
+            <param name="value">The string representation.</param>
+            <param name="frequency">The parsed frequency if successful.</param>
+            <returns>True if parsing succeeded, false otherwise.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryFromEventsPerYear(System.Int32,System.Nullable{B7.Financial.Abstractions.Schedule.Frequency}@)">
             <summary>
             Attempts to construct a frequency from an integer events-per-year value.
             Supports:
@@ -640,7 +638,7 @@
         <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToReciprocal">
             <summary>
             Returns the reciprocal frequency if this frequency has exact events per year.
-            For example, Monthly (12 events) returns Annual (1 event), Quarterly (4 events) returns 3-monthly, etc.
+            For example, Monthly (12 events) returns Annual (1 event), Quarterly (4 events) returns Annual, etc.
             </summary>
             <returns>The reciprocal frequency.</returns>
             <exception cref="T:System.InvalidOperationException">Thrown when the frequency doesn't have exact events per year.</exception>
@@ -678,6 +676,236 @@
             <summary>
             Compares two frequencies for inequality.
             </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToNormalized">
+            <summary>
+            Normalizes the months and years of this tenor.
+            <para>
+            This method returns a tenor of an equivalent length but with any number <br/>
+            of months greater than 12 normalized into a combination of months and years.
+            </para>
+            </summary>
+            <returns>The normalized tenor</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.op_Addition(B7.Financial.Abstractions.Schedule.Frequency,B7.Financial.Abstractions.Date.Period)">
+            <summary>
+            Adds a period to a frequency.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.AddTo(System.DateOnly)">
+            <summary>
+            Adds the current frequency to the specified date and returns the resulting date.
+            </summary>
+            <param name="date">The starting date to which the frequency will be added.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the resulting date after adding the frequency.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if the frequency represents a term and cannot be added to a date.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToAddDateAdjuster">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Date.DateAdjuster"/> that adds the current frequency to a date.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.SubtractFrom(System.DateOnly)">
+            <summary>
+            Subtracts the current frequency from the specified date and returns the resulting date.
+            </summary>
+            <param name="date">The starting date from which the frequency will be subtracted.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the resulting date after subtracting the frequency.</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if the frequency represents a term and cannot be subtracted from a date.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ToSubtractDateAdjuster">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Date.DateAdjuster"/> that subtracts the current frequency from a date.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.TryExactDivide(B7.Financial.Abstractions.Schedule.Frequency,System.Int32@)">
+            <summary>
+            Attempts to compute an exact integer factor n such that:
+                this = subFrequency * n
+            for compatible base types (month-based, week-based, or day-based).
+            Returns false when:
+            - Either frequency is Term
+            - Bases differ (month vs week vs day)
+            - Periods are irregular mixed Y/M/D (contain both months>0 and days>0) 
+            - Division is not exact
+            </summary>
+            <param name="subFrequency">Candidate sub-frequency (must be same or smaller)</param>
+            <param name="factor">Resulting integer factor (>=1) when successful.</param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.Frequency.ExactDivide(B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Computes an exact integer factor n such that:
+                this = subFrequency * n
+            for compatible base types (month / week / day).
+            Throws when:
+            - Not exact
+            - Bases differ
+            - Term involved
+            - Irregular unsupported period shapes
+            </summary>
+            <param name="subFrequency">Candidate sub-frequency (same base, not larger).</param>
+            <returns>Integer factor (>=1).</returns>
+            <exception cref="T:System.InvalidOperationException">Division not exact or frequencies incompatible.</exception>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Schedule.IFrequencyFactory">
+            <summary>
+            Represents a factory for creating frequency instances.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IFrequencyFactory.FrequencyNames">
+            <summary>
+            Retrieves the names of all available predefined frequency instances.
+            </summary>
+            <returns> A collection of predefined frequency names. </returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IFrequencyFactory.OfDays(System.Int32)">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance representing a frequency based on the specified number of days.
+            </summary>
+            <param name="days">The number of days to represent as a frequency. Must be a positive integer.</param>
+            <returns>A <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance corresponding to the specified number of days.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IFrequencyFactory.OfWeeks(System.Int32)">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance representing a frequency based on the specified number of weeks.
+            </summary>
+            <param name="weeks">The number of weeks to represent as a frequency. Must be a positive integer.</param>
+            <returns>A <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance corresponding to the specified number of weeks.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IFrequencyFactory.OfMonths(System.Int32)">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance representing a recurrence interval in months.
+            </summary>
+            <param name="months">The number of months for the recurrence interval. Must be greater than zero.</param>
+            <returns>A <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance configured with the specified monthly interval.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IFrequencyFactory.OfYears(System.Int32)">
+            <summary>
+            Creates a <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance representing a recurrence interval in years.
+            </summary>
+            <param name="years">The number of years for the recurrence interval. Must be greater than zero.</param>
+            <returns>A <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> instance configured with the specified yearly interval.</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Schedule.IRollConvention">
+            <summary>
+            A convention defining how to roll dates.
+            <para>
+            A <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> defines the periodicity of the roll. <br/>
+            When applying the frequency, the roll convention is used to fine tune the dates. <br/>
+            This might involve selecting the last day of the month, or the third Wednesday.
+            </para>
+            <para>
+            To get the next date in the schedule, take the base date and the <br/>
+            periodic <see cref="T:B7.Financial.Abstractions.Schedule.Frequency"/> and apply the roll convention. <br/>
+            the roll convention is applied to produce the next schedule date.
+            </para>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConvention.Adjust(System.DateOnly)">
+            <summary>
+            Adjusts the given date according to the roll convention.
+            <para>
+            It is recommended to use <see cref="M:B7.Financial.Abstractions.Schedule.IRollConvention.Next(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)"/> and <see cref="M:B7.Financial.Abstractions.Schedule.IRollConvention.Previous(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)"/> rather than <br/>
+            directly using this method.
+            </para>
+            </summary>
+            <param name="date">The date to adjust.</param>
+            <returns>The adjusted date.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConvention.Matches(System.DateOnly)">
+            <summary>
+            Checks if the date matches the rules of the roll convention. <br/>
+            See the description of each roll convention to understand the rule applied.
+            </summary>
+            <param name="date">The date to check.</param>
+            <returns>True if the date matches the roll convention; otherwise, false.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConvention.Next(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Calculates the next date based on the given date and periodic frequency. <br/>
+            This takes the input date, adds the periodic frequency and adjusts the date <br/>
+            as necessary to match the roll convention rules. <br/>
+            The result will always be after the input date.
+            </summary>
+            <param name="date">The date to adjust.</param>
+            <param name="periodicFrequency">The frequency of the periodic event.</param>
+            <returns>The next date based on the roll convention.</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConvention.Previous(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <summary>
+            Calculates the previous date based on the specified starting date and periodic frequency. <br/>
+            This takes the input date, subtracts the periodic frequency and adjusts the date <br/>
+            as necessary to match the roll convention rules. <br/>
+            The result will always be before the input date.
+            </summary>
+            <param name="date">The date to adjust.</param>
+            <param name="periodicFrequency">The frequency of the periodic event.</param>
+            <returns>The previous date based on the roll convention.</returns>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Schedule.IRollConvention.DayOfMonth">
+            <summary>
+            Gets the day-of-month that the roll convention implies.
+            <para>
+            This extracts the day-of-month for simple roll conventions. <br/>
+            The numeric roll conventions will return their day-of-month. <br/>
+            The 'EOM' convention will return 31. <br/>
+            All other conventions will return zero (0).
+            </para>
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Schedule.IRollConventionFactory">
+            <summary>
+            Represents a factory for creating roll convention instances.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConventionFactory.RollConventionNames">
+            <summary>
+            Retrieves the names of all available predefined <see cref="T:B7.Financial.Abstractions.Schedule.IRollConvention"/> instances.
+            </summary>
+            <returns> A collection of predefined Roll Convention names. </returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConventionFactory.OfDayOfMonth(System.Byte)">
+            <summary>
+            Obtains an instance from the day-of-month.
+            <para>
+            This convention will adjust the input date to the specified day-of-month. <br/>
+            The year and month of the result date will be the same as the input date. <br/>
+            It is intended for use with periods that are a multiple of months.
+            </para>
+            <para>
+            If the month being adjusted has a length less than the requested day-of-month <br/>
+            then the last valid day-of-month will be chosen. As such, passing 31 to this <br/>
+            method is equivalent to selecting the end-of-month convention.
+            </para>
+            </summary>
+            <param name="dayOfMonth">The day-of-month, form 1 to 31</param>
+            <returns>The <see cref="T:B7.Financial.Abstractions.Schedule.IRollConvention"/> instance.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the day-of-month is not between 1 and 31.</exception>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Schedule.IRollConventionFactory.OfDayOfWeek(System.DayOfWeek)">
+            <summary>
+            Obtains an instance from the day-of-week.
+            <para>
+            This convention will adjust the input date to the specified day-of-week. <br/>
+            It is intended for use with <see cref="P:B7.Financial.Abstractions.Schedule.Frequency.Period"/> that are a multiple of weeks.
+            </para>
+            <para>
+            In <see cref="M:B7.Financial.Abstractions.Schedule.IRollConvention.Adjust(System.DateOnly)"/>, if the input date is not the required day-of-week, <br/>
+            then the next occurrence of the day-of-week is selected, up to 6 days later.
+            </para>
+            <para>
+            In <see cref="M:B7.Financial.Abstractions.Schedule.IRollConvention.Next(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)"/>, the day-of-week is selected after the frequency is added. <br/>
+            If the calculated date is not the required day-of-week, then the next occurrence <br/>
+            of the day-of-week is selected, up to 6 days later.
+            </para>
+            <para>
+            In <see cref="M:B7.Financial.Abstractions.Schedule.IRollConvention.Previous(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)"/>, the day-of-week is selected after the frequency is subtracted. <br/>
+            If the calculated date is not the required day-of-week, then the previous occurrence <br/>
+            of the day-of-week is selected, up to 6 days earlier.
+            </para>
+            </summary>
+            <param name="dayOfWeek">The day-of-week.</param>
+            <returns>The <see cref="T:B7.Financial.Abstractions.Schedule.IRollConvention"/> instance.</returns>
         </member>
     </members>
 </doc>

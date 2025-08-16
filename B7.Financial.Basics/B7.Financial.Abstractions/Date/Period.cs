@@ -601,7 +601,7 @@ public readonly struct Period : INamed, INamedFactory<Period>,
     /// </summary>
     public DateAdjuster ToAddDateAdjuster()
     {
-        var period = this; // Copy 'this' to a local variable
+        var period = this; // Capture the period in a closure
         return date => period.AddTo(date);
     }
 

@@ -5,7 +5,7 @@ public class DateAdjustersTests
     [Theory]
     [InlineData(2023, 1, 1, 2024, 2, 29)] // Non-leap year, next leap day
     [InlineData(2024, 2, 28, 2024, 2, 29)] // Leap year, before Feb 29
-    [InlineData(2024, 2, 29, 2024, 2, 29)] // Already a leap day
+    [InlineData(2024, 2, 29, 2028, 2, 29)] // Already a leap day
     [InlineData(2100, 3, 1, 2104, 2, 29)] // 2100 is not a leap year
     public void NextLeapDay_ReturnsExpectedDate(int startYear, int startMonth, int startDay, int expectedYear, int expectedMonth, int expectedDay)
     {
@@ -23,7 +23,7 @@ public class DateAdjustersTests
     [Theory]
     [InlineData(2023, 1, 1, 2024, 2, 29)] // Non-leap year, next leap day
     [InlineData(2024, 2, 28, 2024, 2, 29)] // Leap year, before Feb 29
-    [InlineData(2024, 2, 29, 2024, 2, 29)] // Already a leap day
+    [InlineData(2024, 2, 29, 2028, 2, 29)] // Already a leap day
     [InlineData(2100, 3, 1, 2104, 2, 29)] // 2100 is not a leap year
     public void NextLeapDayAdjuster_ReturnsExpectedDate(int startYear, int startMonth, int startDay, int expectedYear, int expectedMonth, int expectedDay)
     {

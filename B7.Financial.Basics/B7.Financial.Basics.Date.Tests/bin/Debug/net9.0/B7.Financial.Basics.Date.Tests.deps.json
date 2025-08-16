@@ -10,6 +10,7 @@
         "dependencies": {
           "B7.Financial.Basics.Date": "1.0.0",
           "CommunityToolkit.Diagnostics": "8.4.0",
+          "FsCheck.Xunit": "3.3.0",
           "Microsoft.NET.Test.Sdk": "17.14.1",
           "coverlet.collector": "6.0.4",
           "xunit": "2.9.3",
@@ -28,6 +29,79 @@
         }
       },
       "coverlet.collector/6.0.4": {},
+      "FsCheck/3.3.0": {
+        "dependencies": {
+          "FSharp.Core": "5.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FsCheck.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        }
+      },
+      "FsCheck.Xunit/3.3.0": {
+        "dependencies": {
+          "FSharp.Core": "5.0.2",
+          "FsCheck": "3.3.0",
+          "xunit.extensibility.execution": "2.9.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FsCheck.Xunit.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        }
+      },
+      "FSharp.Core/5.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/FSharp.Core.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.221.30802"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.0/cs/FSharp.Core.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.0/de/FSharp.Core.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.0/es/FSharp.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/fr/FSharp.Core.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/it/FSharp.Core.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.0/ja/FSharp.Core.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.0/ko/FSharp.Core.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.0/pl/FSharp.Core.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.0/pt-BR/FSharp.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/ru/FSharp.Core.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.0/tr/FSharp.Core.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.0/zh-Hans/FSharp.Core.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.0/zh-Hant/FSharp.Core.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
       "Microsoft.CodeCoverage/17.14.1": {
         "runtime": {
           "lib/net8.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll": {
@@ -399,6 +473,27 @@
       "sha512": "sha512-lkhqpF8Pu2Y7IiN7OntbsTtdbpR1syMsm2F3IgX6ootA4ffRqWL5jF7XipHuZQTdVuWG/gVAAcf8mjk8Tz0xPg==",
       "path": "coverlet.collector/6.0.4",
       "hashPath": "coverlet.collector.6.0.4.nupkg.sha512"
+    },
+    "FsCheck/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CGUXGwql1Ot9B6hIlNFIa10Hi6SQsvQr5wUURRm7zGCBBO3f85YfVsOqD1NO1c5VYdfWY3+bd32V+Gaz7c7A9A==",
+      "path": "fscheck/3.3.0",
+      "hashPath": "fscheck.3.3.0.nupkg.sha512"
+    },
+    "FsCheck.Xunit/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4SpaSXqivrtNnHvlNlc3PaGnErenXnyjnSun7LLMCfy2qdL6hhR3qyjIjFMArJP2r6AIiju0sWByBSyhQZg+iw==",
+      "path": "fscheck.xunit/3.3.0",
+      "hashPath": "fscheck.xunit.3.3.0.nupkg.sha512"
+    },
+    "FSharp.Core/5.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DpcajqENgb3VXaHw1FKfVS+TWwEzck1PCajqLwBAVrtd1lfxd7T8JISVZBdV1mX9+2g48+tIgpNaVJWObdMrBw==",
+      "path": "fsharp.core/5.0.2",
+      "hashPath": "fsharp.core.5.0.2.nupkg.sha512"
     },
     "Microsoft.CodeCoverage/17.14.1": {
       "type": "package",

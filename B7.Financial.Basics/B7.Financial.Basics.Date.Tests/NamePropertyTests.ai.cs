@@ -1,5 +1,6 @@
 ﻿namespace B7.Financial.Basics.Date.Tests;
 
-public partial class FrequencyTests
+public class NamePropertyTests
 {
+    
 }
