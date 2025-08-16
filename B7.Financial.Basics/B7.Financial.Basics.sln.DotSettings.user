@@ -5,11 +5,13 @@
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9da03d78_002Da822_002D483a_002D85ad_002Dcbf037b23f19/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FrequencyFactory_OfPeriod_ReturnsExpectedFrequency" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::320C3DE0-BD7D-4C8A-A943-4C154EE0B7E4::net9.0::B7.Financial.Basics.Date.Tests.FrequencyTests.FrequencyFactory_OfPeriod_ReturnsExpectedFrequency&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	
 	
 	</wpf:ResourceDictionary>
