@@ -4,6 +4,253 @@
         <name>B7.Financial.Basics.Date</name>
     </assembly>
     <members>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayAdjustment">
+            <summary>
+            An adjustment that alters a date if it falls on a day other than a business day.
+            <para>
+            When processing dates in finance, it is typically intended that non-business days, <br/>
+            such as weekends and holidays, are converted to a nearby valid business day. <br/>
+            This class represents the necessary adjustment.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayAdjustment.NoAdjustment">
+            <summary>
+            An instance that performs no adjustment.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.BusinessDayConvention">
+            <summary>
+            The convention used to the adjust the date if it does not fall on a business day.
+            <para>
+            The convention determines whether to move forwards or backwards when it is a holiday.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.HolidayCalendar">
+            <summary>
+            The calendar that defines holidays and business days.
+            <para>
+            When the adjustment is made, this calendar is used to skip holidays.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.Adjuster">
+            <summary>
+            A DateAdjuster that adjusts a date according to the business day convention and holiday calendar.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.#ctor(B7.Financial.Abstractions.Date.IBusinessDayConvention,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Basics.Date.BusinessDayAdjustment"/> with the specified business day convention and holiday calendar.
+            </summary>
+            <param name="businessDayConvention"></param>
+            <param name="holidayCalendar"></param>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.Adjust(System.DateOnly)">
+            <summary>
+            Adjusts the date as necessary if it is not a business day.
+            <para>
+            If the date is a business day it will be returned unaltered. <br/>
+            If the date is not a business day, the convention will be applied.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The adjusted date</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing">
+            <summary>
+            The 'Following' convention which adjusts to the next business day.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the next business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing">
+            <summary>
+            The 'ModifiedFollowing' convention which adjusts to the next business day without crossing month end.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the next business day unless that day is in a different <br/>
+            calendar month, in which case the previous business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly">
+            <summary>
+            The 'ModifiedFollowingBiMonthly' convention which adjusts to the next business day without <br/>
+            crossing mid-month or month end.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The month is divided into two parts, the first half, the 1st to 15th and the 16th onwards. <br/>
+            The adjusted date is the next business day unless that day is in a different half-month, <br/>
+            in which case the previous business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding">
+            <summary>
+            The 'ModifiedPreceding' convention which adjusts to the previous business day without crossing month start.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the previous business day unless that day is in a different <br/>
+            calendar month, in which case the next business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest">
+            <summary>
+            The 'Nearest' convention which adjusts <see cref="F:System.DayOfWeek.Sunday"/> and <see cref="F:System.DayOfWeek.Monday"/> forward, and other days backward.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            If the input is Sunday or Monday then the next business day is returned. <br/>
+            Otherwise, the previous business day is returned.
+            </para>
+            <remarks>
+            Note that despite the name, the algorithm may not return the business day that is actually nearest.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust">
+            <summary>
+            The 'NoAdjust' convention which makes no adjustment.
+            <para>
+            The input date will not be adjusted even if it is not a business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.NoAdjust">
+            <summary>
+            No adjustment is made to the date, even if it is not a business day.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding">
+            <summary>
+            The 'Preceding' convention which adjusts to the previous business day.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the previous business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory">
+            <summary>
+            Represents a factory for creating standard business day conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.NoAdjust">
+            <summary> Make no adjustment </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Following">
+            <summary> Next business day </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedFollowing">
+            <summary> Next business day unless over a month end </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedFollowingBiMonthly">
+            <summary> Next business day unless over a month end or mid </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Preceding">
+            <summary> Previous business day </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedPreceding">
+            <summary> Previous business day unless over a month end </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Nearest">
+            <summary> Next business day if Sun/Mon, otherwise previous </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves the business day convention associated with the specified name.
+            </summary>
+            <param name="name">The name representing the desired business day convention.</param>
+            <returns>An instance of <see cref="T:B7.Financial.Abstractions.Date.IBusinessDayConvention"/> corresponding to the specified name.</returns>
+            <exception cref="T:System.NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.BusinessDayConventionNames">
+            <inheritdoc />
+        </member>
         <member name="T:B7.Financial.Basics.Date.DateAdjusters">
             <summary>
             Provides utility methods and predefined adjusters for working with leap days (February 29).
@@ -325,29 +572,112 @@
         <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.Days(System.DateOnly,System.DateOnly)">
             <inheritdoc />
         </member>
-        <member name="T:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory">
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory">
             <summary>
             Represents a factory for creating standard day count conventions.
             </summary>
         </member>
-        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.OneOne">
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.OneOne">
             <summary>The '1/1' day count convention.</summary>
         </member>
-        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.ActualActualIsda">
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.ActualActualIsda">
             <summary>The 'Act/Act ISDA' day count convention.</summary>
         </member>
-        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.Actual365Actual">
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.Actual365Actual">
             <summary>The 'Act/365A' day count convention.</summary>
         </member>
-        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.Of(B7.Financial.Abstractions.Name)">
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.Of(B7.Financial.Abstractions.Name)">
             <summary>
             Retrieves a day count convention by its name.
             </summary>
             <param name="name"></param>
-            <returns>The <see cref="T:B7.Financial.Abstractions.Date.DayCount"/> instance associated with the specified name.</returns>
-            <exception cref="T:System.ArgumentException"></exception>
+            <returns>The <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/> instance associated with the specified name.</returns>
+            <exception cref="T:System.NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
         </member>
-        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountsFactory.DayCountNames">
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.DayCountNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.NoHolidays">
+            <summary> No Holidays Calendar. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Sun">
+            <summary> Sunday </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.SatSun">
+            <summary> Saturday/Sunday </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Of(B7.Financial.Abstractions.Name)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.HolidayCalendarNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar">
+            <summary>
+            An identifier for a calendar declaring no holidays and no weekends, with code 'NoHolidays'.
+            <para>
+            This calendar has the effect of making every day a business day. <br/>
+            It is often used to indicate that a holiday calendar does not apply.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.NoHolidays">
+            <summary>
+            No Holidays Calendar.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar">
+            <summary>
+            An identifier for a calendar declaring all days as business days <br/>
+            except Saturday/Sunday weekends, with code 'Sat/Sun'.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar">
+            <summary>
+            An identifier for a calendar declaring all days as business days <br/>
+            except Sunday weekends, with code 'Sun'.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.IsHoliday(System.DateOnly)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder">

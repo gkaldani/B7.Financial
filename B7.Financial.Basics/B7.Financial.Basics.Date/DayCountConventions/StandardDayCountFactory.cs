@@ -7,7 +7,7 @@ namespace B7.Financial.Basics.Date.DayCountConventions;
 /// <summary>
 /// Represents a factory for creating standard day count conventions.
 /// </summary>
-public class StandardDayCountsFactory : IDayCountFactory
+public class StandardDayCountFactory : IDayCountFactory
 {
     /// <summary>The '1/1' day count convention.</summary>
     public static readonly DayCountOneOne OneOne = new ();
@@ -16,8 +16,8 @@ public class StandardDayCountsFactory : IDayCountFactory
     /// <summary>The 'Act/365A' day count convention.</summary>
     public static readonly DayCountActual365Actual Actual365Actual = new ();
 
-    private static readonly FrozenDictionary<Name, DayCount> DayCountConventions =
-        new Dictionary<Name, DayCount>
+    private static readonly FrozenDictionary<Name, IDayCount> DayCountConventions =
+        new Dictionary<Name, IDayCount>
         {
             [OneOne.Name] = OneOne,
             [ActualActualIsda.Name] = ActualActualIsda,
@@ -28,12 +28,12 @@ public class StandardDayCountsFactory : IDayCountFactory
     /// Retrieves a day count convention by its name.
     /// </summary>
     /// <param name="name"></param>
-    /// <returns>The <see cref="DayCount"/> instance associated with the specified name.</returns>
-    /// <exception cref="ArgumentException"></exception>
-    public virtual DayCount Of(Name name) =>
+    /// <returns>The <see cref="IDayCount"/> instance associated with the specified name.</returns>
+    /// <exception cref="NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
+    public virtual IDayCount Of(Name name) =>
         DayCountConventions.TryGetValue(name, out var convention)
             ? convention
-            : throw new ArgumentException($"Unknown day count convention: {name}");
+            : throw new NotImplementedException($"Unknown day count convention: {name}");
 
     /// <inheritdoc />
     public virtual IEnumerable<Name> DayCountNames() => DayCountConventions.Keys;

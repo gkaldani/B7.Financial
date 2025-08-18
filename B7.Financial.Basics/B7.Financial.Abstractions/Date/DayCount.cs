@@ -30,4 +30,6 @@ public abstract class DayCount : IDayCount
 
     /// <inheritdoc />
     public abstract int Days(DateOnly firstDate, DateOnly secondDate);
+
+
 }

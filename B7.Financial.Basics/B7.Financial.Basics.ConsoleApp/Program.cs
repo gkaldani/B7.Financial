@@ -19,7 +19,7 @@ internal class Program
 
         Console.WriteLine($"Adjusted date: {d}");
 
-        IDayCountFactory dayCountFactory = new StandardDayCountsFactory();
+        IDayCountFactory dayCountFactory = new StandardDayCountFactory();
 
         foreach (var dayCountName in dayCountFactory.DayCountNames())
         {

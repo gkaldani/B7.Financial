@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a factory for creating day count conventions.
 /// </summary>
-public interface IDayCountFactory : INamedFactory<DayCount>
+public interface IDayCountFactory : INamedFactory<IDayCount>
 {
     /// <summary>
     /// Retrieves the names of all available day count conventions.
