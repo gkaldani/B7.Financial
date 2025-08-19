@@ -1,4 +1,6 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿using B7.Financial.Abstractions.Date.HolidayCalendars;
+
+namespace B7.Financial.Abstractions.Date.BusinessDayConventions;
 
 /// <summary>
 /// A convention defining how to adjust a date if it falls on a day other than a business day.

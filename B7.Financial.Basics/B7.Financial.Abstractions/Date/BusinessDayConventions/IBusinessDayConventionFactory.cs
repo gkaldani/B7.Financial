@@ -1,4 +1,4 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿namespace B7.Financial.Abstractions.Date.BusinessDayConventions;
 
 /// <summary>
 /// Provides a factory for creating business day conventions.

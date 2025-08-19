@@ -1,7 +1,4 @@
-﻿using B7.Financial.Abstractions;
-using B7.Financial.Abstractions.Date;
-
-namespace B7.Financial.Basics.Date.HolidayCalendars;
+﻿namespace B7.Financial.Abstractions.Date.HolidayCalendars;
 
 /// <summary>
 /// An identifier for a calendar declaring no holidays and no weekends, with code 'NoHolidays'.

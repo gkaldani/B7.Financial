@@ -1,4 +1,4 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿namespace B7.Financial.Abstractions.Date.HolidayCalendars;
 
 /// <inheritdoc />
 public abstract class HolidayCalendar : IHolidayCalendar
@@ -66,7 +66,7 @@ public abstract class HolidayCalendar : IHolidayCalendar
     {
         var nextOrSame = NextOrSame(date);
         
-        return (nextOrSame.Month != date.Month)
+        return nextOrSame.Month != date.Month
             ? Previous(date)
             : nextOrSame;
     }

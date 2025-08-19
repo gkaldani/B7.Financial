@@ -40,7 +40,7 @@
             A DateAdjuster that adjusts a date according to the business day convention and holiday calendar.
             </summary>
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.#ctor(B7.Financial.Abstractions.Date.IBusinessDayConvention,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.#ctor(B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <summary>
             Creates a new instance of <see cref="T:B7.Financial.Basics.Date.BusinessDayAdjustment"/> with the specified business day convention and holiday calendar.
             </summary>
@@ -78,7 +78,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing">
@@ -99,7 +99,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly">
@@ -122,7 +122,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding">
@@ -143,7 +143,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest">
@@ -167,31 +167,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <inheritdoc />
-        </member>
-        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust">
-            <summary>
-            The 'NoAdjust' convention which makes no adjustment.
-            <para>
-            The input date will not be adjusted even if it is not a business day.
-            </para>
-            </summary>
-        </member>
-        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.NoAdjust">
-            <summary>
-            No adjustment is made to the date, even if it is not a business day.
-            </summary>
-        </member>
-        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.BusinessDayConventionName">
-            <summary>
-            The name of the Business Day Convention.
-            </summary>
-        </member>
-        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.Name">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNoAdjust.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding">
@@ -211,7 +187,7 @@
         <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Name">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory">
@@ -245,7 +221,7 @@
             Retrieves the business day convention associated with the specified name.
             </summary>
             <param name="name">The name representing the desired business day convention.</param>
-            <returns>An instance of <see cref="T:B7.Financial.Abstractions.Date.IBusinessDayConvention"/> corresponding to the specified name.</returns>
+            <returns>An instance of <see cref="T:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention"/> corresponding to the specified name.</returns>
             <exception cref="T:System.NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
         </member>
         <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.BusinessDayConventionNames">
@@ -612,38 +588,13 @@
         <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Of(B7.Financial.Abstractions.Name)">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <inheritdoc />
         </member>
         <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.HolidayCalendarNames">
-            <inheritdoc />
-        </member>
-        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar">
-            <summary>
-            An identifier for a calendar declaring no holidays and no weekends, with code 'NoHolidays'.
-            <para>
-            This calendar has the effect of making every day a business day. <br/>
-            It is often used to indicate that a holiday calendar does not apply.
-            </para>
-            </summary>
-        </member>
-        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.NoHolidays">
-            <summary>
-            No Holidays Calendar.
-            </summary>
-        </member>
-        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.CalendarName">
-            <summary>
-            The name of the day Holiday Calendar.
-            </summary>
-        </member>
-        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.Name">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.NoHolidaysCalendar.IsHoliday(System.DateOnly)">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar">
@@ -678,6 +629,106 @@
             <inheritdoc />
         </member>
         <member name="M:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay">
+            <summary>
+            Convention applying a last <i>business</i> day of month rule.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic, <br/>
+            shifting to the last business day of the month if the base date is the <br/>
+            last business day of the month. <br/>
+            The business day adjustment is applied to produce the final result. <br/>
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 29th will result in July 31st <br/>
+            assuming that June 30th is not a valid business day and July 31st is.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay">
+            <summary>
+            Convention applying a last day of month rule, <i>ignoring business days</i>.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic, <br/>
+            shifting to the end-of-month if the base date is the last day of the month. <br/>
+            The business day adjustment is applied to produce the final result. <br/>
+            Note that this rule is based on the last day of the month, not the last business day of the month.
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 30th will result in July 31st.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone">
+            <summary>
+            No specific rule applies.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic. <br/>
+            The business day adjustment is applied to produce the final result.
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 30th will result in July 30th.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory">
+            <summary>
+            Represents a factory for creating standard period addition conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.None">
+            <summary> no specific addition rule </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.LastDay">
+            <summary> last day of month addition rule </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.Of(B7.Financial.Abstractions.Name)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.PeriodAdditionConventionNames">
             <inheritdoc />
         </member>
         <member name="T:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder">

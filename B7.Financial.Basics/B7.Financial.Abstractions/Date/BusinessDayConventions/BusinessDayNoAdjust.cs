@@ -1,7 +1,6 @@
-﻿using B7.Financial.Abstractions;
-using B7.Financial.Abstractions.Date;
+﻿using B7.Financial.Abstractions.Date.HolidayCalendars;
 
-namespace B7.Financial.Basics.Date.BusinessDayConventions;
+namespace B7.Financial.Abstractions.Date.BusinessDayConventions;
 
 /// <summary>
 /// The 'NoAdjust' convention which makes no adjustment.

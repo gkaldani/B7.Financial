@@ -9,9 +9,7 @@ namespace B7.Financial.Abstractions;
 /// <remarks>
 /// Has implicit conversions to and from <see cref="string"/>.
 /// </remarks>
-#pragma warning disable CA2231
 public readonly struct Name : IEquatable<Name>
-#pragma warning restore CA2231
 {
     /// <summary>
     /// Determines the maximum length of a name.
@@ -63,13 +61,13 @@ public readonly struct Name : IEquatable<Name>
     public override string ToString() => Value;
 
     /// <inheritdoc/>
-    public bool Equals(Name other) => string.Equals(Value, other.Value, StringComparison.OrdinalIgnoreCase);
+    public bool Equals(Name other) => string.Equals(Value, other.Value, StringComparison.InvariantCultureIgnoreCase);
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Name { _value: not null } other && Equals(other);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Value);
+    public override int GetHashCode() => StringComparer.InvariantCultureIgnoreCase.GetHashCode(Value);
 
     /// <summary>
     /// Implicit conversion from <see cref="Name"/> to <see cref="string"/>.

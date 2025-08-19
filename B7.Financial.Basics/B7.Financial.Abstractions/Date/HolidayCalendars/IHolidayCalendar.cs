@@ -1,4 +1,4 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿namespace B7.Financial.Abstractions.Date.HolidayCalendars;
 
 /// <summary>
 /// A holiday calendar, classifying dates as holidays or business days.

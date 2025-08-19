@@ -4,51 +4,134 @@
         <name>B7.Financial.Abstractions</name>
     </assembly>
     <members>
-        <member name="T:B7.Financial.Abstractions.Date.BusinessDayConvention">
-            <inheritdoc />
-        </member>
-        <member name="P:B7.Financial.Abstractions.Date.BusinessDayConvention.Name">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.BusinessDayConvention.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <inheritdoc />
-        </member>
-        <member name="T:B7.Financial.Abstractions.Date.CombinedHolidayCalendar">
+        <member name="T:B7.Financial.Abstractions.Date.BusinessDayAdjustment">
             <summary>
-            A holiday calendar implementation that combines two other calendars.
+            An adjustment that alters a date if it falls on a day other than a business day.
             <para>
-            This immutable implementation of <see cref="T:B7.Financial.Abstractions.Date.IHolidayCalendar"/> stores two underlying calendars. <br/>
-            A date is a holiday if either calendar defines it as a holiday.
+            When processing dates in finance, it is typically intended that non-business days, <br/>
+            such as weekends and holidays, are converted to a nearby valid business day. <br/>
+            This class represents the necessary adjustment.
             </para>
             </summary>
         </member>
-        <member name="F:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.Joiner">
+        <member name="F:B7.Financial.Abstractions.Date.BusinessDayAdjustment.NoAdjustment">
             <summary>
-            Joiner character for combining two calendars.
+            An instance that performs no adjustment.
             </summary>
         </member>
-        <member name="P:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.Calendar1">
+        <member name="P:B7.Financial.Abstractions.Date.BusinessDayAdjustment.BusinessDayConvention">
             <summary>
-            Calendar 1.
+            The convention used to the adjust the date if it does not fall on a business day.
+            <para>
+            The convention determines whether to move forwards or backwards when it is a holiday.
+            </para>
             </summary>
         </member>
-        <member name="P:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.Calendar2">
+        <member name="P:B7.Financial.Abstractions.Date.BusinessDayAdjustment.HolidayCalendar">
             <summary>
-            Calendar 2.
+            The calendar that defines holidays and business days.
+            <para>
+            When the adjustment is made, this calendar is used to skip holidays.
+            </para>
             </summary>
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.#ctor(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="P:B7.Financial.Abstractions.Date.BusinessDayAdjustment.Adjuster">
             <summary>
-            Combines two holiday calendars into one.
+            A DateAdjuster that adjusts a date according to the business day convention and holiday calendar.
             </summary>
-            <param name="calendar1"></param>
-            <param name="calendar2"></param>
         </member>
-        <member name="P:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.Name">
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayAdjustment.#ctor(B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Abstractions.Date.BusinessDayAdjustment"/> with the specified business day convention and holiday calendar.
+            </summary>
+            <param name="businessDayConvention"></param>
+            <param name="holidayCalendar"></param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayAdjustment.Adjust(System.DateOnly)">
+            <summary>
+            Adjusts the date as necessary if it is not a business day.
+            <para>
+            If the date is a business day it will be returned unaltered. <br/>
+            If the date is not a business day, the convention will be applied.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The adjusted date</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayAdjustment.ToString">
             <inheritdoc />
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.CombinedHolidayCalendar.IsHoliday(System.DateOnly)">
+        <member name="T:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayConvention">
             <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayConvention.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayConvention.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayNoAdjust">
+            <summary>
+            The 'NoAdjust' convention which makes no adjustment.
+            <para>
+            The input date will not be adjusted even if it is not a business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayNoAdjust.NoAdjust">
+            <summary>
+            No adjustment is made to the date, even if it is not a business day.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayNoAdjust.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayNoAdjust.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayConventions.BusinessDayNoAdjust.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention">
+            <summary>
+            A convention defining how to adjust a date if it falls on a day other than a business day.
+            <para>
+            The purpose of this convention is to define how to handle non-business days. <br/>
+            When processing dates in finance, it is typically intended that non-business days, <br/>
+            such as weekends and holidays, are converted to a nearby valid business day. <br/>
+            The convention, in conjunction with a <see cref="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar"/>, <br/>
+            defines exactly how the adjustment should be made.
+            </para>
+            <para>
+            The most common implementations are provided in <see cref="T:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConventionFactory"/>. <br/>
+            Additional implementations may be added by implementing this interface.
+            </para>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Adjusts the date as necessary if it is not a business day.
+            <para>
+            If the date is a business day it will be returned unaltered. <br/>
+            If the date is not a business day, the convention will be applied.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <param name="calendar">The calendar that defines holidays and business days</param>
+            <returns>The adjusted date</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConventionFactory">
+            <summary>
+            Provides a factory for creating business day conventions.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConventionFactory.BusinessDayConventionNames">
+            <summary>
+            Retrieves the names of all available business day conventions.
+            </summary>
+            <returns> A collection of business day convention names. </returns>
         </member>
         <member name="T:B7.Financial.Abstractions.Date.DateAdjuster">
             <summary>
@@ -115,101 +198,349 @@
             <param name="value"></param>
             <param name="options"></param>
         </member>
-        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendar">
-            <inheritdoc />
-        </member>
-        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendar.Name">
-            <inheritdoc/>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.IsHoliday(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.IsBusinessDay(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.AdjustBy(System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Shift(System.DateOnly,System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Next(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.NextOrSame(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Previous(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.PreviousOrSame(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.NextSameOrLastInMonth(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.IsLastBusinessDayOfMonth(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.LastBusinessDayOfMonth(System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.DaysBetween(System.DateOnly,System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.BusinessDays(System.DateOnly,System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Holidays(System.DateOnly,System.DateOnly)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Equals(B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.Equals(System.Object)">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendar.GetHashCode">
-            <inheritdoc />
-        </member>
-        <member name="T:B7.Financial.Abstractions.Date.IBusinessDayConvention">
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar">
             <summary>
-            A convention defining how to adjust a date if it falls on a day other than a business day.
+            A holiday calendar implementation that combines two other calendars.
             <para>
-            The purpose of this convention is to define how to handle non-business days. <br/>
-            When processing dates in finance, it is typically intended that non-business days, <br/>
-            such as weekends and holidays, are converted to a nearby valid business day. <br/>
-            The convention, in conjunction with a <see cref="T:B7.Financial.Abstractions.Date.IHolidayCalendar"/>, <br/>
-            defines exactly how the adjustment should be made.
-            </para>
-            <para>
-            The most common implementations are provided in <see cref="T:B7.Financial.Abstractions.Date.IBusinessDayConventionFactory"/>. <br/>
-            Additional implementations may be added by implementing this interface.
+            This immutable implementation of <see cref="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar"/> stores two underlying calendars. <br/>
+            A date is a holiday if either calendar defines it as a holiday.
             </para>
             </summary>
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.IBusinessDayConvention.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.IHolidayCalendar)">
+        <member name="F:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.Joiner">
             <summary>
-            Adjusts the date as necessary if it is not a business day.
+            Joiner character for combining two calendars.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.Calendar1">
+            <summary>
+            Calendar 1.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.Calendar2">
+            <summary>
+            Calendar 2.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.#ctor(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Combines two holiday calendars into one.
+            </summary>
+            <param name="calendar1"></param>
+            <param name="calendar2"></param>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.CombinedHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Name">
+            <inheritdoc/>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.IsBusinessDay(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.AdjustBy(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Shift(System.DateOnly,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Next(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.NextOrSame(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Previous(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.PreviousOrSame(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.NextSameOrLastInMonth(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.IsLastBusinessDayOfMonth(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.LastBusinessDayOfMonth(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.DaysBetween(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.BusinessDays(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Holidays(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Equals(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.HolidayCalendar.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar">
+            <summary>
+            A holiday calendar, classifying dates as holidays or business days.
             <para>
-            If the date is a business day it will be returned unaltered. <br/>
-            If the date is not a business day, the convention will be applied.
+            Many calculations in finance require knowledge of whether a date is a business day or not. <br/>
+            This interface encapsulates that knowledge, with each day treated as a holiday or a business day. <br/>
+            Weekends are effectively treated as a special kind of holiday.
+            </para>
+            <para>
+            Applications should refer to holidays using <see cref="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendarFactory"/>. <br/>
+            The name must be resolved <see cref="!:IHolidayCalendarFactory.Of"/> to a <see cref="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar"/> <br/>
+            before the holiday data methods can be accessed. <br/>
+            </para>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.IsHoliday(System.DateOnly)">
+            <summary>
+            Checks if the specified date is a holiday. <br/>
+            This is the opposite of <see cref="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.IsBusinessDay(System.DateOnly)"/>. <br/>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.IsBusinessDay(System.DateOnly)">
+            <summary>
+            Checks if the specified date is a business day. <br/>
+            This is the opposite of <see cref="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.IsHoliday(System.DateOnly)"/>. <br/>
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.AdjustBy(System.Int32)">
+            <summary>
+            Returns an adjuster that changes the date.
+            </summary>
+            <param name="days">The number of business days to adjust by</param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.Shift(System.DateOnly,System.Int32)">
+            <summary>
+            Shifts the date by a specified number of business days.
+            <para>
+            If the number of days is zero, the original date is returned. <br/>
+            If the number of days is positive, the date is shifted forward. Later business days are chosen. <br/>
+            If the number of days is negative, the date is shifted backward. Earlier business days are chosen. <br/>
             </para>
             </summary>
             <param name="date">The date to adjust</param>
-            <param name="calendar">The calendar that defines holidays and business days</param>
-            <returns>The adjusted date</returns>
+            <param name="days"></param>
+            <returns></returns>
         </member>
-        <member name="T:B7.Financial.Abstractions.Date.IBusinessDayConventionFactory">
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.Next(System.DateOnly)">
             <summary>
-            Provides a factory for creating business day conventions.
+            Finds the next business day, always returning a later date.
+            <para>Given a date, this method returns the next business day.</para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The first business day after the input date</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.NextOrSame(System.DateOnly)">
+            <summary>
+            Finds the next business day, returning the input date if it is a business day.
+            <para>
+            Given a date, this method returns a business day. <br/>
+            If the input date is a business day, it is returned. <br/>
+            Otherwise, the next business day is returned.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The input date if it is a business day, or the next business day</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.Previous(System.DateOnly)">
+            <summary>
+            Finds the previous business day, always returning an earlier date.
+            <para>Given a date, this method returns the previous business day.</para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The first business day before the input date</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.PreviousOrSame(System.DateOnly)">
+            <summary>
+            Finds the previous business day, returning the input date if it is a business day.
+            <para>
+            Given a date, this method returns a business day. <br/>
+            If the input date is a business day, it is returned. <br/>
+            Otherwise, the previous business day is returned.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The input date if it is a business day, or the previous business day</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.NextSameOrLastInMonth(System.DateOnly)">
+            <summary>
+            Finds the next business day within the month, returning the input date if it is a business day, <br/>
+            or the last business day of the month if the next business day is in a different month.
+            <para>
+            Given a date, this method returns a business day. <br/>
+            If the input date is a business day, it is returned. <br/>
+            If the next business day is within the same month, it is returned. <br/>
+            Otherwise, the last business day of the month is returned.
+            </para>
+            <remarks>
+            Note that the result of this method may be earlier than the input date. <br/>
+            This corresponds to the 'BusinessDayModifiedFollowing' business day convention. <br/>
+            </remarks>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The input date if it is a business day, the next business day if within the same month or the last business day of the month</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.IsLastBusinessDayOfMonth(System.DateOnly)">
+            <summary>
+            Checks if the specified date is the last business day of the month.
+            <para>
+            This returns true if the date specified is the last valid business day of the month.
+            </para>
+            </summary>
+            <param name="date">The date to check</param>
+            <returns>True if the specified date is the last business day of the month</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.LastBusinessDayOfMonth(System.DateOnly)">
+            <summary>
+            Calculates the last business day of the month.
+            <para>
+            Given a date, this method returns the date of the last business day of the month.
+            </para>
+            </summary>
+            <param name="date">The date to check</param>
+            <returns>The date of the last business day of the month</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.DaysBetween(System.DateOnly,System.DateOnly)">
+            <summary>
+            Calculates the number of business days between two dates.
+            <para>
+            This calculates the number of business days within the range. <br/>
+            If the dates are equal, zero is returned. <br/>
+            If the end is before the start, an exception is thrown.
+            </para>
+            </summary>
+            <param name="startInclusive">The start date</param>
+            <param name="endExclusive">The end date</param>
+            <returns>The total number of business days between the start and end date</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.BusinessDays(System.DateOnly,System.DateOnly)">
+            <summary>
+            Gets the stream of business days between the two dates.
+            </summary>
+            <param name="startInclusive">The start date</param>
+            <param name="endExclusive">The end date</param>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar.Holidays(System.DateOnly,System.DateOnly)">
+            <summary>
+            Gets the stream of holidays between the two dates.
+            </summary>
+            <param name="startInclusive">The start date</param>
+            <param name="endExclusive">The end date</param>
+            <returns></returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendarFactory">
+            <summary>
+            Represents a factory for creating Holiday Calendars.
             </summary>
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.IBusinessDayConventionFactory.BusinessDayConventionNames">
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendarFactory.HolidayCalendarNames">
             <summary>
-            Retrieves the names of all available business day conventions.
+            Retrieves the names of all available holiday calendars.
             </summary>
-            <returns> A collection of business day convention names. </returns>
+            <returns> A collection of holiday calendar names. </returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Combines this holiday calendar with another.
+            <para>
+            The resulting calendar will declare a day as a business day if it is a <br/>
+            business day in both source calendars.
+            </para>
+            </summary>
+            <param name="calendar1">Calendar 1</param>
+            <param name="calendar2">Calendar 2</param>
+            <returns>The combined calendar</returns>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Links two holiday calendars together.
+            <para>
+            The resulting calendar will declare a day as a business day if it is a <br/>
+            business day in either source calendar.
+            </para>
+            </summary>
+            <param name="calendar1">Calendar 1</param>
+            <param name="calendar2">Calendar 2</param>
+            <returns>The linked calendar</returns>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar">
+            <summary>
+            A holiday calendar implementation that links two other calendars.
+            <para>
+            This immutable implementation of <see cref="T:B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar"/> stores two underlying calendars. <br/>
+            A date is a holiday if both calendars defines it as a holiday.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.Joiner">
+            <summary>
+            Joiner character for linking two calendars.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.Calendar1">
+            <summary>
+            Calendar 1.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.Calendar2">
+            <summary>
+            Calendar 2.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.#ctor(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Links two holiday calendars into one.
+            </summary>
+            <param name="calendar1"></param>
+            <param name="calendar2"></param>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.LinkedHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.HolidayCalendars.NoHolidaysCalendar">
+            <summary>
+            An identifier for a calendar declaring no holidays and no weekends, with code 'NoHolidays'.
+            <para>
+            This calendar has the effect of making every day a business day. <br/>
+            It is often used to indicate that a holiday calendar does not apply.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Date.HolidayCalendars.NoHolidaysCalendar.NoHolidays">
+            <summary>
+            No Holidays Calendar.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Abstractions.Date.HolidayCalendars.NoHolidaysCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.HolidayCalendars.NoHolidaysCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Abstractions.Date.HolidayCalendars.NoHolidaysCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
         </member>
         <member name="T:B7.Financial.Abstractions.Date.IDayCount">
             <summary>
@@ -296,230 +627,51 @@
             </summary>
             <returns> A collection of day count convention names. </returns>
         </member>
-        <member name="T:B7.Financial.Abstractions.Date.IHolidayCalendar">
+        <member name="T:B7.Financial.Abstractions.Date.IPeriodAdditionConvention">
             <summary>
-            A holiday calendar, classifying dates as holidays or business days.
+            A convention defining how a period is added to a date.
             <para>
-            Many calculations in finance require knowledge of whether a date is a business day or not. <br/>
-            This interface encapsulates that knowledge, with each day treated as a holiday or a business day. <br/>
-            Weekends are effectively treated as a special kind of holiday.
+            The purpose of this convention is to define how to handle the addition of a period. <br/>
+            The default implementations include two different end-of-month rules. <br/>
+            The convention is generally only applicable for month-based periods.
             </para>
             <para>
-            Applications should refer to holidays using <see cref="T:B7.Financial.Abstractions.Date.IHolidayCalendarFactory"/>. <br/>
-            The name must be resolved <see cref="!:IHolidayCalendarFactory.Of"/> to a <see cref="T:B7.Financial.Abstractions.Date.IHolidayCalendar"/> <br/>
-            before the holiday data methods can be accessed. <br/>
+            Implementations of this interface are provided in <see cref="T:B7.Financial.Abstractions.Date.IPeriodAdditionConventionFactory"/>
             </para>
             </summary>
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.IsHoliday(System.DateOnly)">
+        <member name="M:B7.Financial.Abstractions.Date.IPeriodAdditionConvention.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
             <summary>
-            Checks if the specified date is a holiday. <br/>
-            This is the opposite of <see cref="M:B7.Financial.Abstractions.Date.IHolidayCalendar.IsBusinessDay(System.DateOnly)"/>. <br/>
-            </summary>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.IsBusinessDay(System.DateOnly)">
-            <summary>
-            Checks if the specified date is a business day. <br/>
-            This is the opposite of <see cref="M:B7.Financial.Abstractions.Date.IHolidayCalendar.IsHoliday(System.DateOnly)"/>. <br/>
-            </summary>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.AdjustBy(System.Int32)">
-            <summary>
-            Returns an adjuster that changes the date.
-            </summary>
-            <param name="days">The number of business days to adjust by</param>
-            <returns></returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.Shift(System.DateOnly,System.Int32)">
-            <summary>
-            Shifts the date by a specified number of business days.
+            Adjusts the base date, adding the period and applying the convention rule.
             <para>
-            If the number of days is zero, the original date is returned. <br/>
-            If the number of days is positive, the date is shifted forward. Later business days are chosen. <br/>
-            If the number of days is negative, the date is shifted backward. Earlier business days are chosen. <br/>
+            The adjustment occurs in two steps. <br/>
+            First, the period is added to the based date to create the end date. <br/>
+            Second, the end date is adjusted by the convention rules. <br/>
             </para>
             </summary>
-            <param name="date">The date to adjust</param>
-            <param name="days"></param>
-            <returns></returns>
+            <param name="date">The date to add to</param>
+            <param name="period">The period to add</param>
+            <param name="calendar">The holiday calendar to use</param>
+            <returns>The adjusted date</returns>
         </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.Next(System.DateOnly)">
+        <member name="P:B7.Financial.Abstractions.Date.IPeriodAdditionConvention.IsMonthBased">
             <summary>
-            Finds the next business day, always returning a later date.
-            <para>Given a date, this method returns the next business day.</para>
-            </summary>
-            <param name="date">The date to adjust</param>
-            <returns>The first business day after the input date</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.NextOrSame(System.DateOnly)">
-            <summary>
-            Finds the next business day, returning the input date if it is a business day.
+            Checks whether the convention requires a month-based period.
             <para>
-            Given a date, this method returns a business day. <br/>
-            If the input date is a business day, it is returned. <br/>
-            Otherwise, the next business day is returned.
-            </para>
-            </summary>
-            <param name="date">The date to adjust</param>
-            <returns>The input date if it is a business day, or the next business day</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.Previous(System.DateOnly)">
-            <summary>
-            Finds the previous business day, always returning an earlier date.
-            <para>Given a date, this method returns the previous business day.</para>
-            </summary>
-            <param name="date">The date to adjust</param>
-            <returns>The first business day before the input date</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.PreviousOrSame(System.DateOnly)">
-            <summary>
-            Finds the previous business day, returning the input date if it is a business day.
-            <para>
-            Given a date, this method returns a business day. <br/>
-            If the input date is a business day, it is returned. <br/>
-            Otherwise, the previous business day is returned.
-            </para>
-            </summary>
-            <param name="date">The date to adjust</param>
-            <returns>The input date if it is a business day, or the previous business day</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.NextSameOrLastInMonth(System.DateOnly)">
-            <summary>
-            Finds the next business day within the month, returning the input date if it is a business day, <br/>
-            or the last business day of the month if the next business day is in a different month.
-            <para>
-            Given a date, this method returns a business day. <br/>
-            If the input date is a business day, it is returned. <br/>
-            If the next business day is within the same month, it is returned. <br/>
-            Otherwise, the last business day of the month is returned.
-            </para>
-            <remarks>
-            Note that the result of this method may be earlier than the input date. <br/>
-            This corresponds to the 'BusinessDayModifiedFollowing' business day convention. <br/>
-            </remarks>
-            </summary>
-            <param name="date">The date to adjust</param>
-            <returns>The input date if it is a business day, the next business day if within the same month or the last business day of the month</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.IsLastBusinessDayOfMonth(System.DateOnly)">
-            <summary>
-            Checks if the specified date is the last business day of the month.
-            <para>
-            This returns true if the date specified is the last valid business day of the month.
-            </para>
-            </summary>
-            <param name="date">The date to check</param>
-            <returns>True if the specified date is the last business day of the month</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.LastBusinessDayOfMonth(System.DateOnly)">
-            <summary>
-            Calculates the last business day of the month.
-            <para>
-            Given a date, this method returns the date of the last business day of the month.
-            </para>
-            </summary>
-            <param name="date">The date to check</param>
-            <returns>The date of the last business day of the month</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.DaysBetween(System.DateOnly,System.DateOnly)">
-            <summary>
-            Calculates the number of business days between two dates.
-            <para>
-            This calculates the number of business days within the range. <br/>
-            If the dates are equal, zero is returned. <br/>
-            If the end is before the start, an exception is thrown.
-            </para>
-            </summary>
-            <param name="startInclusive">The start date</param>
-            <param name="endExclusive">The end date</param>
-            <returns>The total number of business days between the start and end date</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.BusinessDays(System.DateOnly,System.DateOnly)">
-            <summary>
-            Gets the stream of business days between the two dates.
-            </summary>
-            <param name="startInclusive">The start date</param>
-            <param name="endExclusive">The end date</param>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendar.Holidays(System.DateOnly,System.DateOnly)">
-            <summary>
-            Gets the stream of holidays between the two dates.
-            </summary>
-            <param name="startInclusive">The start date</param>
-            <param name="endExclusive">The end date</param>
-            <returns></returns>
-        </member>
-        <member name="T:B7.Financial.Abstractions.Date.IHolidayCalendarFactory">
-            <summary>
-            Represents a factory for creating Holiday Calendars.
-            </summary>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendarFactory.HolidayCalendarNames">
-            <summary>
-            Retrieves the names of all available holiday calendars.
-            </summary>
-            <returns> A collection of holiday calendar names. </returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <summary>
-            Combines this holiday calendar with another.
-            <para>
-            The resulting calendar will declare a day as a business day if it is a <br/>
-            business day in both source calendars.
-            </para>
-            </summary>
-            <param name="calendar1">Calendar 1</param>
-            <param name="calendar2">Calendar 2</param>
-            <returns>The combined calendar</returns>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.IHolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <summary>
-            Links two holiday calendars together.
-            <para>
-            The resulting calendar will declare a day as a business day if it is a <br/>
-            business day in either source calendar.
-            </para>
-            </summary>
-            <param name="calendar1">Calendar 1</param>
-            <param name="calendar2">Calendar 2</param>
-            <returns>The linked calendar</returns>
-        </member>
-        <member name="T:B7.Financial.Abstractions.Date.LinkedHolidayCalendar">
-            <summary>
-            A holiday calendar implementation that links two other calendars.
-            <para>
-            This immutable implementation of <see cref="T:B7.Financial.Abstractions.Date.IHolidayCalendar"/> stores two underlying calendars. <br/>
-            A date is a holiday if both calendars defines it as a holiday.
+            A month-based period contains only months and/or years, and not days.
             </para>
             </summary>
         </member>
-        <member name="F:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.Joiner">
+        <member name="T:B7.Financial.Abstractions.Date.IPeriodAdditionConventionFactory">
             <summary>
-            Joiner character for linking two calendars.
+            Provides a factory for creating Period Addition Conventions.
             </summary>
         </member>
-        <member name="P:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.Calendar1">
+        <member name="M:B7.Financial.Abstractions.Date.IPeriodAdditionConventionFactory.PeriodAdditionConventionNames">
             <summary>
-            Calendar 1.
+            Retrieves the names of all available Period Addition Conventions.
             </summary>
-        </member>
-        <member name="P:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.Calendar2">
-            <summary>
-            Calendar 2.
-            </summary>
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.#ctor(B7.Financial.Abstractions.Date.IHolidayCalendar,B7.Financial.Abstractions.Date.IHolidayCalendar)">
-            <summary>
-            Links two holiday calendars into one.
-            </summary>
-            <param name="calendar1"></param>
-            <param name="calendar2"></param>
-        </member>
-        <member name="P:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.Name">
-            <inheritdoc />
-        </member>
-        <member name="M:B7.Financial.Abstractions.Date.LinkedHolidayCalendar.IsHoliday(System.DateOnly)">
-            <inheritdoc />
+            <returns> A collection of Period Addition Convention names. </returns>
         </member>
         <member name="T:B7.Financial.Abstractions.Date.Period">
             <summary>
@@ -756,6 +908,52 @@
         <member name="M:B7.Financial.Abstractions.Date.Period.ToSubtractDateAdjuster">
             <summary>
             Creates a <see cref="T:B7.Financial.Abstractions.Date.DateAdjuster"/> that subtracts this period from a DateOnly.
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.Tenor">
+            <summary>
+            A tenor indicating how long it will take for a financial instrument to reach maturity.
+            <para>
+            A tenor is allowed to be any non-negative non-zero period of days, weeks, month or years. <br/>
+            </para>
+            <para>
+            Each tenor is based on a <see cref="T:B7.Financial.Abstractions.Date.Period"/>. The months and years of the period are not normalized, <br/>
+            thus it is possible to have a tenor of 12 months and a different one of 1 year. <br/>
+            When used, standard date addition rules apply, thus there is no difference between them. <br/>
+            Call <see cref="M:B7.Financial.Abstractions.Date.Tenor.ToNormalized"/> to apply normalization. 
+            </para>
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Date.TenorAdjustment">
+            <summary>
+            An adjustment that alters a date by adding a tenor.
+            <para>
+            This adjustment adds a <see cref="P:B7.Financial.Abstractions.Date.TenorAdjustment.Tenor"/> to the input date using an addition convention, <br/>
+            followed by an adjustment to ensure the result is a valid business day.
+            </para>
+            <para>
+            Addition is performed using standard calendar addition. <br/>
+            It is not possible to add a number of business days using this class.
+            See <see cref="T:B7.Financial.Abstractions.Date.DaysAdjustment"/> for an alternative that can handle addition of business days.
+            </para>
+            <para>
+            There are two steps in the calculation: <br/>
+            In step one, the period is added using the specified <see cref="T:B7.Financial.Abstractions.Date.IPeriodAdditionConvention"/>. <br/>
+            In step two, the result of step one is optionally adjusted to be a business day using a <see cref="T:B7.Financial.Abstractions.Date.BusinessDayAdjustment"/>. <br/>
+            </para>
+            </summary>
+            <remarks>
+            For example, a rule represented by this class might be: <br/>
+            "the end date is 5 years after the start date, with end-of-month rule based on the last business day of the month, <rb/>
+            adjusted to be a valid London business day using the 'ModifiedFollowing' convention".
+            </remarks>
+        </member>
+        <member name="P:B7.Financial.Abstractions.Date.TenorAdjustment.Tenor">
+            <summary>
+            The tenor to be added.
+            <para>
+            When the adjustment is performed, this tenor will be added to the input date.
+            </para>
             </summary>
         </member>
         <member name="T:B7.Financial.Abstractions.INamed">

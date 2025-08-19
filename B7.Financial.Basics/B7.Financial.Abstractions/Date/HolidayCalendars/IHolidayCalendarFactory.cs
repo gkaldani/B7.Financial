@@ -1,4 +1,4 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿namespace B7.Financial.Abstractions.Date.HolidayCalendars;
 
 /// <summary>
 /// Represents a factory for creating Holiday Calendars.

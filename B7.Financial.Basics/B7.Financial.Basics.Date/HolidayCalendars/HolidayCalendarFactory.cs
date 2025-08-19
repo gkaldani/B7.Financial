@@ -1,5 +1,5 @@
 ﻿using B7.Financial.Abstractions;
-using B7.Financial.Abstractions.Date;
+using B7.Financial.Abstractions.Date.HolidayCalendars;
 using System.Collections.Concurrent;
 
 namespace B7.Financial.Basics.Date.HolidayCalendars;

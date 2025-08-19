@@ -1,16 +1,16 @@
-﻿namespace B7.Financial.Abstractions.Date;
+﻿namespace B7.Financial.Abstractions.Date.HolidayCalendars;
 
 /// <summary>
-/// A holiday calendar implementation that links two other calendars.
+/// A holiday calendar implementation that combines two other calendars.
 /// <para>
 /// This immutable implementation of <see cref="IHolidayCalendar"/> stores two underlying calendars. <br/>
-/// A date is a holiday if both calendars defines it as a holiday.
+/// A date is a holiday if either calendar defines it as a holiday.
 /// </para>
 /// </summary>
-public sealed class LinkedHolidayCalendar : HolidayCalendar
+public sealed class CombinedHolidayCalendar : HolidayCalendar
 {
     /// <summary>
-    /// Joiner character for linking two calendars.
+    /// Joiner character for combining two calendars.
     /// </summary>
     public const char Joiner  = '+';
 
@@ -25,19 +25,19 @@ public sealed class LinkedHolidayCalendar : HolidayCalendar
     public IHolidayCalendar Calendar2 { get; }
 
     /// <summary>
-    /// Links two holiday calendars into one.
+    /// Combines two holiday calendars into one.
     /// </summary>
     /// <param name="calendar1"></param>
     /// <param name="calendar2"></param>
-    public LinkedHolidayCalendar(IHolidayCalendar calendar1, IHolidayCalendar calendar2)
+    public CombinedHolidayCalendar(IHolidayCalendar calendar1, IHolidayCalendar calendar2)
     {
         Calendar1 = calendar1;
         Calendar2 = calendar2;
     }
 
     /// <inheritdoc />
-    public override Name Name => $"[{Calendar1.Name}~{Calendar2.Name}]";
+    public override Name Name => $"[{Calendar1.Name}+{Calendar2.Name}]";
 
     /// <inheritdoc />
-    public override bool IsHoliday(DateOnly date) => Calendar1.IsHoliday(date) && Calendar2.IsHoliday(date);
+    public override bool IsHoliday(DateOnly date) => Calendar1.IsHoliday(date) || Calendar2.IsHoliday(date);
 }
