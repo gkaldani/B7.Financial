@@ -994,6 +994,20 @@
             <param name="name"> The name of the instance to retrieve. </param>
             <returns> An instance of type <typeparamref name="T"/>. </returns>
         </member>
+        <member name="T:B7.Financial.Abstractions.Index.IFloatingRate">
+            <summary>
+            An index or group of indices used to provide floating rates, typically in interest rate swaps.
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Abstractions.Index.IIndex">
+            <summary>
+            An index of values, such as LIBOR, FED FUND or daily exchange rates.
+            <para>
+            An index is an agreed mechanism for determining certain financial indicators, <br/>
+            such as exchange rate or interest rates. Most common indices are daily.
+            </para>
+            </summary>
+        </member>
         <member name="T:B7.Financial.Abstractions.Name">
             <summary>
             Represents a strongly-typed name.

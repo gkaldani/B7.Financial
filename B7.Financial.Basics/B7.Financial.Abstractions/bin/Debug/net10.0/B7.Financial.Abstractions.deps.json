@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "B7.Financial.Abstractions/1.0.0": {
+        "dependencies": {
+          "CommunityToolkit.Diagnostics": "8.4.0"
+        },
+        "runtime": {
+          "B7.Financial.Abstractions.dll": {}
+        }
+      },
+      "CommunityToolkit.Diagnostics/8.4.0": {
+        "runtime": {
+          "lib/net8.0/CommunityToolkit.Diagnostics.dll": {
+            "assemblyVersion": "8.4.0.0",
+            "fileVersion": "8.4.0.1"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "B7.Financial.Abstractions/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CommunityToolkit.Diagnostics/8.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/9Nuy8EWo0ZYQsjn3h4OGxjCWVYXl3TV3fvv29f8IVqplXgXGRzIpbtHEHGOfykh+TPbzUclzIfMCBzmgblKDA==",
+      "path": "communitytoolkit.diagnostics/8.4.0",
+      "hashPath": "communitytoolkit.diagnostics.8.4.0.nupkg.sha512"
+    }
+  }
+}

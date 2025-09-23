@@ -1,0 +1,1783 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>B7.Financial.Basics.Date</name>
+    </assembly>
+    <members>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayAdjustment">
+            <summary>
+            An adjustment that alters a date if it falls on a day other than a business day.
+            <para>
+            When processing dates in finance, it is typically intended that non-business days, <br/>
+            such as weekends and holidays, are converted to a nearby valid business day. <br/>
+            This class represents the necessary adjustment.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayAdjustment.NoAdjustment">
+            <summary>
+            An instance that performs no adjustment.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.BusinessDayConvention">
+            <summary>
+            The convention used to the adjust the date if it does not fall on a business day.
+            <para>
+            The convention determines whether to move forwards or backwards when it is a holiday.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.HolidayCalendar">
+            <summary>
+            The calendar that defines holidays and business days.
+            <para>
+            When the adjustment is made, this calendar is used to skip holidays.
+            </para>
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayAdjustment.Adjuster">
+            <summary>
+            A DateAdjuster that adjusts a date according to the business day convention and holiday calendar.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.#ctor(B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <summary>
+            Creates a new instance of <see cref="T:B7.Financial.Basics.Date.BusinessDayAdjustment"/> with the specified business day convention and holiday calendar.
+            </summary>
+            <param name="businessDayConvention"></param>
+            <param name="holidayCalendar"></param>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.Adjust(System.DateOnly)">
+            <summary>
+            Adjusts the date as necessary if it is not a business day.
+            <para>
+            If the date is a business day it will be returned unaltered. <br/>
+            If the date is not a business day, the convention will be applied.
+            </para>
+            </summary>
+            <param name="date">The date to adjust</param>
+            <returns>The adjusted date</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayAdjustment.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing">
+            <summary>
+            The 'Following' convention which adjusts to the next business day.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the next business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing">
+            <summary>
+            The 'ModifiedFollowing' convention which adjusts to the next business day without crossing month end.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the next business day unless that day is in a different <br/>
+            calendar month, in which case the previous business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowing.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly">
+            <summary>
+            The 'ModifiedFollowingBiMonthly' convention which adjusts to the next business day without <br/>
+            crossing mid-month or month end.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The month is divided into two parts, the first half, the 1st to 15th and the 16th onwards. <br/>
+            The adjusted date is the next business day unless that day is in a different half-month, <br/>
+            in which case the previous business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedFollowingBiMonthly.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding">
+            <summary>
+            The 'ModifiedPreceding' convention which adjusts to the previous business day without crossing month start.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the previous business day unless that day is in a different <br/>
+            calendar month, in which case the next business day is returned.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayModifiedPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest">
+            <summary>
+            The 'Nearest' convention which adjusts <see cref="F:System.DayOfWeek.Sunday"/> and <see cref="F:System.DayOfWeek.Monday"/> forward, and other days backward.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            If the input is Sunday or Monday then the next business day is returned. <br/>
+            Otherwise, the previous business day is returned.
+            </para>
+            <remarks>
+            Note that despite the name, the algorithm may not return the business day that is actually nearest.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayNearest.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding">
+            <summary>
+            The 'Preceding' convention which adjusts to the previous business day.
+            <para>
+            If the input date is not a business day then the date is adjusted. <br/>
+            The adjusted date is the previous business day.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.BusinessDayConventionName">
+            <summary>
+            The name of the Business Day Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.BusinessDayPreceding.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory">
+            <summary>
+            Represents a factory for creating standard business day conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.NoAdjust">
+            <summary> Make no adjustment </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Following">
+            <summary> Next business day </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedFollowing">
+            <summary> Next business day unless over a month end </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedFollowingBiMonthly">
+            <summary> Next business day unless over a month end or mid </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Preceding">
+            <summary> Previous business day </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.ModifiedPreceding">
+            <summary> Previous business day unless over a month end </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Nearest">
+            <summary> Next business day if Sun/Mon, otherwise previous </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves the business day convention associated with the specified name.
+            </summary>
+            <param name="name">The name representing the desired business day convention.</param>
+            <returns>An instance of <see cref="T:B7.Financial.Abstractions.Date.BusinessDayConventions.IBusinessDayConvention"/> corresponding to the specified name.</returns>
+            <exception cref="T:System.NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.BusinessDayConventions.StandardBusinessDayConventionFactory.BusinessDayConventionNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DateAdjusters">
+            <summary>
+            Provides utility methods and predefined adjusters for working with leap days (February 29).
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. Leap years are years divisible by 4,
+            except for years divisible by 100 but not divisible by 400. This class includes methods to calculate  the next leap
+            day on or after a given date, as well as predefined adjusters for use with date manipulation.</remarks>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateAdjusters.NextLeapDay(System.DateOnly)">
+            <summary>
+            Determines the next leap day that occurs after the specified date.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. This method accounts for leap
+            year rules and ensures the returned date is valid.</remarks>
+            <param name="date">The starting date to evaluate.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the next February 29 that occurs after the specified date. If the
+            input date is already February 29, the same date is returned.</returns>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DateAdjusters.NextLeapDayAdjuster">
+            <summary>
+            Adjusts the given date to the next leap day.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. If the provided date is already
+            February 29, the adjuster will return the same date. Otherwise, it calculates the next occurrence of February 29
+            after the given date.</remarks>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateAdjusters.NextOrSameLeapDay(System.DateOnly)">
+            <summary>
+            Determines the next leap day (February 29) that is on or after the specified date.
+            </summary>
+            <remarks>A leap day occurs only in leap years, which are years divisible by 4, except for years
+            divisible by 100 but not divisible by 400. This method ensures that the returned date is always February 29 of a
+            valid leap year.</remarks>
+            <param name="date">The starting date to evaluate.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the next leap day (February 29) that is on or after the specified
+            <paramref name="date"/>. If the specified date is already a leap day, the same date is returned.</returns>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DateAdjusters.NextOrSameLeapDayAdjuster">
+            <summary>
+            Adjusts the given date to the next leap day, or returns the same date if it is already a leap day.
+            </summary>
+            <remarks>A leap day is February 29, which occurs only in leap years. If the provided date is already
+            February 29, the adjuster will return the same date. Otherwise, it calculates the next occurrence of February 29
+            after the given date.</remarks>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DateOnlyUtils">
+            <summary>
+            DateOnlyUtils provides utility methods for working with <see cref="T:System.DateOnly"/> values.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysBetween(System.DateOnly,System.DateOnly)">
+            <summary>
+            Returns the number of days between two <see cref="T:System.DateOnly"/> values.
+            </summary>
+            <param name="firstDate">The first date.</param>
+            <param name="secondDate">The second date.</param>
+            <returns>The number of days between the two dates.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysInYear(System.Int32)">
+            <summary>
+            Returns the number of days in a given year.
+            </summary>
+            <param name="year"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysInYear(System.DateOnly)">
+            <summary>
+            Returns the number of days in the year of a given <see cref="T:System.DateOnly"/> value.
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.Stream(System.DateOnly,System.DateOnly)">
+            <summary>
+            Generates a sequence of dates within the specified range.
+            </summary>
+            <remarks>The method iterates through the range of dates, incrementing by one day at a time, and yields
+            each date in the sequence.</remarks>
+            <param name="startInclusive">The start date of the range, inclusive.</param>
+            <param name="endExclusive">The end date of the range, exclusive.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <see cref="T:System.DateOnly"/> representing each date from <paramref
+            name="startInclusive"/> to the day before <paramref name="endExclusive"/>.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.IsAfter(System.DateOnly,System.DateOnly)">
+            <summary>
+            Checks if the specified <see cref="T:System.DateOnly"/> is before another date.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.IsBefore(System.DateOnly,System.DateOnly)">
+            <summary>
+            Checks if the specified <see cref="T:System.DateOnly"/> is before another date.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.IsLeapYear(System.DateOnly)">
+            <summary>
+            Checks if the specified <see cref="T:System.DateOnly"/> is before another date.
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DaysInMonth(System.DateOnly)">
+            <summary>
+            Returns the number of days in the month represented by the current <see cref="T:System.DateOnly"/> instance.
+            </summary>
+            <remarks>This method uses the year and month of the <see cref="T:System.DateOnly"/> instance to determine the
+            number of days. For example, it accounts for leap years when calculating the days in February.</remarks>
+            <param name="self"></param>
+            <returns>The total number of days in the month for the specified year and month.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.LastDayOfMonth(System.DateOnly)">
+            <summary>
+            Returns a <see cref="T:System.DateOnly"/> instance representing the last day of the month for the specified date.
+            </summary>
+            <remarks>This method calculates the last day of the month based on the year and month of the provided
+            <paramref name="self"/>.</remarks>
+            <param name="self">The <see cref="T:System.DateOnly"/> instance for which to determine the last day of the month.</param>
+            <returns>A <see cref="T:System.DateOnly"/> representing the last day of the month for the specified date.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.StartOfMonth(System.DateOnly)">
+            <summary>
+            Returns the start of the month using the specified calendar.
+            </summary>
+            <param name="date">The <see cref="T:System.DateOnly"/> to get the start of the month for.</param>
+            <returns>A <see cref="T:System.DateOnly"/> structure.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.DayOfWeekInMonth(System.DateOnly,System.Int32,System.DayOfWeek)">
+            <summary>
+            Returns the requested occurrence of the specified week day in the month using the specified calendar.
+            </summary>
+            <param name="date">The <see cref="T:System.DateTime"/> to get the day from.</param>
+            <param name="occurrence">The occurrence of the week day to return.</param>
+            <param name="dayOfWeek">The <see cref="T:System.DayOfWeek"/> to return.</param>
+            <returns>A <see cref="T:System.DateTime"/> structure.</returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.NextOrSame(System.DateOnly,System.DayOfWeek)">
+            <summary>
+            Returns the next date that matches the specified day of the week, or the same date if it already matches.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DateOnlyUtils.PreviousOrSame(System.DateOnly,System.DayOfWeek)">
+            <summary>
+            Returns the previous date that matches the specified day of the week, or the same date if it already matches.
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual">
+            <summary>
+            The 'Act/365 Actual' day count convention. <br/>
+            Also known as 'Act/365A'. <be/>
+            Which divides the actual number of days by 366 if the period contains 'Leap Day' (February 29th), <br/>
+            or by 365 if it does not.
+            <para>
+            The result is a simple division. <br/>
+            The numerator is the actual number of days in the requested period. <br/>
+            The denominator is 366 if the period contains leap day (February 29th), if not it is 365. <br/>
+            The first day in the period is excluded, the last day is included.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365Actual.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear">
+            <summary>
+            The 'Act/365 Leap Yea Year' day count convention. <br/>
+            Also known as 'Act/365L'. <be/>
+            Which divides the actual number of days by 365 or 366. <br/>
+            <para>
+            The result is a simple division. <br/>
+            The numerator is the actual number of days in the requested period. <br/>
+            The denominator is determined by examining the frequency and the period end date (the date of the next coupon). <br/>
+            If the frequency is annual then the denominator is 366 if the period contains 'Leap Day' (February 29th), <br/>
+            if not it is 365. The first day in the period is excluded, the last day is included. <br/>
+            If the frequency is not annual, the denominator is 366 if the period end date <br/>
+            is in a leap year, if not it is 365.
+            </para>
+            <remarks>
+            Defined by the 2006 ISDA definitions 4.16i and ICMA rule 251.1(i) part 2 as later clarified by ICMA and Swiss Exchange.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActual365LeapYear.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma">
+            <summary>
+            The 'Act/Act ICMA' day count, which divides the actual number of days by <br/>
+            the actual number of days in the coupon period multiplied by the frequency. <br/>
+            Also known as 'Actual/Actual ICMA' or 'Actual/Actual (Bond)'. <br/>
+            Defined by the 2006 ISDA definitions 4.16c and ICMA rule 251.1(iii) and 251.3
+            <para>
+            The result is calculated as follows.
+            </para>
+            <para>
+            First, the underlying schedule period is obtained treating the first date as the start of the schedule period.
+            </para>
+            <para>
+            Second, if the period is a stub, then nominal regular periods are created matching the <br/>
+            schedule frequency, working forwards or backwards from the known regular schedule date. <br/>
+            An end-of-month flag is used to handle month-ends. <br/>
+            If the period is not a stub then the schedule period treated as a nominal period below.
+            </para>
+            <para>
+            Third, the result is calculated as the sum of a calculation for each nominal period. <br/>
+            The actual days between the first and second date are allocated to the matching nominal period. <br/>
+            Each calculation is a division. The numerator is the actual number of days in <br/>
+            the nominal period, which could be zero in the case of a long stub. <br/>
+            The denominator is the length of the nominal period  multiplied by the frequency. <br/>
+            The first day in the period is included, the last day is excluded. <br/>
+            </para>
+            <para>
+            Due to the way that the nominal periods are determined ignoring business day adjustments, <br/>
+            this day count is recommended for use by bonds, not swaps.
+            </para>
+            <para>
+            The method <see cref="M:B7.Financial.Abstractions.Date.DayCount.YearFraction(System.DateOnly,System.DateOnly)"/> will throw an <br/>
+            exception because schedule information is required for this day count. <br/>
+            as later clarified by ISDA 'EMU and market conventions' http://www.isda.org/c_and_a/pdf/mktc1198.pdf.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIcma.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda">
+            <summary>
+            Actual/Actual ISDA day count convention. <br/>
+            Also known as 'Actual/Actual'. <br/>
+            Defined by the 2006 ISDA definitions 4.16b.
+            <para>
+            The 'Act/Act ISDA' day count, which divides the actual number of days in a <br/>
+            leap year by 366 and the actual number of days in a standard year by 365.
+            </para>
+            <para>
+            The result is calculated in two parts. <br/>
+            The actual number of days in the requested period that fall in a leap year is divided by 366. <br/>
+            The actual number of days in the requested period that fall in a standard year is divided by 365. <br/>
+            The result is the sum of the two. <br/>
+            The first day in the period is included, the last day excluded.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <summary>
+            Returns the year fraction between two dates according to the Actual/Actual ISDA convention. <br/>
+            </summary>
+            <remarks>
+            The result is calculated in two parts: <br/>
+            The actual number of days in the requested period that fall in a leap year is divided by 366, <br/>
+            The actual number of days in the requested period that fall in a standard year is divided by 365. <br/>
+            The result is the sum of the two. <br/>
+            The first day in the period is included, the last day excluded.
+            </remarks>
+            <param name="firstDate">The first date</param>
+            <param name="secondDate">The second date, on or after the <see cref="!:firstDate"/></param>
+            <param name="scheduleInfo">The schedule information</param>
+            <returns>The year fraction, zero or greater</returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountActualActualIsda.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne">
+            <summary>
+            Always returns a year fraction of 1 and a day count of 1.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.DayCountName">
+            <summary>
+            The name of the day count convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.YearFraction(System.DateOnly,System.DateOnly,B7.Financial.Abstractions.Date.IDayCount.IScheduleInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.DayCountOneOne.Days(System.DateOnly,System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory">
+            <summary>
+            Represents a factory for creating standard day count conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.OneOne">
+            <summary>The '1/1' day count convention.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.ActualActualIsda">
+            <summary>The 'Act/Act ISDA' day count convention.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.Actual365Actual">
+            <summary>The 'Act/365A' day count convention.</summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves a day count convention by its name.
+            </summary>
+            <param name="name"></param>
+            <returns>The <see cref="T:B7.Financial.Abstractions.Date.IDayCount"/> instance associated with the specified name.</returns>
+            <exception cref="T:System.NotImplementedException">This method is not implemented and must be overridden in a derived class.</exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.DayCountConventions.StandardDayCountFactory.DayCountNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.NoHolidays">
+            <summary> No Holidays Calendar. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Sun">
+            <summary> Sunday </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.SatSun">
+            <summary> Saturday/Sunday </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Of(B7.Financial.Abstractions.Name)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Combine(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.Link(B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.HolidayCalendarFactory.HolidayCalendarNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar">
+            <summary>
+            An identifier for a calendar declaring all days as business days <br/>
+            except Saturday/Sunday weekends, with code 'Sat/Sun'.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.SatSunHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar">
+            <summary>
+            An identifier for a calendar declaring all days as business days <br/>
+            except Sunday weekends, with code 'Sun'.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.CalendarName">
+            <summary>
+            The name of the day Holiday Calendar.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.HolidayCalendars.SundayHolidayCalendar.IsHoliday(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay">
+            <summary>
+            Convention applying a last <i>business</i> day of month rule.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic, <br/>
+            shifting to the last business day of the month if the base date is the <br/>
+            last business day of the month. <br/>
+            The business day adjustment is applied to produce the final result. <br/>
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 29th will result in July 31st <br/>
+            assuming that June 30th is not a valid business day and July 31st is.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastBusinessDay.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay">
+            <summary>
+            Convention applying a last day of month rule, <i>ignoring business days</i>.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic, <br/>
+            shifting to the end-of-month if the base date is the last day of the month. <br/>
+            The business day adjustment is applied to produce the final result. <br/>
+            Note that this rule is based on the last day of the month, not the last business day of the month.
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 30th will result in July 31st.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionLastDay.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone">
+            <summary>
+            No specific rule applies.
+            <para>
+            Given a date, the specified period is added using standard date arithmetic. <br/>
+            The business day adjustment is applied to produce the final result.
+            </para>
+            <remarks>
+            For example, adding a period of 1 month to June 30th will result in July 30th.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.PeriodAdditionName">
+            <summary>
+            The name of the Period Addition Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.Adjust(System.DateOnly,B7.Financial.Abstractions.Date.Period,B7.Financial.Abstractions.Date.HolidayCalendars.IHolidayCalendar)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.PeriodAdditionConventions.PeriodAdditionNone.IsMonthBased">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory">
+            <summary>
+            Represents a factory for creating standard period addition conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.None">
+            <summary> no specific addition rule </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.LastDay">
+            <summary> last day of month addition rule </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.Of(B7.Financial.Abstractions.Name)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodAdditionConventions.StandardPeriodAdditionConventionFactory.PeriodAdditionConventionNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder">
+            <summary>
+            Fluent builder for <see cref="T:B7.Financial.Abstractions.Date.Period"/> with optional normalization on build.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.From(B7.Financial.Abstractions.Name)">
+            <summary>
+            Parse ISO-8601 text (e.g., "P1Y2M3W4D" or "Zero") and seed the builder.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.TryFrom(System.String,B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder@)">
+            <summary>
+            Try parse ISO-8601 text and seed the builder.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.WithTotalMonths(System.Int32)">
+            <summary>
+            Sets years/months from a total months value (e.g., 26 =&gt; 2y 2m).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Normalize(System.Boolean)">
+            <summary>
+            When enabled, converts months ≥ 12 to years during <see cref="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Build"/>.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Clear">
+            <summary>
+            Resets all components to zero.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Peek">
+            <summary>
+            Peek the current state without modifying it.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.Build">
+            <summary>
+            Create the immutable <see cref="T:B7.Financial.Abstractions.Date.Period"/>. Throws if any part is negative (should never happen).
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.TryBuild(System.Nullable{B7.Financial.Abstractions.Date.Period}@)">
+            <summary>
+            Try to create the <see cref="T:B7.Financial.Abstractions.Date.Period"/> without throwing.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder.op_Implicit(B7.Financial.Basics.Date.PeriodIso8601.PeriodBuilder)~B7.Financial.Abstractions.Date.Period">
+            <summary>
+            Implicit conversion for convenience: var p = PeriodBuilder.Create().WithDays(3);
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.None">
+            <summary>
+            Value indicating no units - an empty period.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years">
+            <summary>
+            Years element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months">
+            <summary>
+            Months element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Weeks">
+            <summary>
+            Weeks element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days">
+            <summary>
+            Days element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllDateUnits">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Weeks"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.YearMonthDay">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Years"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Months"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Days"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Hours">
+            <summary>
+            Hours element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Minutes">
+            <summary>
+            Minutes element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Seconds">
+            <summary>
+            Seconds element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Milliseconds">
+            <summary>
+            Milliseconds element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Ticks">
+            <summary>
+            Tick element within a <see cref="!:Period" />
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Nanoseconds">
+            <summary>
+            Nanoseconds element within a <see cref="!:Period" />.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.HourMinuteSecond">
+            <summary>
+            Compound value representing the combination of <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Hours"/>, <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Minutes"/> and <see cref="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.Seconds"/>.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllTimeUnits">
+            <summary>
+            Compound value representing the combination of all time elements.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.DateAndTime">
+            <summary>
+            Compound value representing the combination of all possible elements except weeks.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.PeriodIso8601.PeriodUnits.AllUnits">
+            <summary>
+            Compound value representing the combination of all possible elements.
+            </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.FrequencyFactory">
+            <summary>
+            Represents a factory for creating frequency instances.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.Term">
+            <summary>
+            A periodic frequency matching the term. <br/>
+            Also known as zero-coupon. <br/>
+            This is represented using the <see cref="P:B7.Financial.Abstractions.Date.Period.MaxValue"/>. <br/>
+            There are no events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P1D">
+            <summary>
+            A periodic frequency of one day. <br/>
+            Also known as 'Daily'.
+            There are considered to be 364 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P1W">
+            <summary>
+            A periodic frequency of 1 week (7 days). <br/>
+            Also known as 'Weekly'.
+            There are considered to be 52 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P2W">
+            <summary>
+            A periodic frequency of 2 weeks (14 days). <br/>
+            Also known as 'Biweekly'.
+            There are considered to be 26 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P4W">
+            <summary>
+            A periodic frequency of 4 weeks (28 days). <br/>
+            Also known as 'Lunar'. <br/>
+            There are considered to be 13 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P13W">
+            <summary>
+            A periodic frequency of 13 weeks (91 days). <br/>
+            There are considered to be 4 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P26W">
+            <summary>
+            A periodic frequency of 26 weeks (182 days). <br/>
+            There are considered to be 2 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P52W">
+            <summary>
+            A periodic frequency of 52 weeks (364 days). <br/>
+            There are considered to be 1 event per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P1M">
+            <summary>
+            A periodic frequency of 1 month. <br/>
+            Also known as 'Monthly'. <br/>
+            There are 12 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P2M">
+            <summary>
+            A periodic frequency of 2 months. <br/>
+            Also known as 'Bi-Monthly'. <br/>
+            There are 6 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P3M">
+            <summary>
+            A periodic frequency of 3 months. <br/>
+            Also known as 'Quarterly'. <br/>
+            There are 4 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P4M">
+            <summary>
+            A periodic frequency of 4 months. <br/>
+            There are 3 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P6M">
+            <summary>
+            A periodic frequency of 6 months. <br/>
+            Also known as 'Semi-Annual'. <br/>
+            There are 2 events per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P12M">
+            <summary>
+            A periodic frequency of 12 months (1 year). <br/>
+            Also known as 'Annual'.
+            There is 1 event per year with this frequency.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.P1Y">
+            <summary>
+            A periodic frequency of 1 year. <br/>
+            Also known as 'Annual'.
+            There is 1 event per year with this frequency.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.OfDays(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.OfWeeks(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.OfMonths(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.OfYears(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.FrequencyFactory.PredefinedFrequencies">
+            <summary>
+            Read-only dictionary containing standard predefined frequencies for fast lookup.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves a frequency by its name.
+            </summary>
+            <param name="name">The name of the frequency to retrieve.</param>
+            <returns>
+            The frequency instance corresponding to the specified name. 
+            Returns a standard frequency if found in the predefined collection, 
+            otherwise parses and returns a new frequency instance.
+            </returns>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.FrequencyFactory.FrequencyNames">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.Matches(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.Next(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.Previous(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConvention.DayOfMonth">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom">
+            <summary>
+            Base class for roll conventions that adjust dates based on a specific day of the month (DOM).
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom.Dom">
+            <summary>
+            Gets the day of month for this roll convention.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom.Matches(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom.DayOfMonth">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom1">
+            <summary> Day of Month (DOM) roll convention for first (1) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom1.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom1.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom1.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom2">
+            <summary> Day of Month (DOM) roll convention for second (2) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom2.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom2.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom2.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom3">
+            <summary> Day of Month (DOM) roll convention for third (3) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom3.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom3.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom3.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom4">
+            <summary> Day of Month (DOM) roll convention for fourth (4) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom4.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom4.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom4.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom5">
+            <summary> Day of Month (DOM) roll convention for fifth (5) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom5.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom5.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom5.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom6">
+            <summary> Day of Month (DOM) roll convention for sixth (6) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom6.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom6.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom6.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom7">
+            <summary> Day of Month (DOM) roll convention for seventh (7) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom7.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom7.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom7.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom8">
+            <summary> Day of Month (DOM) roll convention for eighth (8) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom8.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom8.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom8.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom9">
+            <summary> Day of Month (DOM) roll convention for ninth (9) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom9.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom9.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom9.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom10">
+            <summary> Day of Month (DOM) roll convention for tenth (10) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom10.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom10.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom10.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom11">
+            <summary> Day of Month (DOM) roll convention for eleventh (11) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom11.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom11.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom11.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom12">
+            <summary> Day of Month (DOM) roll convention for twelfth (12) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom12.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom12.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom12.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom13">
+            <summary> Day of Month (DOM) roll convention for thirteenth (13) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom13.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom13.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom13.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom14">
+            <summary> Day of Month (DOM) roll convention for fourteenth (14) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom14.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom14.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom14.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom15">
+            <summary> Day of Month (DOM) roll convention for fifteenth (15) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom15.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom15.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom15.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom16">
+            <summary> Day of Month (DOM) roll convention for sixteenth (16) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom16.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom16.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom16.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom17">
+            <summary> Day of Month (DOM) roll convention for seventeenth (17) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom17.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom17.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom17.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom18">
+            <summary> Day of Month (DOM) roll convention for eighteenth (18) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom18.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom18.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom18.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom19">
+            <summary> Day of Month (DOM) roll convention for nineteenth (19) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom19.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom19.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom19.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom20">
+            <summary> Day of Month (DOM) roll convention for twentieth (20) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom20.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom20.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom20.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom21">
+            <summary> Day of Month (DOM) roll convention for twenty-first (21) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom21.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom21.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom21.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom22">
+            <summary> Day of Month (DOM) roll convention for twenty-second (22) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom22.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom22.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom22.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom23">
+            <summary> Day of Month (DOM) roll convention for twenty-third (23) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom23.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom23.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom23.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom24">
+            <summary> Day of Month (DOM) roll convention for twenty-fourth (24) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom24.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom24.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom24.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom25">
+            <summary> Day of Month (DOM) roll convention for twenty-fifth (25) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom25.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom25.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom25.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom26">
+            <summary> Day of Month (DOM) roll convention for twenty-sixth (26) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom26.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom26.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom26.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom27">
+            <summary> Day of Month (DOM) roll convention for twenty-seventh (27) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom27.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom27.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom27.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom28">
+            <summary> Day of Month (DOM) roll convention for twenty-eighth (28) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom28.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom28.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom28.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom29">
+            <summary> Day of Month (DOM) roll convention for twenty-ninth (29) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom29.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom29.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom29.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom30">
+            <summary> Day of Month (DOM) roll convention for thirtieth (30) day of the month. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom30.Dom">
+            <inheritdoc />
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom30.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDom30.Name">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow">
+            <summary>
+            Base class for roll conventions that adjust dates based on a specific day of the week (DOW).
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow.Dow">
+            <summary>
+            Gets the day of the week for this roll convention.
+            </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow.Matches(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow.Next(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDow.Previous(System.DateOnly,B7.Financial.Abstractions.Schedule.Frequency)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowMonday">
+            <summary> Day of Week (DOW) roll convention for Monday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowMonday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowMonday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowMonday.Dow">
+            <summary> Monday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowTuesday">
+            <summary> Day of Week (DOW) roll convention for Tuesday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowTuesday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowTuesday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowTuesday.Dow">
+            <summary> Tuesday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowWednesday">
+            <summary> Day of Week (DOW) roll convention for Wednesday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowWednesday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowWednesday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowWednesday.Dow">
+            <summary> Wednesday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowThursday">
+            <summary> Day of Week (DOW) roll convention for Thursday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowThursday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowThursday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowThursday.Dow">
+            <summary> Thursday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowFriday">
+            <summary> Day of Week (DOW) roll convention for Friday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowFriday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowFriday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowFriday.Dow">
+            <summary> Friday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSaturday">
+            <summary> Day of Week (DOW) roll convention for Saturday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSaturday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSaturday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSaturday.Dow">
+            <summary> Saturday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSunday">
+            <summary> Day of Week (DOW) roll convention for Sunday. </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSunday.RollConventionName">
+            <summary> The name of the Roll Convention. </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSunday.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionDowSunday.Dow">
+            <summary> Sunday is the day of the week for this roll convention. </summary>
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionEom">
+            <summary>
+            Represents the "End of Month" (EOM) roll convention, which adjusts dates to the last day of the month.
+            <para>
+            The input date will be adjusted ensure it is the last valid day of the month. <br/>
+            The year and month of the result date will be the same as the input date.
+            </para>
+            <para>
+            This convention is intended for use with periods that are a multiple of months.
+            </para>
+            </summary>
+            <remarks>This roll convention ensures that dates are adjusted to the last calendar day of the month. <br/>
+            It is commonly used in financial applications where end-of-month alignment is required.</remarks>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionEom.RollConventionName">
+            <summary>
+            The name of the Roll Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionEom.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionEom.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionEom.DayOfMonth">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImm">
+            <summary>
+            The 'IMM' roll convention which adjusts the date to the third Wednesday.
+            <para>
+            The input date will be adjusted ensure it is the third Wednesday of the month. <br/>
+            The year and month of the result date will be the same as the input date.
+            </para>
+            <remarks>
+            This convention is intended for use with periods that are a multiple of months.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImm.RollConventionName">
+            <summary>
+            The name of the Roll Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImm.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImm.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImmnzd">
+            <summary>
+            The 'IMMNZD' roll convention which adjusts the date to the first Wednesday <br/>
+            on or after the ninth day of the month.
+            <para>
+            The input date will be adjusted to the ninth day of the month, and then it will <br/>
+            be adjusted to be a Wednesday. If the ninth is a Wednesday, then that is returned. <br/>
+            The year and month of the result date will be the same as the input date.
+            </para>
+            <remarks>
+            This convention is intended for use with periods that are a multiple of months.
+            </remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImmnzd.RollConventionName">
+            <summary>
+            The name of the Roll Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImmnzd.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionImmnzd.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionNone">
+            <summary>
+            The 'None' roll convention.
+            <para>
+            The input date will not be adjusted.
+            </para>
+            <para>
+            When calculating a schedule, there will be no further adjustment after the <br/>
+            periodic frequency is added or subtracted.
+            </para>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionNone.RollConventionName">
+            <summary>
+            The name of the Roll Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionNone.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionNone.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionSfe">
+            <summary>
+            The 'SFE' roll convention which adjusts the date to the second Friday.
+            <para>
+            The input date will be adjusted ensure it is the second Friday of the month. <br/>
+            The year and month of the result date will be the same as the input date.
+            </para>
+            <remarks>This convention is intended for use with periods that are a multiple of months.</remarks>
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionSfe.RollConventionName">
+            <summary>
+            The name of the Roll Convention.
+            </summary>
+        </member>
+        <member name="P:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionSfe.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.RollConventionSfe.Adjust(System.DateOnly)">
+            <inheritdoc />
+        </member>
+        <member name="T:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory">
+            <summary>
+            Represents a factory for creating standard roll conventions.
+            </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.None">
+            <summary>No Adjustment</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom1">
+            <summary>Day of Month (DOM) roll convention for first (1) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom2">
+            <summary>Day of Month (DOM) roll convention for second (2) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom3">
+            <summary>Day of Month (DOM) roll convention for third (3) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom4">
+            <summary>Day of Month (DOM) roll convention for fourth (4) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom5">
+            <summary>Day of Month (DOM) roll convention for fifth (5) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom6">
+            <summary>Day of Month (DOM) roll convention for sixth (6) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom7">
+            <summary>Day of Month (DOM) roll convention for seventh (7) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom8">
+            <summary>Day of Month (DOM) roll convention for eighth (8) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom9">
+            <summary>Day of Month (DOM) roll convention for ninth (9) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom10">
+            <summary>Day of Month (DOM) roll convention for tenth (10) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom11">
+            <summary>Day of Month (DOM) roll convention for eleventh (11) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom12">
+            <summary>Day of Month (DOM) roll convention for twelfth (12) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom13">
+            <summary>Day of Month (DOM) roll convention for thirteenth (13) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom14">
+            <summary>Day of Month (DOM) roll convention for fourteenth (14) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom15">
+            <summary>Day of Month (DOM) roll convention for fifteenth (15) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom16">
+            <summary>Day of Month (DOM) roll convention for sixteenth (16) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom17">
+            <summary>Day of Month (DOM) roll convention for seventeenth (17) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom18">
+            <summary>Day of Month (DOM) roll convention for eighteenth (18) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom19">
+            <summary>Day of Month (DOM) roll convention for nineteenth (19) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom20">
+            <summary>Day of Month (DOM) roll convention for twentieth (20) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom21">
+            <summary>Day of Month (DOM) roll convention for twenty-first (21) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom22">
+            <summary>Day of Month (DOM) roll convention for twenty-second (22) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom23">
+            <summary>Day of Month (DOM) roll convention for twenty-third (23) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom24">
+            <summary>Day of Month (DOM) roll convention for twenty-fourth (24) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom25">
+            <summary>Day of Month (DOM) roll convention for twenty-fifth (25) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom26">
+            <summary>Day of Month (DOM) roll convention for twenty-sixth (26) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom27">
+            <summary>Day of Month (DOM) roll convention for twenty-seventh (27) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom28">
+            <summary>Day of Month (DOM) roll convention for twenty-eighth (28) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom29">
+            <summary>Day of Month (DOM) roll convention for twenty-ninth (29) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Dom30">
+            <summary>Day of Month (DOM) roll convention for thirtieth (30) day of the month.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Eom">
+            <summary>Last Day of Month (EOM) roll convention.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Monday">
+            <summary>Day of Week (DOW) roll convention for Monday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Tuesday">
+            <summary>Day of Week (DOW) roll convention for Tuesday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Wednesday">
+            <summary>Day of Week (DOW) roll convention for Wednesday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Thursday">
+            <summary>Day of Week (DOW) roll convention for Thursday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Friday">
+            <summary>Day of Week (DOW) roll convention for Friday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Saturday">
+            <summary>Day of Week (DOW) roll convention for Saturday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Sunday">
+            <summary>Day of Week (DOW) roll convention for Sunday.</summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Imm">
+            <summary> 3rd Wednesday </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Immnzd">
+            <summary> Wednesday on or after 9th </summary>
+        </member>
+        <member name="F:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Sfe">
+            <summary> 2nd Friday </summary>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.Of(B7.Financial.Abstractions.Name)">
+            <summary>
+            Retrieves the <see cref="T:B7.Financial.Abstractions.Schedule.IRollConvention"/> by its name.
+            </summary>
+            <param name="name">The name of the Roll Convention to retrieve.</param>
+            <returns>The roll convention associated with the specified <paramref name="name"/>.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if the specified <paramref name="name"/> does not correspond to a known roll convention.</exception>
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.OfDayOfMonth(System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.OfDayOfWeek(System.DayOfWeek)">
+            <inheritdoc />
+        </member>
+        <member name="M:B7.Financial.Basics.Date.Schedule.RollConventions.StandardRollConventionsFactory.RollConventionNames">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
