@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("B7.Financial.Basics.Date")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f5d5655166c328fd997332433b739d0b66e890e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3354a38377bce95d06a1f7b39fce824df3ffed7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("B7.Financial.Basics.Date")]
 [assembly: System.Reflection.AssemblyTitleAttribute("B7.Financial.Basics.Date")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
